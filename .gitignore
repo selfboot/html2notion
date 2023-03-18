@@ -1,5 +1,6 @@
 .vscode
 *.pyc
-logs/*
-!logs/.gitkeep 
 notion_demo/*
+build/
+html2notion.egg-info/
+logs/*

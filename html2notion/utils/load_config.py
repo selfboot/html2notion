@@ -1,16 +1,16 @@
 import json
 import os
 import sys
-from .log import logger
+
+config = {}
 
 
-def read_config(filename):
-    if not os.path.exists(filename):
-        print("Load config from file %s failed. ", filename)
-        logger.error("Load config from file %s failed. ", filename)
+def read_config(file_path):
+    if not file_path.is_file():
+        print(f"Load {file_path} fail")
         sys.exit(1)
 
-    with open(filename, "r") as f:
+    with open(file_path, "r") as f:
         config = json.load(f)
 
         """
@@ -23,15 +23,13 @@ def read_config(filename):
         """
         if "notion" not in config:
             raise Exception("notion is not set in config.json")
+
         notion_conf = config["notion"]
         if "database_id" not in notion_conf:
             raise Exception("database_id is not set in config.json")
         if "api_key" not in notion_conf:
             raise Exception("api_key is not set in config.json")
 
-        return config
-
-
-script_path = os.path.abspath(__file__)
-script_dir = os.path.dirname(script_path)
-config = read_config(os.path.join(script_dir, "../config.json"))
+        if "log_path" not in config:
+            config["log_path"] = os.path.expanduser('~/logs')
+        return True

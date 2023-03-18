@@ -1,7 +1,7 @@
-import logging.config
 import logging
-from logging.handlers import TimedRotatingFileHandler
+from logging import handlers
 import os
+logger = logging.getLogger()
 
 
 class CustomFormatter(logging.Formatter):
@@ -11,7 +11,8 @@ class CustomFormatter(logging.Formatter):
     red = "\x1b[31;21m"
     bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"
-    format = "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"  # type: ignore
+    # type: ignore
+    format = "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"
 
     FORMATS = {
         logging.DEBUG: green + format + reset,  # type: ignore
@@ -27,17 +28,16 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-logger = logging.getLogger(__name__)
-script_path = os.path.abspath(__file__)
-script_dir = os.path.dirname(script_path)
-log_path = os.path.join(script_dir, "../logs/error.log")
-handler = TimedRotatingFileHandler(filename=log_path, when='midnight', backupCount=30, encoding='utf-8')
-handler.setLevel(logging.DEBUG)
-handler.setFormatter(CustomFormatter())
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+def setup_logger(log_path):
+    filename = os.path.join(log_path.resolve(), "html2notion_error.log")
+    handler = handlers.TimedRotatingFileHandler(
+        filename=filename, when='midnight', backupCount=30, encoding='utf-8')
+    handler.setLevel(logging.DEBUG)
+    handler.setFormatter(CustomFormatter())
+    logger.addHandler(handler)
+    logger.setLevel(logging.DEBUG)
 
-logger.debug('Logging debug message')
-logger.info('Logging info message')
-logger.warn('Logging debug message')
-logger.error('Logging error message')
+    logger.debug('Logging debug message')
+    logger.info('Logging info message')
+    logger.warn('Logging debug message')
+    logger.error('Logging error message')
