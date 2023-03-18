@@ -1,0 +1,26 @@
+{
+    "object":"block",
+    "type":"paragraph",
+    "paragraph":{
+        "rich_text":[
+            {
+                "type":"text",
+                "text":{
+                    "content":"这里是"
+                }
+            },
+            {
+                "type":"text",
+                "text":{
+                    "content":"红色字体"
+                },
+                "annotations":{
+                    "bold":false,
+                    "strikethrough":false,
+                    "underline":false,
+                    "color":"red"
+                }
+            }
+        ]
+    }
+}

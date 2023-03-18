@@ -1,0 +1,5 @@
+.vscode
+*.pyc
+logs/*
+!logs/.gitkeep 
+notion_demo/*
