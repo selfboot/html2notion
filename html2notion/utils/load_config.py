@@ -1,6 +1,6 @@
 import json
-import os
 import sys
+from pathlib import Path
 
 config = {}
 
@@ -31,5 +31,5 @@ def read_config(file_path):
             raise Exception("api_key is not set in config.json")
 
         if "log_path" not in config:
-            config["log_path"] = os.path.expanduser('~/logs')
+            config["log_path"] = Path('~/logs')
         return True

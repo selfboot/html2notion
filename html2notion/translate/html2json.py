@@ -1,6 +1,6 @@
 from ..utils import logger
 from bs4 import BeautifulSoup
-import os
+from pathlib import Path
 import json
 
 
@@ -20,8 +20,8 @@ class Html2Json:
         self.html_file = html_file
         self.html_content = ""
 
-        if not os.path.exists(html_file):
-            logger.error("Load file failed", html_file)
+        if not html_file.is_file():
+            logger.error("Load file failed", html_file.resolve())
         else:
             with open(self.html_file, "r") as file:
                 self.html_content = file.read()
@@ -77,9 +77,7 @@ class Html2Json:
 
 
 if __name__ == "__main__":
-    script_path = os.path.abspath(__file__)
-    script_dir = os.path.dirname(script_path)
-    html_test = os.path.join(script_dir, "../demos/paragram_simple.html")
+    html_test = Path("./demos/paragram_simple.html")
     html2json = Html2Json(html_test)
     html2json.convert()
-    print(json.dumps(html2json.children, indent=4))
+    print(json.dumps(html2json.children, indent=4, ensure_ascii=False))
