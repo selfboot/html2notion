@@ -4,3 +4,4 @@ notion_demo/*
 build/
 html2notion.egg-info/
 logs/*
+.config.json
