@@ -38,7 +38,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest >> $GITHUB_OUTPUT
+        pytest
       env:
         notion_api_key: ${{ secrets.NOTION_API_KEY }}
         notion_db_id_1: ${{ secrets.NOTION_DATABASE_ID_1 }}
