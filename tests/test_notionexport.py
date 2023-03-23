@@ -31,9 +31,11 @@ def test_check_is_delete():
 
 def test_export_blocks():
     if 'GITHUB_ACTIONS' in os.environ:
+        print("GITHUB_ACTIONS")
         api_key = os.environ['notion_api_key']
         page_id = os.environ['notion_page_id_1']
     else:
+        print("Local pytest")
         test_prepare_conf()
         api_key = config['notion']['api_key']
         page_id = config['notion']['page_id']
@@ -56,6 +58,7 @@ def test_export_blocks():
 
 if __name__ == '__main__':
     if 'GITHUB_ACTIONS' not in os.environ:
+        print("Local main")
         test_prepare_conf()
 
     test_check_is_delete()
