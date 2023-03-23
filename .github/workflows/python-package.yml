@@ -25,10 +25,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: set environment
-        env:
+      env:
           notion_api_key: ${{ secrets.NOTION_API_KEY }}
-          notion_db_id_1: ${{ secrets.NOTION_DATABASE_ID_1}}
-          notion_page_id_1: ${{ secrets.NOTION_PAGE_ID_1}}
+          notion_db_id_1: ${{ secrets.NOTION_DATABASE_ID_1 }}
+          notion_page_id_1: ${{ secrets.NOTION_PAGE_ID_1 }}
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
