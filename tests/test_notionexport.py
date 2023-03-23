@@ -2,7 +2,7 @@ from html2notion.translate.notion_export import NotionExporter
 import os
 import json
 from html2notion.utils import config, test_prepare_conf
-workflow = os.environ.get('workflow', '')
+workflow = ('GITHUB_ACTIONS' in os.environ)
 
 
 def test_check_is_delete():
