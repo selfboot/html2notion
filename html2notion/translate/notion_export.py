@@ -171,57 +171,8 @@ class NotionExporter:
 
 if __name__ == "__main__":
     test_prepare_conf()
-    print(config)
     exporter = NotionExporter(api_key=config['notion']['api_key'],
                               page_id=config['notion']['page_id'],
                               page_size=10)
     exporter.export_blocks()
     print(json.dumps(exporter.output_blocks, indent=4, ensure_ascii=False))
-
-    # testData = {
-    #     "object": "block",
-    #     "id": "95948188-43cb-451f-b538-e0375368ca96",
-    #     "parent": {
-    #         "type": "page_id",
-    #         "page_id": "6d45ea01-5ba4-4ccc-a3b1-386958e2f3a7"
-    #     },
-    #     "created_time": "2023-03-16T12:41:00.000Z",
-    #     "last_edited_time": "2023-03-16T12:41:00.000Z",
-    #     "created_by": {
-    #         "object": "user",
-    #         "id": "6244005a-4cd8-4819-bde8-eba3de5c4cec"
-    #     },
-    #     "last_edited_by": {
-    #         "object": "user",
-    #         "id": "6244005a-4cd8-4819-bde8-eba3de5c4cec"
-    #     },
-    #     "has_children": False,
-    #     "archived": False,
-    #     "type": "paragraph",
-    #     "paragraph": {
-    #         "rich_text": [
-    #             {
-    #                 "type": "text",
-    #                 "text": {
-    #                     "content": "测试文本内容第3行",
-    #                     "link": None
-    #                 },
-    #                 "annotations": {
-    #                     "bold": True,
-    #                     "italic": False,
-    #                     "strikethrough": False,
-    #                     "underline": False,
-    #                     "code": False,
-    #                     "color": "default"
-    #                 },
-    #                 "plain_text": "测试文本内容第3行",
-    #                 "href": None
-    #             }
-    #         ],
-    #         "color": "default"
-    #     }
-    # }
-
-    # print(NotionExporter.check_is_delete(["outer_key"], "nested_value"))
-    # print(NotionExporter.check_is_delete(["outer_key", "nested_key"], "nested_value"))
-    # print(NotionExporter.check_is_delete(["outer_key", "nested_key2"], "nested_value2"))
