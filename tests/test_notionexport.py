@@ -2,7 +2,7 @@ from html2notion.translate.notion_export import NotionExporter
 import os
 import json
 from html2notion.utils import config, test_prepare_conf
-ci = os.environ.get('CI', False)
+workflow = os.environ.get('workflow', '')
 
 
 def test_check_is_delete():
@@ -31,7 +31,7 @@ def test_check_is_delete():
 
 
 def test_export_blocks():
-    if ci:
+    if workflow:
         api_key = os.environ['notion_api_key']
         page_id = os.environ['notion_page_id_1']
     else:
@@ -55,7 +55,7 @@ def test_export_blocks():
 
 
 if __name__ == '__main__':
-    if not ci:
+    if not workflow:
         test_prepare_conf()
 
     test_check_is_delete()
