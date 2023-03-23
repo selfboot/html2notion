@@ -2,7 +2,6 @@ from html2notion.translate.notion_export import NotionExporter
 import os
 import json
 from html2notion.utils import config, test_prepare_conf
-workflow = ('GITHUB_ACTIONS' in os.environ)
 
 
 def test_check_is_delete():
@@ -31,10 +30,11 @@ def test_check_is_delete():
 
 
 def test_export_blocks():
-    if workflow:
+    if 'GITHUB_ACTIONS' in os.environ:
         api_key = os.environ['notion_api_key']
         page_id = os.environ['notion_page_id_1']
     else:
+        test_prepare_conf()
         api_key = config['notion']['api_key']
         page_id = config['notion']['page_id']
 
@@ -55,7 +55,7 @@ def test_export_blocks():
 
 
 if __name__ == '__main__':
-    if not workflow:
+    if 'GITHUB_ACTIONS' not in os.environ:
         test_prepare_conf()
 
     test_check_is_delete()
