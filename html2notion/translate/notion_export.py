@@ -54,7 +54,7 @@ class NotionExporter:
             # Number in path is json array placeholder
             if isinstance(key, int):
                 if isinstance(result, list) and len(result) > 0:
-                    result = result[0]
+                    result = result[0] # type: ignore
                 else:
                     result = None
             elif isinstance(result, dict) and key in result:
@@ -83,28 +83,32 @@ class NotionExporter:
 
     @staticmethod
     def keep_dict_pathvalue(data, path, value):
-        current = data
-
         for i, key in enumerate(path):
-            # if isinstance(key, int):
-            #     if isinstance(current[prekey], list):
-            #         current[prekey].append({})
-
-            if i == len(path) - 1:
-                current[key] = value
+            if isinstance(key, int):
+                data = data[key]
+            elif i == len(path) - 1:
+                data[key] = value
             else:
-                prekey = key
-                if key in current:
-                    if not isinstance(current[key], dict) and not isinstance(current[key], list):
-                        current[key] = {}
+                next_key = path[i+1] if i+1 < len(path) else None
+                if key in data:
+                    if isinstance(next_key, int):
+                        if not isinstance(data[key], list):
+                            logger.error(f"Keep error: {i}, {path}, {data[key]}")
+                            return
+                        data[key].extend([{} for _ in range(next_key - len(data[key]) + 1)])
                     else:
-                        pass
+                        if not isinstance(data[key], dict):
+                            logger.error(f"Keep error: {i}, {path}, {data[key]}")
+                            return
                 else:
-                    current[key] = {}
-                current = current[key]
-        data = current
+                    if isinstance(next_key, int):
+                        data[key] = [{} for _ in range(next_key + 1)]
+                    else:
+                        data[key] = {}
+
+                data = data[key]
         return
-       
+
     def __get_children_blocks(self):
         children = self.notion.blocks.children.list(block_id=self.page_id, page_size=self.page_size)
         if not isinstance(children, dict):
