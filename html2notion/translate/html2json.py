@@ -58,9 +58,6 @@ class Html2Json:
 
             tagname = child.name.lower()
             if tagname in self.tag_map:
-                tag_value = self.tag_map[tagname]
-                # parse annotation
-
                 tag_text = child.get_text()
                 text_obj = {
                     "type": self.tag_map[tagname],

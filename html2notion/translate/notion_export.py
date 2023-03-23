@@ -54,7 +54,7 @@ class NotionExporter:
             # Number in path is json array placeholder
             if isinstance(key, int):
                 if isinstance(result, list) and len(result) > 0:
-                    result = result[0] # type: ignore
+                    result = result[0]  # type: ignore
                 else:
                     result = None
             elif isinstance(result, dict) and key in result:
@@ -152,7 +152,7 @@ class NotionExporter:
                     logger.debug(f"Keep {prefix}: {cur}")
                     NotionExporter.keep_dict_pathvalue(clean_block, prefix, cur)
         return clean_block
-    
+
     def export_blocks(self):
         self.__get_children_blocks()
         result = json.dumps(self.all_blocks, indent=4, ensure_ascii=False)
