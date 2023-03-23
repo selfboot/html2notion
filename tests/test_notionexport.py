@@ -29,13 +29,19 @@ def test_check_is_delete():
         assert not NotionExporter.check_is_delete(path, value)
 
 
+def test_my_function():
+    CI = os.environ['CI']
+    assert CI == True
+
+
 def test_export_blocks():
+    import sys
     if 'GITHUB_ACTIONS' in os.environ:
-        print("GITHUB_ACTIONS")
+        print("GITHUB_ACTIONS", file=sys.stderr)
         api_key = os.environ['notion_api_key']
         page_id = os.environ['notion_page_id_1']
     else:
-        print("Local pytest")
+        print("Local pytest", file=sys.stderr)
         test_prepare_conf()
         api_key = config['notion']['api_key']
         page_id = config['notion']['page_id']
