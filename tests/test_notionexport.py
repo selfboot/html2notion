@@ -1,7 +1,6 @@
 from html2notion.translate.notion_export import NotionExporter
 import os
 import json
-from html2notion.utils import config, test_prepare_conf
 
 
 def test_check_is_delete():
@@ -29,19 +28,13 @@ def test_check_is_delete():
         assert not NotionExporter.check_is_delete(path, value)
 
 
-def test_my_function():
-    CI = os.environ['CI']
-    assert CI == True
-
-
 def test_export_blocks():
     import sys
     if 'GITHUB_ACTIONS' in os.environ:
-        print("GITHUB_ACTIONS", file=sys.stderr)
         api_key = os.environ['notion_api_key']
         page_id = os.environ['notion_page_id_1']
     else:
-        print("Local pytest", file=sys.stderr)
+        from html2notion.utils import config, test_prepare_conf
         test_prepare_conf()
         api_key = config['notion']['api_key']
         page_id = config['notion']['page_id']
@@ -64,7 +57,8 @@ def test_export_blocks():
 
 if __name__ == '__main__':
     if 'GITHUB_ACTIONS' not in os.environ:
-        print("Local main")
+        from html2notion.utils import config, test_prepare_conf
         test_prepare_conf()
 
     test_check_is_delete()
+    test_export_blocks()
