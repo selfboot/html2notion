@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
 from .log import logger, setup_logger
 from .load_config import read_config, config
 from pathlib import Path

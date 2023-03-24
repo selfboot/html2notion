@@ -29,7 +29,6 @@ def test_check_is_delete():
 
 
 def test_export_blocks():
-    import sys
     if 'GITHUB_ACTIONS' in os.environ:
         api_key = os.environ['notion_api_key']
         page_id = os.environ['notion_page_id_1']

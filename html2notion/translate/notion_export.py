@@ -166,7 +166,6 @@ class NotionExporter:
             self.output_blocks.append(output_block)
 
         return self.output_blocks
-        # return json.dumps(self.all_blocks, indent=4, ensure_ascii=False)
 
 
 if __name__ == "__main__":
