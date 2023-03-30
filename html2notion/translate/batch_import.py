@@ -33,8 +33,9 @@ class BatchImport:
         semaphore = asyncio.Semaphore(self.concurrent_limit)
         files_len = len(list(self.directory.glob('*')))
         pbar = tqdm(total=files_len, bar_format='{l_bar}{bar}|{n_fmt}/{total_fmt}', dynamic_ncols=True)
-        print("")       # Keep a placeholder row
+        print("")  # Keep a placeholder row
         BatchImport.print_above("Begin...")
+
         async with aiohttp.ClientSession() as session:
             tasks = []
             for file_path in self.directory.glob('*'):
@@ -44,7 +45,7 @@ class BatchImport:
                     task.add_done_callback(lambda t: semaphore.release())
                     tasks.append(task)
             await asyncio.gather(*tasks)
-        # pbar.close()
+            await session.close()
 
     def run(self):
         loop = asyncio.get_event_loop()

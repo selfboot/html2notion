@@ -19,11 +19,6 @@ class NotionImporter:
         logger.info(f"process file {file_path}")
         if content == "main_hold":                  # local debug
             await asyncio.sleep(1)
-        elif content == "http://localhost:0":       # pytest
-            url = self.get_url_from_content(content)
-            html = await self.fetch(url)
-            logger.debug(f"process_file, url({url}), html({html})")
-            return html
         else:
             await asyncio.sleep(1)  # TODO
 
