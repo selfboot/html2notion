@@ -24,10 +24,11 @@ class BatchImport:
         logger.info(f"Begin file, file {file_path}")
         notion_import = NotionImporter(session)
         if file_path.is_file():
-            await notion_import.process_file(file_path)
+            response = await notion_import.process_file(file_path)
             BatchImport.print_above(f"Processed {file_path}")
             logger.info(f"Finish file {file_path}")
             pbar.update(1)
+            return response
 
     async def process_directory(self):
         semaphore = asyncio.Semaphore(self.concurrent_limit)
@@ -36,16 +37,19 @@ class BatchImport:
         print("")  # Keep a placeholder row
         BatchImport.print_above("Begin...")
 
+        async def process_file_with_semaphore(session, file_path, pbar):
+            async with semaphore:
+                return await self.process_file(session, file_path, pbar)
+
         async with aiohttp.ClientSession() as session:
-            tasks = []
-            for file_path in self.directory.glob('*'):
-                if file_path.is_file():
-                    await semaphore.acquire()
-                    task = asyncio.ensure_future(BatchImport.process_file(session, file_path, pbar))
-                    task.add_done_callback(lambda t: semaphore.release())
-                    tasks.append(task)
-            await asyncio.gather(*tasks)
+            tasks = [
+                process_file_with_semaphore(session, file_path, pbar)
+                for file_path in self.directory.iterdir()
+                if file_path.is_file()
+            ]
+            results = await asyncio.gather(*tasks)
             await session.close()
+            return results
 
     def run(self):
         loop = asyncio.get_event_loop()
