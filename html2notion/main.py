@@ -1,39 +1,70 @@
 import argparse
 import sys
-import json
 from pathlib import Path
+import asyncio
+from aiohttp import ClientSession
 from .utils import setup_logger, read_config, logger
-from .translate.html2json import Html2Json
+from .translate.notion_import import NotionImporter
+from .translate.batch_import import BatchImport
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description='Html2notion: Save HTML to your Notion notes quickly and easily, while keeping the original format as much as possible')
+    parser.add_argument('--conf', type=str, help='conf file path', required=True)
+    parser.add_argument('--log', type=str, help='log direct path')
+    parser.add_argument('--batch', type=int, default=15, help='batch save concurrent limit')
+
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--file', type=str, help='Save single html file to notion')
+    group.add_argument('--dir', type=str, help='Save all html files in the dir to notion')
+    return parser.parse_args()
+
+
+def prepare_env(args: argparse.Namespace):
+    log_path = Path(args.log) if args.log else Path.cwd() / 'logs/'
+    if not log_path.is_dir():
+        log_path.mkdir(parents=True)
+
+    conf_path = Path(args.conf)
+    if not conf_path.is_file():
+        print(f"Read conf file({conf_path}) failed.")
+        logger.fatal(f"Read conf file({conf_path}) failed.")
+        sys.exit(1)
+
+    setup_logger(log_path)
+    read_config(conf_path)
+    logger.info(f"Read log {log_path}, conf {conf_path}")
+
+
+async def import_single_file(file):
+    async with ClientSession() as session:
+        notion_importer = NotionImporter(session)
+        result = await notion_importer.process_file(file)
+        return result
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--html', type=str, default='test.html',
-                        help='html file to convert')
-    parser.add_argument('--conf', type=str, default='./config.json',
-                        help='conf file path', required=True)
-    parser.add_argument('--log', type=str, default='~/logs',
-                        help='log direct path', required=True)
+    args = parse_args()
+    prepare_env(args)
 
-    args = parser.parse_args()
-    log_path = Path(args.log)
-    conf_path = Path(args.conf)
-    setup_logger(log_path)
-    read_config(conf_path)
-
-    html_path = Path(args.html)
-    if html_path.is_file():
-        logger.info(f"Read html file({html_path}).")
-        html2json = Html2Json(html_path)
-        html2json.convert()
-        print(json.dumps(html2json.children, indent=4, ensure_ascii=False))
-
+    file_path = Path(args.file) if args.file else None
+    dir_path = Path(args.dir) if args.dir else None
+    max_concurrency = args.batch
+    if file_path and file_path.is_file():
+        logger.info(f"Begin save single html file: {file_path}.")
+        result = asyncio.run(import_single_file(file_path))
+        logger.info(f"Finish save single html file: {file_path}.\n{result}")
+        print(f"File {file_path} saved.")
+    elif dir_path and dir_path.is_dir():
+        logger.info(f"Begin save all html files in the dir: {dir_path}.")
+        batch_import = BatchImport(dir_path, max_concurrency)
+        result = asyncio.run(batch_import.process_directory())
+        logger.info(f"Finish save all html files in the dir: {dir_path}.\n{result}")
+        print(f"Directory {dir_path} saved.")
     else:
-        print(f"Read html file({html_path}) failed.")
-        logger.fatal(f"Read html file({html_path}) failed.")
-        sys.exit(1)
-
-    logger.info(f"Read log path({log_path}), conf path({conf_path})")
+        print("No impossible.")
+    return
 
 
 if __name__ == '__main__':

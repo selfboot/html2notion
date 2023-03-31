@@ -13,10 +13,14 @@ class NotionImporter:
             return await response.text()
 
     async def process_file(self, file_path: Path):
+        if not file_path.is_file():
+            logger.error(f"{file_path} is not a file.")
+            return
+
         with file_path.open() as f:
             content = f.read()
 
-        logger.info(f"process file {file_path}")
+        logger.info(f"Process file {file_path}")
         if content == "main_hold":                  # local debug
             await asyncio.sleep(1)
         else:

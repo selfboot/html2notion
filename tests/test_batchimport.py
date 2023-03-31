@@ -56,7 +56,7 @@ def temp_dir_fixture(request):
 async def test_batch_process(temp_dir_fixture, concurrent_limit):
     dir_path = temp_dir_fixture
     start_time = time.time()
-    with patch("html2notion.translate.notion_import.NotionImporter.process_file", side_effect=mock_notion_api_request) as mock_process_file:
+    with patch("html2notion.translate.notion_import.NotionImporter.process_file", side_effect=mock_notion_api_request):
         batch_processor = BatchImport(dir_path, concurrent_limit=concurrent_limit)
         responses = await batch_processor.process_directory()
 
@@ -70,4 +70,4 @@ async def test_batch_process(temp_dir_fixture, concurrent_limit):
     expected_time = max(len(list(dir_path.iterdir())) / concurrent_limit, process_once_time)
     schedule_more_time = 1.5
     assert total_time >= expected_time
-    assert total_time <= expected_time * 1.5
+    assert total_time <= expected_time * schedule_more_time

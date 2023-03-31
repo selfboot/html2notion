@@ -51,10 +51,6 @@ class BatchImport:
             await session.close()
             return results
 
-    def run(self):
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.process_directory())
-
 
 if __name__ == '__main__':
     from ..utils import test_prepare_conf
@@ -70,4 +66,5 @@ if __name__ == '__main__':
 
         max_concurrency = 2
         batch_import = BatchImport(temp_dir_path, max_concurrency)
-        batch_import.run()
+        result = asyncio.run(batch_import.process_directory())
+        print(result)
