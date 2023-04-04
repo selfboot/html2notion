@@ -35,10 +35,10 @@ async def mock_cos_upload_request(file_path, *args, **kwargs):
         region = config["cos"]["region"]
         bucket = config["cos"]["bucket"]
     else:
-        secret_id = os.environ['COS_SECRET_ID']
-        secret_key = os.environ['COS_SECRET_KEY']
-        region = os.environ['COS_REGION']
-        bucket = os.environ['COS_BUCKET']
+        secret_id = os.environ['cos_secret_id']
+        secret_key = os.environ['cos_secret_key']
+        region = os.environ['cos_region']
+        bucket = os.environ['cos_bucket']
 
     log_only_local(f"mock_cos_upload_request: {file_path}")
     uploader = TencentCosUploaderAsync(secret_id, secret_key, region, bucket)
