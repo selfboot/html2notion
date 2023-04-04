@@ -16,3 +16,4 @@ soupsieve==2.4
 aiohttp==3.8.4
 anyio==3.6.2
 tqdm==4.65.0
+cos-python-sdk-v5==1.9.23
