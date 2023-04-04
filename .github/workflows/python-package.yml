@@ -43,3 +43,7 @@ jobs:
         notion_api_key: ${{ secrets.NOTION_API_KEY }}
         notion_db_id_1: ${{ secrets.NOTION_DATABASE_ID_1 }}
         notion_page_id_1: ${{ secrets.NOTION_PAGE_ID_1 }}
+        cos_secret_id: ${{ secrets.COS_SECRET_ID }}
+        cos_secret_key: ${{ secrets.COS_SECRET_KEY }}
+        cos_region: ${{ secrets.COS_REGION }}
+        cos_bucket: ${{ secrets.COS_BUCKET }}
