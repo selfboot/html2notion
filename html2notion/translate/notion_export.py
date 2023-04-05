@@ -1,7 +1,7 @@
-from notion_client import Client
-from ..utils import logger, test_prepare_conf, config
 import json
-
+from notion_client import Client, errors as notion_errors
+from ..utils import logger, test_prepare_conf, config
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 class NotionExporter:
     # Remove keys which not used by add page
@@ -109,6 +109,7 @@ class NotionExporter:
                 data = data[key]
         return
 
+    @retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=3, max=30), retry=retry_if_exception_type(notion_errors.RequestTimeoutError))
     def __get_children_blocks(self):
         children = self.notion.blocks.children.list(block_id=self.page_id, page_size=self.page_size)
         if not isinstance(children, dict):
