@@ -6,8 +6,8 @@ from functools import partial
 
 
 class TencentCosUploaderAsync:
-    def __init__(self, secret_id, secret_key, region, bucket):
-        self.config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
+    def __init__(self, secret_id, secret_key, region, bucket, timeout=60):
+        self.config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Timeout=timeout)
         self.client = CosS3Client(self.config)
         self.bucket = bucket
 

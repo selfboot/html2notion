@@ -40,17 +40,18 @@ async def mock_cos_upload_request(file_path, *args, **kwargs):
         region = os.environ['cos_region']
         bucket = os.environ['cos_bucket']
 
-    log_only_local(f"mock_cos_upload_request: {file_path}")
+    start_time = time.perf_counter()
     uploader = TencentCosUploaderAsync(secret_id, secret_key, region, bucket)
     loop = asyncio.get_event_loop()
     key = f"test_workflow/{file_path.name}"
     upload_response = await uploader.upload_file(loop, file_path, key)
     log_only_local(f"Upload response: {upload_response}")
 
-    if await uploader.check_file_exist(loop, key):
-        return True
-    else:
-        return False
+    is_exist = await uploader.check_file_exist(loop, key)
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    log_only_local(f"Upload elapsed time: {elapsed_time}")
+    return (is_exist, elapsed_time)
 
 
 @pytest.fixture()
@@ -73,9 +74,17 @@ def temp_dir_fixture():
 async def test_batch_cos_upload(temp_dir_fixture):
     concurrent_limit = 10
     dir_path = temp_dir_fixture
+
+    start_time = time.perf_counter()
     with patch("html2notion.translate.notion_import.NotionImporter.process_file", side_effect=mock_cos_upload_request):
-        batch_processor = BatchImport(dir_path, concurrent_limit=concurrent_limit)
+        batch_processor = BatchImport(
+            dir_path, concurrent_limit=concurrent_limit)
         responses = await batch_processor.process_directory()
+    end_time = time.perf_counter()
 
     for res in responses:
-        assert (res)
+        assert (res[0])
+
+    elapsed_times = sum([res[1] for res in responses])
+    log_only_local(f"Total elapsed time: {elapsed_times}")
+    assert ((end_time-start_time) * 5 <= elapsed_times)
