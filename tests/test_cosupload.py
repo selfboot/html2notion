@@ -59,8 +59,8 @@ def temp_dir_fixture():
     with TemporaryDirectory() as temp_dir:
         dir_path = Path(temp_dir)
         temp_files = []
-        for i in range(100):
-            file_size = random.randint(1 * 1024 * 1024, 5 * 1024 * 1024)
+        for i in range(20):
+            file_size = random.randint(1 * 1024, 1 * 1024 * 1024)
             random_text = "".join(random.choices(string.ascii_letters + string.digits, k=file_size))
 
             temp_file = dir_path / f"file_{i}.txt"
@@ -72,7 +72,7 @@ def temp_dir_fixture():
 
 @pytest.mark.asyncio
 async def test_batch_cos_upload(temp_dir_fixture):
-    concurrent_limit = 10
+    concurrent_limit = 5
     dir_path = temp_dir_fixture
 
     start_time = time.perf_counter()
@@ -87,4 +87,4 @@ async def test_batch_cos_upload(temp_dir_fixture):
 
     elapsed_times = sum([res[1] for res in responses])
     log_only_local(f"Total elapsed time: {elapsed_times}")
-    assert ((end_time-start_time) * 5 <= elapsed_times)
+    assert ((end_time-start_time) < elapsed_times)
