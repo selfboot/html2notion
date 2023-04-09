@@ -18,7 +18,7 @@ def _check_convert_succ(case_name):
 
 
 def test_html2json():
-    assert not _check_convert_succ("paragram_simple")   # todo
+    assert not _check_convert_succ("yinxiang")   # todo
 
 
 if __name__ == '__main__':

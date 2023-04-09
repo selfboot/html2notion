@@ -1,4 +1,5 @@
-import os
+import sys
+import json
 from functools import singledispatch
 from pathlib import Path
 from bs4 import BeautifulSoup
@@ -40,10 +41,10 @@ def _(html_content: str):
 
 
 @html2json_process.register
-def _(html_file:  Path):
+def _(html_file: Path):
     if not html_file.is_file():
         print(f"Load file: {html_file.resolve()} failed")
-        os.exit(1)
+        sys.exit(1)
 
     with open(html_file, "r") as file:
         html_content = file.read()
@@ -55,6 +56,10 @@ def _(html_file:  Path):
 
 if __name__ == "__main__":
     test_prepare_conf()
-    html_file = Path("./demos/paragram_simple.html")
-    print(html2json_process(html_file))
-    print(html2json_process("<html><body><div>test</div></body></html>"))
+    html_file = Path("./demos/yinxiang.html")
+    result, html_type = html2json_process(html_file)
+    print(html_type)
+    print(json.dumps(result, indent=4, ensure_ascii=False))
+    result2, html_type2 = html2json_process("<html><body><div>test</div></body></html>")
+    print(html_type2)
+    print(json.dumps(result2, indent=4, ensure_ascii=False))

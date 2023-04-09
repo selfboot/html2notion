@@ -1,7 +1,7 @@
 import json
 from notion_client import Client, errors as notion_errors
-from ..utils import logger, test_prepare_conf, config
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from ..utils import logger, test_prepare_conf, config
 
 class NotionExporter:
     # Remove keys which not used by add page
