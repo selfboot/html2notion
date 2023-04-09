@@ -1,80 +1,60 @@
-from ..utils import logger
-from bs4 import BeautifulSoup
+import os
+from functools import singledispatch
 from pathlib import Path
-import json
+from bs4 import BeautifulSoup
+from ..utils import logger, test_prepare_conf
+from ..translate.html2json_base import Html2JsonBase
+from ..translate.html2json_default import Default_Type
+from ..translate.html2json_yinxiang import YinXiang_Type
 
 
-class Html2Json:
-    def __init__(self, html_file):
-        self.tag_map = {
-            "div": "paragraph",
-            "span": "text",
-            "font": "text"
-        }
-        self.attr_map = {
-            "color": "color",
-            "size": "font_size",
-        }
+def _infer_input_type(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    exporter_version_meta = soup.find(
+        'meta', attrs={'name': 'exporter-version'})
+    exporter_version_content = exporter_version_meta.get(
+        'content') if exporter_version_meta else None
+    if exporter_version_content and exporter_version_content.startswith("Evernote"):
+        return YinXiang_Type
 
-        self.children = []
-        self.html_file = html_file
-        self.html_content = ""
+    return Default_Type
 
-        if not html_file.is_file():
-            logger.error("Load file failed", html_file.resolve())
-        else:
-            with open(self.html_file, "r") as file:
-                self.html_content = file.read()
 
-    def convert(self):
-        soup = BeautifulSoup(self.html_content, 'html.parser')
-        paragraphs = soup.find_all('div', recursive=True)
+def _get_converter(html_content):
+    html_type = _infer_input_type(html_content)
+    logger.info(f"Input type: {html_type}")
+    converter = Html2JsonBase.create(html_type, html_content)
+    return converter
 
-        for child in paragraphs:
-            is_dup = False
-            for parent in child.find_parents():
-                if parent.name == 'div':
-                    logger.debug("Filter child div")
-                    is_dup = True
-                    break
-            if is_dup:
-                continue
-            parapraph = self.convert_paragraph(child)
-            if parapraph:
-                self.children.append(parapraph)
 
-    def convert_paragraph(self, soup):
-        json_obj = {
-            "object": "block",
-            "type": "paragraph",
-            "paragraph": {
-                "rich_text": []
-            }
-        }
-        rich_text = json_obj["paragraph"]["rich_text"]
-        for child in soup.children:
-            if child.name is None:
-                continue
+@singledispatch
+def html2json_process(html_content):
+    raise TypeError("Unsupported param type")
 
-            tagname = child.name.lower()
-            if tagname in self.tag_map:
-                tag_text = child.get_text()
-                text_obj = {
-                    "type": self.tag_map[tagname],
-                    "text": {
-                        "content": tag_text
-                    }
-                }
-                rich_text.append(text_obj)
 
-        return json_obj
+@html2json_process.register
+def _(html_content: str):
+    converter = _get_converter(html_content)
+    result = converter.process()
+    return converter.get_res(), result
 
-    def get_res(self):
-        return self.children
+
+@html2json_process.register
+def _(html_file:  Path):
+    if not html_file.is_file():
+        print(f"Load file: {html_file.resolve()} failed")
+        os.exit(1)
+
+    with open(html_file, "r") as file:
+        html_content = file.read()
+
+    converter = _get_converter(html_content)
+    result = converter.process()
+    return converter.get_res(), result
 
 
 if __name__ == "__main__":
-    html_test = Path("./demos/paragram_simple.html")
-    html2json = Html2Json(html_test)
-    html2json.convert()
-    print(json.dumps(html2json.children, indent=4, ensure_ascii=False))
+    test_prepare_conf()
+    html_file = Path("./demos/paragram_simple.html")
+    print(html2json_process(html_file))
+    print(html2json_process("<html><body><div>test</div></body></html>"))

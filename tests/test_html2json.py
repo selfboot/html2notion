@@ -1,6 +1,6 @@
-from html2notion.translate.html2json import Html2Json
 import json
 from pathlib import Path
+from html2notion.translate.html2json import html2json_process
 
 
 def _check_convert_succ(case_name):
@@ -9,9 +9,10 @@ def _check_convert_succ(case_name):
         result = json.load(f)
 
     html_file = Path(f"./demos/{case_name}.html")
-    html2json = Html2Json(html_file)
-    html2json.convert()
-    convert = json.dumps(html2json.children)
+    html2json = html2json_process(html_file)
+    if html2json[1] is False:
+        return False
+    convert = json.dumps(html2json[0])
 
     return convert == result
 
