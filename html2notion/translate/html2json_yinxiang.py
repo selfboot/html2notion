@@ -73,6 +73,10 @@ class Html2JsonYinXiang(Html2JsonBase):
             text_params["strikethrough"] = True
         if Html2JsonBase.is_underline(tag_name, styles):
             text_params["underline"] = True
+
+        color = Html2JsonBase.get_color(styles)
+        if color != 'default':
+            text_params["color"] = color
         text_obj = self.generate_text(**text_params)
         return text_obj
 
