@@ -59,21 +59,22 @@ class Html2JsonBase:
 
     @staticmethod
     def is_strikethrough(tag_name: str, styles: Property) -> bool:
-        if tag_name and tag_name in ('s', 'strike', 'del'):
+        if tag_name in ('s', 'strike', 'del'):
             return True
         text_decoration = styles.getPropertyValue("text-decoration", None)
         return "line-through" in text_decoration
 
     @staticmethod
     def is_italic(tag_name: str, styles: Property) -> bool:
-        if tag_name and tag_name in ('i', 'em'):
+        if tag_name in ('i', 'em'):
             return True
         font_style = styles.getPropertyValue('font-style', None)
         return "italic" in font_style
 
     @staticmethod
     def is_underline(tag_name: str, styles: Property) -> bool:
-        if tag_name and tag_name in ('u'):
+        # A tuple of a single element requires a comma after the element
+        if tag_name in ('u',):
             return True
         text_decoration = styles.getPropertyValue('text-decoration', None)
         return 'underline' in text_decoration
