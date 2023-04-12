@@ -10,14 +10,12 @@ YinXiang_Type = "yinxiang"
 class Html2JsonYinXiang(Html2JsonBase):
     input_type = YinXiang_Type
 
+    inline_tags = {"a", "abbr", "acronym", "b", "cite", "code", "em", "i",
+                   "img", "kbd", "q", "samp", "small", "span", "strong",
+                   "sub", "sup", "u"}
+
     def __init__(self, html_content):
         super().__init__(html_content)
-        self.tag_map = {
-            # "div": "paragraph",
-            "span": "text",
-            "font": "text",
-            "strike": "text",
-        }
 
     def process(self):
         self.convert()
@@ -25,9 +23,9 @@ class Html2JsonYinXiang(Html2JsonBase):
 
     def convert(self):
         soup = BeautifulSoup(self.html_content, 'html.parser')
-        paragraphs = soup.find_all('div', recursive=True)
+        div_tags = soup.find_all('div', recursive=True)
 
-        for child in paragraphs:
+        for child in div_tags:
             is_dup = False
             for parent in child.find_parents():
                 if parent.name == 'div':
@@ -36,9 +34,17 @@ class Html2JsonYinXiang(Html2JsonBase):
                     break
             if is_dup:
                 continue
-            parapraph = self.convert_paragraph(child)
-            if parapraph:
-                self.children.append(parapraph)
+            
+            div_type = self.get_div_type(child)
+
+            if div_type == "paragraph":
+                parapraph = self.convert_paragraph(child)
+                if parapraph:
+                    self.children.append(parapraph)
+            elif div_type == "quote":
+                quote = self.convert_quote(child)
+                if quote:
+                    self.children.append(quote)
 
     def convert_paragraph(self, soup):
         json_obj = {
@@ -56,13 +62,37 @@ class Html2JsonYinXiang(Html2JsonBase):
                 continue
             style = child.get('style') if child.name else ""
             tag_style = cssutils.parseStyle(style)
-            text_obj = self.parse_tag(tag_name, tag_text, tag_style)
+            text_obj = self.parse_inline_tag(tag_name, tag_text, tag_style)
             if text_obj:
                 rich_text.append(text_obj)
 
         return json_obj
 
-    def parse_tag(self, tag_name, tag_text, styles):
+    def convert_quote(self, soup):
+        json_obj = {
+            "object": "block",
+            "type": "quote",
+            "quote": {
+                "rich_text": []
+            }
+        }
+        rich_text = json_obj["quote"]["rich_text"]
+        for child in soup.children:
+            tag_name = child.name.lower() if child.name else ""
+            tag_text = child.text if child.text else ""
+            if not tag_text:
+                continue
+            style = child.get('style') if child.name else ""
+            tag_style = cssutils.parseStyle(style)
+            text_obj = self.parse_inline_tag(tag_name, tag_text, tag_style)
+            if text_obj:
+                rich_text.append(text_obj)
+
+        return json_obj
+    
+    def parse_inline_tag(self, tag_name, tag_text, styles):
+        if tag_name not in Html2JsonYinXiang.inline_tags:
+            logger.warn(f"Not support tag {tag_name}")
         text_params = {}
         text_params["plain_text"] = tag_text
         if Html2JsonBase.is_bold(tag_name, styles):
@@ -80,5 +110,16 @@ class Html2JsonYinXiang(Html2JsonBase):
         text_obj = self.generate_text(**text_params)
         return text_obj
 
+    def get_div_type(self, div_tag):
+        style = div_tag.get('style') if div_tag.name else ""
+        if not style:
+            return Html2JsonBase.notion_block_types["paragraph"]
+        # styles = cssutils.parseStyle(style)
+        # block = styles.getPropertyValue('-en-codeblock', False)
+        css_dict = {rule.split(':')[0].strip(): rule.split(
+            ':')[1].strip() for rule in style.split(';') if rule}
+        en_codeblock = css_dict.get('-en-codeblock', None)
+        if en_codeblock == 'true':
+            return Html2JsonBase.notion_block_types["quote"]
 
 Html2JsonBase.register(YinXiang_Type, Html2JsonYinXiang)

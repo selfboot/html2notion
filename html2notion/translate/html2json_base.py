@@ -13,6 +13,12 @@ class Html2JsonBase:
         "code": bool,
         "color": str,
     }
+
+    notion_block_types = {
+        "paragraph": "paragraph",
+        "quote": "quote",
+    }
+
     _color_tuple = namedtuple("Color", "name r g b")
     _notion_color = [
         _color_tuple("gray", 128, 128, 128),
