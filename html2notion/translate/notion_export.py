@@ -5,6 +5,29 @@ from ..utils import logger, test_prepare_conf, config
 
 class NotionExporter:
     # Remove keys which not used by add page
+    delete_block = {
+        "rich_text": [
+            {
+                # "type": "text",
+                "text": {
+                    # "content": "测试第一行",
+                    "link": None
+                },
+                "annotations": {
+                    "bold": False,
+                    "italic": False,
+                    "strikethrough": False,
+                    "underline": False,
+                    "code": False,
+                    "color": "default"
+                },
+                # "plain_text": "测试第一行",
+                "href": None
+            }
+        ],
+        "color": "default"
+    }
+
     delete_conf = {
         # "object": "block",
         "id": "__any__",
@@ -16,32 +39,14 @@ class NotionExporter:
         "has_children": False,
         "archived": False,
         # "type": "paragraph",
-        "paragraph": {
-            "rich_text": [
-                {
-                    # "type": "text",
-                    "text": {
-                        # "content": "测试第一行",
-                        "link": None
-                    },
-                    "annotations": {
-                        "bold": False,
-                        "italic": False,
-                        "strikethrough": False,
-                        "underline": False,
-                        "code": False,
-                        "color": "default"
-                    },
-                    # "plain_text": "测试第一行",
-                    "href": None
-                }
-            ],
-            "color": "default"
-        }
+        "paragraph": delete_block,
+        "quote": delete_block,
+        "numbered_list_item": delete_block,
+        "bulleted_list_item": delete_block
     }
 
     def __init__(self, api_key, page_id, page_size=2):
-        self.notion = Client(auth=api_key)
+        self.notion = Client(auth=api_key, logger=logger)
         self.page_id = page_id
         self.page_size = page_size
         self.all_blocks = []

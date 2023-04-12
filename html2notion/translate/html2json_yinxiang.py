@@ -90,6 +90,8 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         return json_obj
     
+    # Todo
+    # <b><u>下划线粗体</u></b>
     def parse_inline_tag(self, tag_name, tag_text, styles):
         if tag_name not in Html2JsonYinXiang.inline_tags:
             logger.warn(f"Not support tag {tag_name}")
