@@ -11,6 +11,9 @@ def test_check_is_delete():
         (["paragraph", "rich_text", 0, "text", "link"], None),
         (["paragraph", "rich_text", 0, "annotations", "code"], False),
         (["paragraph", "rich_text", 0, "annotations", "color"], "default"),
+        (["quote", "rich_text", 0, "annotations", "color"], "default"),
+        (["numbered_list_item", "rich_text", 0, "annotations", "color"], "default"),
+        (["bulleted_list_item", "rich_text", 0, "annotations", "color"], "default"),
     ]
 
     for (path, value) in del_keyvalue:
@@ -23,6 +26,10 @@ def test_check_is_delete():
         (["paragraph", "rich_text", 0, "text", "link"], "https://selfboot.com"),
         (["paragraph", "rich_text", 0, "annotations", "code"], True),
         (["paragraph", "rich_text", 0, "annotations", "color"], "red"),
+        (["quote", "rich_text", 0, "annotations", "color"], "red"),
+        (["numbered_list_item", "rich_text", 0, "annotations", "color"], "red"),
+        (["bulleted_list_item", "rich_text", 0, "annotations", "color"], "red"),
+        (["bulleted_list_item", "rich_text", 0, "annotations", "code"], True),
     ]
     for (path, value) in keep_keyvalue:
         assert not NotionExporter.check_is_delete(path, value)
