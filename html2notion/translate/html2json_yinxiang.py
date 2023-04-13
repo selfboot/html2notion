@@ -1,4 +1,3 @@
-import cssutils
 from bs4 import BeautifulSoup
 from ..utils import logger
 from ..translate.html2json_base import Html2JsonBase
@@ -61,8 +60,11 @@ class Html2JsonYinXiang(Html2JsonBase):
             if not tag_text:
                 continue
             style = child.get('style') if child.name else ""
-            tag_style = cssutils.parseStyle(style)
-            text_obj = self.parse_inline_tag(tag_name, tag_text, tag_style)
+            css_dict = {}
+            if style:
+                css_dict = {rule.split(':')[0].strip(): rule.split(
+                    ':')[1].strip() for rule in style.split(';') if rule}
+            text_obj = self.parse_inline_tag(tag_name, tag_text, css_dict)
             if text_obj:
                 rich_text.append(text_obj)
 
@@ -83,8 +85,12 @@ class Html2JsonYinXiang(Html2JsonBase):
             if not tag_text:
                 continue
             style = child.get('style') if child.name else ""
-            tag_style = cssutils.parseStyle(style)
-            text_obj = self.parse_inline_tag(tag_name, tag_text, tag_style)
+
+            css_dict = {}
+            if style:
+                css_dict = {rule.split(':')[0].strip(): rule.split(
+                    ':')[1].strip() for rule in style.split(';') if rule}
+            text_obj = self.parse_inline_tag(tag_name, tag_text, css_dict)
             if text_obj:
                 rich_text.append(text_obj)
 
@@ -92,9 +98,9 @@ class Html2JsonYinXiang(Html2JsonBase):
     
     # Todo
     # <b><u>下划线粗体</u></b>
-    def parse_inline_tag(self, tag_name, tag_text, styles):
+    def parse_inline_tag(self, tag_name, tag_text, styles : dict):
         if tag_name not in Html2JsonYinXiang.inline_tags:
-            logger.warn(f"Not support tag {tag_name}")
+            logger.warning(f"Not support tag {tag_name}")
         text_params = {}
         text_params["plain_text"] = tag_text
         if Html2JsonBase.is_bold(tag_name, styles):
@@ -116,8 +122,6 @@ class Html2JsonYinXiang(Html2JsonBase):
         style = div_tag.get('style') if div_tag.name else ""
         if not style:
             return Html2JsonBase.notion_block_types["paragraph"]
-        # styles = cssutils.parseStyle(style)
-        # block = styles.getPropertyValue('-en-codeblock', False)
         css_dict = {rule.split(':')[0].strip(): rule.split(
             ':')[1].strip() for rule in style.split(';') if rule}
         en_codeblock = css_dict.get('-en-codeblock', None)

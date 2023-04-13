@@ -1,5 +1,4 @@
 from collections import namedtuple
-from cssutils.css import Property
 from ..utils import logger
 
 
@@ -63,11 +62,11 @@ class Html2JsonBase:
         return text_obj
 
     @staticmethod
-    def is_bold(tag_name: str, styles: Property) -> bool:
+    def is_bold(tag_name: str, styles: dict) -> bool:
         if tag_name in ('b', 'strong'):
             return True
 
-        font_weight = styles.getPropertyValue('font-weight', None)
+        font_weight = styles.get('font-weight', None)
         if font_weight is None:
             return False
         elif font_weight == 'bold':
@@ -77,34 +76,34 @@ class Html2JsonBase:
         return False
 
     @staticmethod
-    def is_strikethrough(tag_name: str, styles: Property) -> bool:
+    def is_strikethrough(tag_name: str, styles: dict) -> bool:
         if tag_name in ('s', 'strike', 'del'):
             return True
-        text_decoration = styles.getPropertyValue("text-decoration", None)
+        text_decoration = styles.get("text-decoration", "")
         return "line-through" in text_decoration
 
     @staticmethod
-    def is_italic(tag_name: str, styles: Property) -> bool:
+    def is_italic(tag_name: str, styles: dict) -> bool:
         if tag_name in ('i', 'em'):
             return True
-        font_style = styles.getPropertyValue('font-style', None)
+        font_style = styles.get('font-style', "")
         return "italic" in font_style
 
     @staticmethod
-    def is_underline(tag_name: str, styles: Property) -> bool:
+    def is_underline(tag_name: str, styles: dict) -> bool:
         # A tuple of a single element requires a comma after the element
         if tag_name in ('u',):
             return True
-        text_decoration = styles.getPropertyValue('text-decoration', None)
+        text_decoration = styles.get('text-decoration', "")
         return 'underline' in text_decoration
 
     @staticmethod
-    def is_code(tag_name: str, styles: Property):
+    def is_code(tag_name: str, styles: dict):
         if tag_name in ('code',):
             return True
 
         # Check if the font-family is monospace
-        font_family = styles.getPropertyValue('font-family', None)
+        font_family = styles.get('font-family', "")
         monospace_fonts = {'courier', 'monospace'}
         if not font_family:
             return False
@@ -126,8 +125,8 @@ class Html2JsonBase:
         return closest_color
 
     @staticmethod
-    def get_color(styles: Property):
-        color = styles.getPropertyValue('color', None)
+    def get_color(styles: dict):
+        color = styles.get('color', "")
         if not color:
             return "default"
         if color.startswith("rgb"):
