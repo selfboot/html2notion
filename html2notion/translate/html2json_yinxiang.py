@@ -9,9 +9,9 @@ YinXiang_Type = "yinxiang"
 class Html2JsonYinXiang(Html2JsonBase):
     input_type = YinXiang_Type
 
-    inline_tags = {"a", "abbr", "acronym", "b", "cite", "code", "em", "i",
-                   "img", "kbd", "q", "samp", "small", "span", "strong",
-                   "sub", "sup", "u"}
+    # inline_tags = {"a", "abbr", "acronym", "b", "cite", "code", "em", "i",
+    #                "img", "kbd", "q", "samp", "small", "span", "strong",
+    #                "sub", "sup", "u", "font"}
 
     def __init__(self, html_content):
         super().__init__(html_content)
@@ -33,7 +33,7 @@ class Html2JsonYinXiang(Html2JsonBase):
                     break
             if is_dup:
                 continue
-            
+
             div_type = self.get_div_type(child)
 
             if div_type == "paragraph":
@@ -81,10 +81,14 @@ class Html2JsonYinXiang(Html2JsonBase):
             if text_obj:
                 rich_text.append(text_obj)
 
+        # Merge tags has same anotions
+        # TODO: compare
+        json_obj["quote"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
-    
-    # Todo
+
+    # Todo Handle some recursive labels
     # <b><u>下划线粗体</u></b>
+    # <div><font color="#ff2600">红色4</font></div>
     def parse_inline_tag(self, tag_soup, tag_text):
         tag_name = tag_soup.name.lower() if tag_soup.name else ""
         style = tag_soup.get('style') if tag_name else ""
@@ -93,8 +97,8 @@ class Html2JsonYinXiang(Html2JsonBase):
             styles = {rule.split(':')[0].strip(): rule.split(
                 ':')[1].strip() for rule in style.split(';') if rule}
 
-        if tag_name not in Html2JsonYinXiang.inline_tags:
-            logger.warning(f"Not support tag {tag_name}")
+        # if tag_name and tag_name not in Html2JsonYinXiang.inline_tags:
+        #     logger.warning(f"Not support tag {tag_name}")
         text_params = {}
         text_params["plain_text"] = tag_text
         if Html2JsonBase.is_bold(tag_name, styles):
@@ -106,7 +110,7 @@ class Html2JsonYinXiang(Html2JsonBase):
         if Html2JsonBase.is_underline(tag_name, styles):
             text_params["underline"] = True
 
-        color = Html2JsonBase.get_color(styles)
+        color = Html2JsonBase.get_color(styles, tag_soup.attrs if tag_name else {})
         if color != 'default':
             text_params["color"] = color
 
@@ -115,7 +119,6 @@ class Html2JsonYinXiang(Html2JsonBase):
             if not href:
                 logger.warning("Link href is empty")
             text_params["url"] = href
-            logger.info(f"Link tag {text_params}")
             text_obj = self.generate_link(**text_params)
         else:
             text_obj = self.generate_text(**text_params)
@@ -130,5 +133,6 @@ class Html2JsonYinXiang(Html2JsonBase):
         en_codeblock = css_dict.get('-en-codeblock', None)
         if en_codeblock == 'true':
             return Html2JsonBase.notion_block_types["quote"]
+
 
 Html2JsonBase.register(YinXiang_Type, Html2JsonYinXiang)

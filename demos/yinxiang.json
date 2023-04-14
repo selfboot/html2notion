@@ -20,6 +20,91 @@
                     "type": "text"
                 },
                 {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "绿色字体",
+                    "annotations": {
+                        "color": "green"
+                    },
+                    "text": {
+                        "content": "绿色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "褐色字体",
+                    "annotations": {
+                        "color": "gray"
+                    },
+                    "text": {
+                        "content": "褐色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "紫色字体",
+                    "annotations": {
+                        "color": "purple"
+                    },
+                    "text": {
+                        "content": "紫色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "橙色字体",
+                    "annotations": {
+                        "color": "orange"
+                    },
+                    "text": {
+                        "content": "橙色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "黄色字体",
+                    "annotations": {
+                        "color": "yellow"
+                    },
+                    "text": {
+                        "content": "黄色字体"
+                    },
+                    "type": "text"
+                },
+                {
                     "plain_text": "，这里是",
                     "text": {
                         "content": "，这里是"
@@ -106,9 +191,251 @@
                     "type": "text"
                 },
                 {
-                    "plain_text": "，这里是高亮。",
+                    "plain_text": "，这里是",
                     "text": {
-                        "content": "，这里是高亮。"
+                        "content": "，这里是"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "高亮",
+                    "annotations": {
+                        "color": "yellow_background"
+                    },
+                    "text": {
+                        "content": "高亮"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "。",
+                    "text": {
+                        "content": "。"
+                    },
+                    "type": "text"
+                }
+            ]
+        },
+        "type": "paragraph",
+        "object": "block"
+    },
+    {
+        "type": "paragraph",
+        "object": "block"
+    },
+    {
+        "paragraph": {
+            "rich_text": [
+                {
+                    "plain_text": "这里是红色字体，",
+                    "text": {
+                        "content": "这里是红色字体，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "绿色字体",
+                    "annotations": {
+                        "color": "green"
+                    },
+                    "text": {
+                        "content": "绿色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "褐色字体",
+                    "annotations": {
+                        "color": "gray"
+                    },
+                    "text": {
+                        "content": "褐色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "紫色字体",
+                    "annotations": {
+                        "color": "purple"
+                    },
+                    "text": {
+                        "content": "紫色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "橙色字体",
+                    "annotations": {
+                        "color": "orange"
+                    },
+                    "text": {
+                        "content": "橙色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，",
+                    "text": {
+                        "content": "，"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "黄色字体",
+                    "annotations": {
+                        "color": "yellow"
+                    },
+                    "text": {
+                        "content": "黄色字体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，这里是",
+                    "text": {
+                        "content": "，这里是"
+                    },
+                    "type": "text"
+                },
+                {
+                    "href": "http://www.baidu.com/",
+                    "plain_text": "链接",
+                    "text": {
+                        "link": {
+                            "url": "http://www.baidu.com/"
+                        },
+                        "content": "链接"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，这里是",
+                    "text": {
+                        "content": "，这里是"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "下划线",
+                    "annotations": {
+                        "underline": true
+                    },
+                    "text": {
+                        "content": "下划线"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，这里是",
+                    "text": {
+                        "content": "，这里是"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "粗体",
+                    "annotations": {
+                        "bold": true
+                    },
+                    "text": {
+                        "content": "粗体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，这里是",
+                    "text": {
+                        "content": "，这里是"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "删除线",
+                    "annotations": {
+                        "strikethrough": true
+                    },
+                    "text": {
+                        "content": "删除线"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，这里是",
+                    "text": {
+                        "content": "，这里是"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "斜体",
+                    "annotations": {
+                        "italic": true
+                    },
+                    "text": {
+                        "content": "斜体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "，这里是",
+                    "text": {
+                        "content": "，这里是"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "高亮",
+                    "annotations": {
+                        "color": "yellow_background"
+                    },
+                    "text": {
+                        "content": "高亮"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "。这里是",
+                    "text": {
+                        "content": "。这里是"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "下划线粗体",
+                    "annotations": {
+                        "underline": true,
+                        "bold": true
+                    },
+                    "text": {
+                        "content": "下划线粗体"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "。",
+                    "text": {
+                        "content": "。"
                     },
                     "type": "text"
                 }
@@ -123,20 +450,21 @@
     },
     {
         "quote": {
-            "color": "default",
             "rich_text": [
                 {
-                    "plain_text": "引用1\n2\n3",
+                    "plain_text": "引用1\n2\n3\n4\n",
+                    "text": {
+                        "content": "引用1\n2\n3\n4\n"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "红色4",
                     "annotations": {
-                        "color": "default",
-                        "code": false,
-                        "underline": false,
-                        "strikethrough": false,
-                        "italic": false,
-                        "bold": false
+                        "color": "red"
                     },
                     "text": {
-                        "content": "引用1\n2\n3"
+                        "content": "红色4"
                     },
                     "type": "text"
                 }
@@ -166,18 +494,9 @@
     },
     {
         "numbered_list_item": {
-            "color": "default",
             "rich_text": [
                 {
                     "plain_text": "这里是第一",
-                    "annotations": {
-                        "color": "default",
-                        "code": false,
-                        "underline": false,
-                        "strikethrough": false,
-                        "italic": false,
-                        "bold": false
-                    },
                     "text": {
                         "content": "这里是第一"
                     },
@@ -190,18 +509,9 @@
     },
     {
         "numbered_list_item": {
-            "color": "default",
             "rich_text": [
                 {
                     "plain_text": "这里是第二",
-                    "annotations": {
-                        "color": "default",
-                        "code": false,
-                        "underline": false,
-                        "strikethrough": false,
-                        "italic": false,
-                        "bold": false
-                    },
                     "text": {
                         "content": "这里是第二"
                     },
@@ -214,18 +524,9 @@
     },
     {
         "numbered_list_item": {
-            "color": "default",
             "rich_text": [
                 {
                     "plain_text": "这里是第三",
-                    "annotations": {
-                        "color": "default",
-                        "code": false,
-                        "underline": false,
-                        "strikethrough": false,
-                        "italic": false,
-                        "bold": false
-                    },
                     "text": {
                         "content": "这里是第三"
                     },
@@ -257,18 +558,9 @@
     },
     {
         "bulleted_list_item": {
-            "color": "default",
             "rich_text": [
                 {
                     "plain_text": "列表 A",
-                    "annotations": {
-                        "color": "default",
-                        "code": false,
-                        "underline": false,
-                        "strikethrough": false,
-                        "italic": false,
-                        "bold": false
-                    },
                     "text": {
                         "content": "列表 A"
                     },
@@ -281,18 +573,9 @@
     },
     {
         "bulleted_list_item": {
-            "color": "default",
             "rich_text": [
                 {
                     "plain_text": "列表 B",
-                    "annotations": {
-                        "color": "default",
-                        "code": false,
-                        "underline": false,
-                        "strikethrough": false,
-                        "italic": false,
-                        "bold": false
-                    },
                     "text": {
                         "content": "列表 B"
                     },
@@ -305,18 +588,9 @@
     },
     {
         "bulleted_list_item": {
-            "color": "default",
             "rich_text": [
                 {
                     "plain_text": "列表 C",
-                    "annotations": {
-                        "color": "default",
-                        "code": false,
-                        "underline": false,
-                        "strikethrough": false,
-                        "italic": false,
-                        "bold": false
-                    },
                     "text": {
                         "content": "列表 C"
                     },
