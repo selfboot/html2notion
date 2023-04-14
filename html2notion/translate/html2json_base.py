@@ -42,12 +42,25 @@ class Html2JsonBase:
         return self.children
 
     @staticmethod
+    def generate_link(**kwargs):
+        if not kwargs.get("plain_text", ""):
+            return
+        text_obj = {}
+        text_obj["href"] = kwargs.get("url", "")
+        text_obj["plain_text"] = kwargs.get("plain_text", "")
+        text_obj["text"] = {}
+        text_obj["text"]["link"] = {}
+        text_obj["text"]["link"]["url"] = kwargs.get("url", "")
+        text_obj["text"]["content"] = kwargs.get("plain_text", "")
+        text_obj["type"] = "text"
+        return text_obj
+
+    @staticmethod
     def generate_text(**kwargs):
         if not kwargs.get("plain_text", ""):
             return
         text_obj = {}
         text_obj["plain_text"] = kwargs.get("plain_text", "")
-        text_obj["type"] = "text"
         text_obj["text"] = {}
         text_obj["text"]["content"] = kwargs.get("plain_text", "")
         text_obj["annotations"] = {}
@@ -59,6 +72,7 @@ class Html2JsonBase:
             text_obj["annotations"][key] = value
         if not text_obj["annotations"]:
             del text_obj["annotations"]
+        text_obj["type"] = "text"
         return text_obj
 
     @staticmethod

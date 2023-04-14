@@ -55,16 +55,10 @@ class Html2JsonYinXiang(Html2JsonBase):
         }
         rich_text = json_obj["paragraph"]["rich_text"]
         for child in soup.children:
-            tag_name = child.name.lower() if child.name else ""
             tag_text = child.text if child.text else ""
             if not tag_text:
                 continue
-            style = child.get('style') if child.name else ""
-            css_dict = {}
-            if style:
-                css_dict = {rule.split(':')[0].strip(): rule.split(
-                    ':')[1].strip() for rule in style.split(';') if rule}
-            text_obj = self.parse_inline_tag(tag_name, tag_text, css_dict)
+            text_obj = self.parse_inline_tag(child, tag_text)
             if text_obj:
                 rich_text.append(text_obj)
 
@@ -80,17 +74,10 @@ class Html2JsonYinXiang(Html2JsonBase):
         }
         rich_text = json_obj["quote"]["rich_text"]
         for child in soup.children:
-            tag_name = child.name.lower() if child.name else ""
             tag_text = child.text if child.text else ""
             if not tag_text:
                 continue
-            style = child.get('style') if child.name else ""
-
-            css_dict = {}
-            if style:
-                css_dict = {rule.split(':')[0].strip(): rule.split(
-                    ':')[1].strip() for rule in style.split(';') if rule}
-            text_obj = self.parse_inline_tag(tag_name, tag_text, css_dict)
+            text_obj = self.parse_inline_tag(child, tag_text)
             if text_obj:
                 rich_text.append(text_obj)
 
@@ -98,7 +85,14 @@ class Html2JsonYinXiang(Html2JsonBase):
     
     # Todo
     # <b><u>下划线粗体</u></b>
-    def parse_inline_tag(self, tag_name, tag_text, styles : dict):
+    def parse_inline_tag(self, tag_soup, tag_text):
+        tag_name = tag_soup.name.lower() if tag_soup.name else ""
+        style = tag_soup.get('style') if tag_name else ""
+        styles = {}
+        if style:
+            styles = {rule.split(':')[0].strip(): rule.split(
+                ':')[1].strip() for rule in style.split(';') if rule}
+
         if tag_name not in Html2JsonYinXiang.inline_tags:
             logger.warning(f"Not support tag {tag_name}")
         text_params = {}
@@ -115,7 +109,16 @@ class Html2JsonYinXiang(Html2JsonBase):
         color = Html2JsonBase.get_color(styles)
         if color != 'default':
             text_params["color"] = color
-        text_obj = self.generate_text(**text_params)
+
+        if tag_name == 'a':
+            href = tag_soup.get('href', "")
+            if not href:
+                logger.warning("Link href is empty")
+            text_params["url"] = href
+            logger.info(f"Link tag {text_params}")
+            text_obj = self.generate_link(**text_params)
+        else:
+            text_obj = self.generate_text(**text_params)
         return text_obj
 
     def get_div_type(self, div_tag):
