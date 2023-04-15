@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 from ..utils import logger
 from ..translate.html2json_base import Html2JsonBase
 
@@ -8,10 +8,6 @@ YinXiang_Type = "yinxiang"
 
 class Html2JsonYinXiang(Html2JsonBase):
     input_type = YinXiang_Type
-
-    # inline_tags = {"a", "abbr", "acronym", "b", "cite", "code", "em", "i",
-    #                "img", "kbd", "q", "samp", "small", "span", "strong",
-    #                "sub", "sup", "u", "font"}
 
     def __init__(self, html_content):
         super().__init__(html_content)
@@ -82,14 +78,11 @@ class Html2JsonYinXiang(Html2JsonBase):
                 rich_text.append(text_obj)
 
         # Merge tags has same anotions
-        # TODO: compare
         json_obj["quote"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
 
     # Todo Handle some recursive labels
-    # <b><u>下划线粗体</u></b>
-    # <div><font color="#ff2600">红色4</font></div>
-    def parse_inline_tag(self, tag_soup, tag_text):
+    def _recursivr_inline_tag(self, tag_soup, tag_text, text_params):
         tag_name = tag_soup.name.lower() if tag_soup.name else ""
         style = tag_soup.get('style') if tag_name else ""
         styles = {}
@@ -97,9 +90,6 @@ class Html2JsonYinXiang(Html2JsonBase):
             styles = {rule.split(':')[0].strip(): rule.split(
                 ':')[1].strip() for rule in style.split(';') if rule}
 
-        # if tag_name and tag_name not in Html2JsonYinXiang.inline_tags:
-        #     logger.warning(f"Not support tag {tag_name}")
-        text_params = {}
         text_params["plain_text"] = tag_text
         if Html2JsonBase.is_bold(tag_name, styles):
             text_params["bold"] = True
@@ -110,10 +100,25 @@ class Html2JsonYinXiang(Html2JsonBase):
         if Html2JsonBase.is_underline(tag_name, styles):
             text_params["underline"] = True
 
-        color = Html2JsonBase.get_color(styles, tag_soup.attrs if tag_name else {})
+        color = Html2JsonBase.get_color(
+            styles, tag_soup.attrs if tag_name else {})
         if color != 'default':
             text_params["color"] = color
 
+        if not tag_soup or isinstance(tag_soup, NavigableString):
+            return
+
+        for child in tag_soup.children:
+            if child.name:
+                self._recursivr_inline_tag(child, child.text, text_params)
+        return
+    
+    # <b><u>下划线粗体</u></b>
+    # <div><font color="#ff2600">红色4</font></div>
+    def parse_inline_tag(self, tag_soup, tag_text):
+        text_params = {}
+        self._recursivr_inline_tag(tag_soup, tag_text, text_params)
+        tag_name = tag_soup.name.lower() if tag_soup.name else ""
         if tag_name == 'a':
             href = tag_soup.get('href', "")
             if not href:

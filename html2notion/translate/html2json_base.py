@@ -1,4 +1,5 @@
 from collections import namedtuple
+import re
 from ..utils import logger
 
 
@@ -169,6 +170,11 @@ class Html2JsonBase:
         return closest_color
 
     @staticmethod
+    def _hex_to_rgb(hex_color):
+        hex_color = hex_color.lstrip("#")
+        return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+    @staticmethod
     def get_color(styles: dict, attrs):
         color = styles.get('color', "")
         if not color and 'color' in attrs:
@@ -177,7 +183,13 @@ class Html2JsonBase:
             return "default"
         if color.startswith("rgb"):
             r, g, b = [int(x.strip()) for x in color[4:-1].split(",")]
-            return Html2JsonBase._closest_color(r, g, b)
+        # Check if color is in hexadecimal format
+        elif re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color):
+            r, g, b = Html2JsonBase._hex_to_rgb(color)
+        else:
+            return "default"
+
+        return Html2JsonBase._closest_color(r, g, b)
 
     @classmethod
     def register(cls, input_type, subclass):
