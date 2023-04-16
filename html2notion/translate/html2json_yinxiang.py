@@ -29,7 +29,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             if converter:
                 block = converter(child) 
                 if block:
-                    self.children.append(block)
+                    self.children.extend([block] if not isinstance(block, list) else block)
             else:
                 logger.warning(f"Unknown block type: {block_type}")
 
@@ -72,6 +72,51 @@ class Html2JsonYinXiang(Html2JsonBase):
         # Merge tags has same anotions
         json_obj["quote"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
+
+    # <ol><li><div>one</div></li><li><div>first</div></li><li><div>third</div></li></ol>
+    def convert_numbered_list_item(self, soup):
+        return self.convert_list_items(soup, 'numbered_list_item')
+
+    # <ul><li><div>itemA</div></li><li><div>itemB</div></li><li><div>itemC</div></li></ul>
+    def convert_bulleted_list_item(self, soup):
+        return self.convert_list_items(soup, 'bulleted_list_item')
+
+    def convert_list_items(self, soup, list_type):
+        items = soup.find_all('li', recursive=True)
+        if not items:
+            logger.warning("No list items found in {soup}")
+
+        json_arr = []
+        for item in items:
+            one_item = self._convert_one_list_item(item, list_type)
+            if one_item:
+                json_arr.append(one_item)
+            else:
+                logger.info(f'empty {item}')
+        return json_arr
+
+    def _convert_one_list_item(self, soup, list_type):
+        if list_type not in {'numbered_list_item', 'bulleted_list_item'}:
+            logger.warning(f'Not support list_type')
+
+        json_obj = {
+            "object": "block",
+            list_type: {
+                "rich_text": []
+            },
+            "type": list_type,
+        }
+        rich_text = json_obj[list_type]["rich_text"]
+        for child in soup.children:
+            tag_text = child.text if child.text else ""
+            if not tag_text:
+                continue
+            text_obj = self.parse_inline_tag(child, tag_text)
+            if text_obj:
+                rich_text.append(text_obj)
+
+        return json_obj
+
 
     # Todo Handle some recursive labels
     def _recursivr_inline_tag(self, tag_soup, tag_text, text_params):
@@ -121,9 +166,16 @@ class Html2JsonYinXiang(Html2JsonBase):
             text_obj = self.generate_text(**text_params)
         return text_obj
 
-    def get_block_type(self, div_tag):
-        style = div_tag.get('style') if div_tag.name else ""
-        if not style:
+    def get_block_type(self, single_tag):
+        tag_name = single_tag.name
+        style = single_tag.get('style') if tag_name else ""
+
+        if tag_name == 'ol':
+            return Block.NUMBERED_LIST.value
+        if tag_name == 'ul':
+            return Block.BULLETED_LIST.value
+
+        if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
         css_dict = {rule.split(':')[0].strip(): rule.split(
             ':')[1].strip() for rule in style.split(';') if rule}

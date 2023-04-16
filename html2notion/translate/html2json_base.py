@@ -6,6 +6,8 @@ from ..utils import logger
 class Block(Enum):
     PARAGRAPH = "paragraph"
     QUOTE = "quote"
+    NUMBERED_LIST = "numbered_list_item"
+    BULLETED_LIST = "bulleted_list_item"
 
 class Html2JsonBase:
     _registry = {}
