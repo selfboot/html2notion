@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup, NavigableString
 from ..utils import logger
-from ..translate.html2json_base import Html2JsonBase
+from ..translate.html2json_base import Html2JsonBase, Block
 
 
 YinXiang_Type = "yinxiang"
@@ -18,28 +18,20 @@ class Html2JsonYinXiang(Html2JsonBase):
 
     def convert(self):
         soup = BeautifulSoup(self.html_content, 'html.parser')
-        div_tags = soup.find_all('div', recursive=True)
-
-        for child in div_tags:
-            is_dup = False
-            for parent in child.find_parents():
-                if parent.name == 'div':
-                    logger.debug("Filter child div")
-                    is_dup = True
-                    break
-            if is_dup:
-                continue
-
-            div_type = self.get_div_type(child)
-
-            if div_type == "paragraph":
-                parapraph = self.convert_paragraph(child)
-                if parapraph:
-                    self.children.append(parapraph)
-            elif div_type == "quote":
-                quote = self.convert_quote(child)
-                if quote:
-                    self.children.append(quote)
+        content_tags = soup.find_all('body', recursive=True)
+        if not content_tags:
+            logger.warning("No content found")
+            return
+        
+        for child in content_tags[0].children:
+            block_type = self.get_block_type(child)
+            converter = getattr(self, f"convert_{block_type}")
+            if converter:
+                block = converter(child) 
+                if block:
+                    self.children.append(block)
+            else:
+                logger.warning(f"Unknown block type: {block_type}")
 
     def convert_paragraph(self, soup):
         json_obj = {
@@ -129,15 +121,15 @@ class Html2JsonYinXiang(Html2JsonBase):
             text_obj = self.generate_text(**text_params)
         return text_obj
 
-    def get_div_type(self, div_tag):
+    def get_block_type(self, div_tag):
         style = div_tag.get('style') if div_tag.name else ""
         if not style:
-            return Html2JsonBase.notion_block_types["paragraph"]
+            return Block.PARAGRAPH.value
         css_dict = {rule.split(':')[0].strip(): rule.split(
             ':')[1].strip() for rule in style.split(';') if rule}
         en_codeblock = css_dict.get('-en-codeblock', None)
         if en_codeblock == 'true':
-            return Html2JsonBase.notion_block_types["quote"]
+            return Block.QUOTE.value
 
 
 Html2JsonBase.register(YinXiang_Type, Html2JsonYinXiang)

@@ -1,7 +1,11 @@
 from collections import namedtuple
+from enum import Enum
 import re
 from ..utils import logger
 
+class Block(Enum):
+    PARAGRAPH = "paragraph"
+    QUOTE = "quote"
 
 class Html2JsonBase:
     _registry = {}
@@ -12,11 +16,6 @@ class Html2JsonBase:
         "underline": bool,
         "code": bool,
         "color": str,
-    }
-
-    notion_block_types = {
-        "paragraph": "paragraph",
-        "quote": "quote",
     }
 
     _color_tuple = namedtuple("Color", "name r g b")
