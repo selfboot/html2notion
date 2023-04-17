@@ -52,6 +52,15 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         return json_obj
 
+    def convert_fail(self, soup):
+        return {
+            "object": "block",
+            "type": "paragraph",
+            "paragraph": {
+                "rich_text": []
+            }
+        }
+
     def convert_quote(self, soup):
         json_obj = {
             "object": "block",
@@ -73,7 +82,7 @@ class Html2JsonYinXiang(Html2JsonBase):
         json_obj["quote"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
 
-    # <ol><li><div>one</div></li><li><div>first</div></li><li><div>third</div></li></ol>
+    # <ol><li><div>first</div></li><li><div>second</div></li><li><div>third</div></li></ol>
     def convert_numbered_list_item(self, soup):
         return self.convert_list_items(soup, 'numbered_list_item')
 
@@ -177,11 +186,16 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
-        css_dict = {rule.split(':')[0].strip(): rule.split(
-            ':')[1].strip() for rule in style.split(';') if rule}
+        logger.info(f'Support tag {tag_name} with style {style}')
+
+        css_dict = {}
+        if style:
+            css_dict = {rule.split(':')[0].strip(): rule.split(
+                ':')[1].strip() for rule in style.split(';') if rule}
         en_codeblock = css_dict.get('-en-codeblock', None)
         if en_codeblock == 'true':
             return Block.QUOTE.value
 
+        return Block.FAIL.value
 
 Html2JsonBase.register(YinXiang_Type, Html2JsonYinXiang)

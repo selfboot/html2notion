@@ -4,6 +4,7 @@ import re
 from ..utils import logger
 
 class Block(Enum):
+    FAIL = "fail"
     PARAGRAPH = "paragraph"
     QUOTE = "quote"
     NUMBERED_LIST = "numbered_list_item"
