@@ -9,14 +9,7 @@ from unittest.mock import patch
 from tempfile import TemporaryDirectory
 from html2notion.translate.batch_import import BatchImport
 from html2notion.translate.cos_uploader import TencentCosUploaderAsync
-
-
-def log_only_local(content):
-    if 'GITHUB_ACTIONS' in os.environ:
-        return
-
-    from html2notion.utils import logger
-    logger.info(content)
+from html2notion.utils.log import log_only_local
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -85,6 +78,9 @@ async def test_batch_cos_upload(temp_dir_fixture):
     for res in responses:
         assert (res[0])
 
+    total_time = end_time - start_time
     elapsed_times = sum([res[1] for res in responses])
-    log_only_local(f"Total elapsed time: {elapsed_times}")
-    assert ((end_time-start_time) < elapsed_times)
+    least_tiems = min([res[1] for res in responses])
+    log_only_local(f"Time: sum: {elapsed_times}, min {least_tiems}, total: {total_time}")
+    assert (total_time < elapsed_times)
+    assert (total_time >= least_tiems)

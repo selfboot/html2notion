@@ -1,4 +1,5 @@
 import logging
+import os
 from logging import handlers
 logger = logging.getLogger()
 
@@ -10,7 +11,8 @@ class CustomFormatter(logging.Formatter):
     red = "\x1b[31;21m"
     bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"
-    format = "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"  # type: ignore
+    # type: ignore
+    format = "%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"
 
     FORMATS = {
         logging.DEBUG: green + format + reset,  # type: ignore
@@ -39,3 +41,11 @@ def setup_logger(log_path):
     logger.info('Logging info message')
     logger.warning('Logging debug message')
     logger.error('Logging error message')
+
+
+def log_only_local(content):
+    if 'GITHUB_ACTIONS' in os.environ:
+        return
+
+    from html2notion.utils import logger
+    logger.info(content)
