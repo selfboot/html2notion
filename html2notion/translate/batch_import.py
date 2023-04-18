@@ -13,6 +13,12 @@ class BatchImport:
     def __init__(self, directory: Path, concurrent_limit: int = 10):
         self.directory = directory
         self.concurrent_limit = concurrent_limit
+        if 'GITHUB_ACTIONS' in os.environ:
+            self.notion_api_key = os.environ['notion_api_key']
+        else:
+            self.notion_api_key = config['notion']['api_key']
+        self.notion_client = AsyncClient(auth=self.notion_api_key)
+
 
     @staticmethod
     def print_above(message):
@@ -22,15 +28,8 @@ class BatchImport:
         sys.stdout.write(message + '\n')
 
     @staticmethod
-    async def process_file(session, file_path, pbar):
+    async def process_file(session, notion_client, file_path, pbar):
         logger.info(f"Begin file, file {file_path}")
-        notion_api_key = ""
-        if 'GITHUB_ACTIONS' in os.environ:
-            notion_api_key = os.environ['notion_api_key']
-        else:
-            notion_api_key = config['notion']['api_key']
-
-        notion_client = AsyncClient(auth=notion_api_key)
         notion_import = NotionImporter(session, notion_client)
         if file_path.is_file():
             response = await notion_import.process_file(file_path)
@@ -46,13 +45,13 @@ class BatchImport:
         print("")  # Keep a placeholder row
         BatchImport.print_above("Begin...")
 
-        async def process_file_with_semaphore(session, file_path, pbar):
+        async def process_file_with_semaphore(session, notion_client, file_path, pbar):
             async with semaphore:
-                return await self.process_file(session, file_path, pbar)
+                return await self.process_file(session, notion_client, file_path, pbar)
 
         async with aiohttp.ClientSession() as session:
             tasks = [
-                process_file_with_semaphore(session, file_path, pbar)
+                process_file_with_semaphore(session, self.notion_client, file_path, pbar)
                 for file_path in self.directory.iterdir()
                 if file_path.is_file()
             ]
