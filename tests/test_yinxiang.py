@@ -3,7 +3,7 @@ import os
 from html2notion.translate.html2json_yinxiang import Html2JsonYinXiang
 
 link_content = "<div><a href='https://google.com'>Google</a></div>"
-link_rich_text = [
+link_block = [
     {
         "object": "block",
         "type": "paragraph",
@@ -26,7 +26,7 @@ link_rich_text = [
 ]
 
 order_list_content = '<ol><li><div>first</div></li><li><div>second</div></li><li><div>third</div></li></ol>'
-ordered_list_rich_text = [
+ordered_list_block = [
     {
         "object": "block",
         "numbered_list_item": {
@@ -74,11 +74,35 @@ ordered_list_rich_text = [
     }
 ]
 
+nested_bold_content = '<div><b><u>underline bold</u></b></div>'
+nested_bold_block = [
+    {
+        "object": "block",
+        "type": "paragraph",
+        "paragraph": {
+            "rich_text": [
+                {
+                    "plain_text": "underline bold",
+                    "text": {
+                        "content": "underline bold"
+                    },
+                    "annotations": {
+                        "bold": True,
+                        "underline": True
+                    },
+                    "type": "text"
+                }
+            ]
+        }
+    }
+]
+
 
 def test_convert():
     html_jsons = {
-        link_content: link_rich_text,
-        order_list_content: ordered_list_rich_text
+        link_content: link_block,
+        order_list_content: ordered_list_block,
+        nested_bold_content: nested_bold_block
     }
 
     for html_content in html_jsons:
