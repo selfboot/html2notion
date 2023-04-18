@@ -127,8 +127,7 @@ class Html2JsonYinXiang(Html2JsonBase):
         return json_obj
 
 
-    # Todo Handle some recursive labels
-    def _recursivr_inline_tag(self, tag_soup, tag_text, text_params):
+    def _recursive_inline_tag(self, tag_soup, tag_text, text_params):
         tag_name = tag_soup.name.lower() if tag_soup.name else ""
         style = tag_soup.get('style') if tag_name else ""
         styles = {}
@@ -156,14 +155,14 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         for child in tag_soup.children:
             if child.name:
-                self._recursivr_inline_tag(child, child.text, text_params)
+                self._recursive_inline_tag(child, child.text, text_params)
         return
     
-    # <b><u>下划线粗体</u></b>
-    # <div><font color="#ff2600">红色4</font></div>
+    # <b><u>unlineline and bold</u></b>
+    # <div><font color="#ff2600">Red color4</font></div>
     def parse_inline_tag(self, tag_soup, tag_text):
         text_params = {}
-        self._recursivr_inline_tag(tag_soup, tag_text, text_params)
+        self._recursive_inline_tag(tag_soup, tag_text, text_params)
         tag_name = tag_soup.name.lower() if tag_soup.name else ""
         if tag_name == 'a':
             href = tag_soup.get('href', "")

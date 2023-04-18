@@ -1,10 +1,12 @@
 import asyncio
 import aiohttp
+import os
 from tqdm import tqdm
 import sys
 from pathlib import Path
+from notion_client import AsyncClient
 from ..translate.notion_import import NotionImporter
-from ..utils import logger
+from ..utils import logger, config
 
 
 class BatchImport:
@@ -22,7 +24,14 @@ class BatchImport:
     @staticmethod
     async def process_file(session, file_path, pbar):
         logger.info(f"Begin file, file {file_path}")
-        notion_import = NotionImporter(session)
+        notion_api_key = ""
+        if 'GITHUB_ACTIONS' in os.environ:
+            notion_api_key = os.environ['notion_api_key']
+        else:
+            notion_api_key = config['notion']['api_key']
+
+        notion_client = AsyncClient(auth=notion_api_key)
+        notion_import = NotionImporter(session, notion_client)
         if file_path.is_file():
             response = await notion_import.process_file(file_path)
             BatchImport.print_above(f"Processed {file_path}")
