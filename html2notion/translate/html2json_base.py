@@ -1,6 +1,7 @@
+import re
+import os
 from collections import namedtuple
 from enum import Enum
-import re
 from ..utils import logger, config
 
 class Block(Enum):
@@ -39,19 +40,12 @@ class Html2JsonBase:
         self.html_content = html_content
         self.children = []
         self.properties = {}
-
-        self.cover = {}
-        # cover = {
-        #     "external": {
-        #         "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg"
-        #     }
-        # }
-
-        self.icon = {}
-        # icon = {
-        #     "emoji": "🥬"
-        # }
-        self.parent = {"type": "database_id", "database_id": config['notion']['database_id']}
+        self.parent = {}
+        if 'GITHUB_ACTIONS' in os.environ:
+            notion_database_id = os.environ['notion_database_id']
+        else:
+            notion_database_id = config['notion']['database_id']
+        self.parent = {"type": "database_id", "database_id": notion_database_id}
 
     def process(self):
         raise NotImplementedError("Subclasses must implement this method")
@@ -63,8 +57,6 @@ class Html2JsonBase:
                 'children': self.children,
                 'properties': self.properties,
                 'parent': self.parent,
-                'cover': self.cover,
-                'icon': self.icon
             }.items()
             if value
         }
