@@ -28,8 +28,8 @@ class Html2JsonYinXiang(Html2JsonBase):
         meta_url_tag = soup.select_one('head > meta[name="source-url"]')
         if meta_url_tag:
             source_url = meta_url_tag['content']
-        if source_url:
-            properties["url"] = source_url
+            if source_url:
+                properties["url"] = source_url
 
         self.properties = self.generate_properties(**properties)
         return
