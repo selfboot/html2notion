@@ -114,6 +114,12 @@ class Html2JsonBase:
         title = kwargs.get("title", "")
         title_obj = {"text": {"content": title}}
         properties_obj["Title"]["title"].append(title_obj)
+
+        url = kwargs.get("url", "")
+        if url:
+            properties_obj["URL"] = {}
+            properties_obj["URL"]["url"] = url
+            properties_obj["URL"]["type"] = "url"
         return properties_obj
 
     @staticmethod
