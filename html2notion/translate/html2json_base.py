@@ -96,7 +96,7 @@ class Html2JsonBase:
         return text_obj
 
     # properties = {
-    # "Name": {
+    # "Title": {
     #     "title": [
     #         {
     #             "text": {
@@ -108,12 +108,12 @@ class Html2JsonBase:
     @staticmethod
     def generate_properties(**kwargs):
         properties_obj = {}
-        properties_obj["Name"] = {}
-        properties_obj["Name"]["title"] = []
+        properties_obj["Title"] = {}
+        properties_obj["Title"]["title"] = []
 
         title = kwargs.get("title", "")
         title_obj = {"text": {"content": title}}
-        properties_obj["Name"]["title"].append(title_obj)
+        properties_obj["Title"]["title"].append(title_obj)
         return properties_obj
 
     @staticmethod
@@ -139,6 +139,8 @@ class Html2JsonBase:
                 current_text["plain_text"] = text_content
                 current_text["text"]["content"] = text_content
             else:
+                current_text["text"]["content"] += "\n"
+                current_text["plain_text"] += "\n"
                 merged_text.append(current_text)
                 current_text = text
         if current_text:

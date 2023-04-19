@@ -105,9 +105,9 @@ quote_block = [
         "quote": {
             "rich_text": [
                 {
-                    "plain_text": "Quote 1\nQuote 2\nQuote 3",
+                    "plain_text": "Quote 1\nQuote 2\nQuote 3\n",
                     "text": {
-                        "content": "Quote 1\nQuote 2\nQuote 3"
+                        "content": "Quote 1\nQuote 2\nQuote 3\n"
                     },
                     "type": "text"
                 },
@@ -312,8 +312,14 @@ paragram_rich_block = [
         }
     }
 ]
-    
+
+
 def test_convert():
+    if 'GITHUB_ACTIONS' not in os.environ:
+        from html2notion.utils import test_prepare_conf, logger
+        test_prepare_conf()
+        logger.info("prepare_conf_fixture")
+
     html_jsons = {
         link_content: link_block,
         order_list_content: ordered_list_block,
@@ -332,7 +338,4 @@ def test_convert():
 
 
 if __name__ == '__main__':
-    if 'GITHUB_ACTIONS' not in os.environ:
-        from html2notion.utils import config, test_prepare_conf
-        test_prepare_conf()
     test_convert()
