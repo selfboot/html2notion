@@ -325,7 +325,7 @@ def test_convert():
     for html_content in html_jsons:
         body_content = '<body>' + html_content + '</body>'
         yinxiang = Html2JsonYinXiang(body_content)
-        yinxiang.convert()
+        yinxiang.process()
         json_obj = yinxiang.children
         print(json.dumps(json_obj, indent=4))
         assert json_obj == html_jsons[html_content]

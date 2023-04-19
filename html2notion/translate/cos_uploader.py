@@ -1,10 +1,10 @@
 import asyncio
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
-from ..utils import logger, test_prepare_conf, config
+from qcloud_cos.cos_exception import CosClientError
 from functools import partial
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
-from qcloud_cos.cos_exception import CosClientError
+from ..utils import logger, test_prepare_conf, config
 
 class TencentCosUploaderAsync:
     def __init__(self, secret_id, secret_key, region, bucket, timeout=60):
@@ -12,7 +12,9 @@ class TencentCosUploaderAsync:
         self.client = CosS3Client(self.config)
         self.bucket = bucket
 
-    @retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=3, max=30), retry=retry_if_exception_type(CosClientError))
+    @retry(stop=stop_after_attempt(5),
+           wait=wait_exponential(multiplier=1, min=3, max=30),
+           retry=retry_if_exception_type(CosClientError))
     async def upload_file(self, loop, local_path, key):
         with open(local_path, 'rb') as f:
             content = f.read()
@@ -22,7 +24,9 @@ class TencentCosUploaderAsync:
         response = await executor(None, put_object_partial)
         return response
 
-    @retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=3, max=30), retry=retry_if_exception_type(CosClientError))
+    @retry(stop=stop_after_attempt(5),
+           wait=wait_exponential(multiplier=1, min=3, max=30),
+           retry=retry_if_exception_type(CosClientError))
     async def check_file_exist(self, loop, key):
         try:
             executor = loop.run_in_executor
@@ -31,7 +35,9 @@ class TencentCosUploaderAsync:
             logger.error(e)
             return False
 
-    @retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=1, min=3, max=30), retry=retry_if_exception_type(CosClientError))
+    @retry(stop=stop_after_attempt(5),
+           wait=wait_exponential(multiplier=1, min=3, max=30),
+           retry=retry_if_exception_type(CosClientError))
     async def delete_file(self, loop, key):
         executor = loop.run_in_executor
         response = await executor(None, self.client.delete_object, self.bucket, key)

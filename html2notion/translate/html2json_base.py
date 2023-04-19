@@ -1,7 +1,7 @@
 from collections import namedtuple
 from enum import Enum
 import re
-from ..utils import logger
+from ..utils import logger, config
 
 class Block(Enum):
     FAIL = "fail"
@@ -34,15 +34,40 @@ class Html2JsonBase:
         _color_tuple("red", 255, 0, 0),
     ]
 
+    # Page content should be: https://developers.notion.com/reference/post-page
     def __init__(self, html_content):
         self.html_content = html_content
         self.children = []
+        self.properties = {}
+
+        self.cover = {}
+        # cover = {
+        #     "external": {
+        #         "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Tuscankale.jpg"
+        #     }
+        # }
+
+        self.icon = {}
+        # icon = {
+        #     "emoji": "🥬"
+        # }
+        self.parent = {"type": "database_id", "database_id": config['notion']['database_id']}
 
     def process(self):
         raise NotImplementedError("Subclasses must implement this method")
 
-    def get_res(self):
-        return self.children
+    def get_notion_data(self):
+        return {
+            key: value
+            for key, value in {
+                'children': self.children,
+                'properties': self.properties,
+                'parent': self.parent,
+                'cover': self.cover,
+                'icon': self.icon
+            }.items()
+            if value
+        }
 
     @staticmethod
     def generate_link(**kwargs):
@@ -78,8 +103,29 @@ class Html2JsonBase:
         text_obj["type"] = "text"
         return text_obj
 
+    # properties = {
+    # "Name": {
+    #     "title": [
+    #         {
+    #             "text": {
+    #                 "content": "Tuscan Kale"
+    #             }
+    #         }
+    #     ]
+    # }}
     @staticmethod
-    def is_same_annotations_text(text_one: dict, text_another : dict):
+    def generate_properties(**kwargs):
+        properties_obj = {}
+        properties_obj["Name"] = {}
+        properties_obj["Name"]["title"] = []
+
+        title = kwargs.get("title", "")
+        title_obj = {"text": {"content": title}}
+        properties_obj["Name"]["title"].append(title_obj)
+        return properties_obj
+
+    @staticmethod
+    def is_same_annotations_text(text_one: dict, text_another: dict):
         if text_one["type"] != "text" or text_another["type"] != "text":
             return False
         elif "annotations" not in text_one and "annotations" not in text_another:

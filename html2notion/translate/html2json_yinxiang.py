@@ -13,11 +13,21 @@ class Html2JsonYinXiang(Html2JsonBase):
         super().__init__(html_content)
 
     def process(self):
-        self.convert()
+        soup = BeautifulSoup(self.html_content, 'html.parser')
+        self.convert_children(soup)
+        self.convert_properties(soup)
         return YinXiang_Type
 
-    def convert(self):
-        soup = BeautifulSoup(self.html_content, 'html.parser')
+    def convert_properties(self, soup):
+        title_tag = soup.select_one('head > title')
+        title_text = "Unknow"
+        if title_tag:
+            title_text = title_tag.text
+        properties = {"title": title_text}
+        self.properties = self.generate_properties(**properties)
+        return
+
+    def convert_children(self, soup):
         content_tags = soup.find_all('body', recursive=True)
         if not content_tags:
             logger.warning("No content found")

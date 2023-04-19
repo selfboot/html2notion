@@ -2,7 +2,7 @@ import sys
 import json
 from functools import singledispatch
 from pathlib import Path
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from ..utils import logger, test_prepare_conf
 from ..translate.html2json_base import Html2JsonBase
 from ..translate.html2json_default import Default_Type
@@ -11,11 +11,13 @@ from ..translate.html2json_yinxiang import YinXiang_Type
 
 def _infer_input_type(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
-    exporter_version_meta = soup.find(
-        'meta', attrs={'name': 'exporter-version'})
-    exporter_version_content = exporter_version_meta.get(
-        'content') if exporter_version_meta else None
-    if exporter_version_content and exporter_version_content.startswith("Evernote"):
+    exporter_version_meta = soup.find('meta', attrs={'name': 'exporter-version'})
+
+    exporter_version_content = ""
+    if exporter_version_meta and isinstance(exporter_version_meta, Tag):
+        exporter_version_content = exporter_version_meta.get('content', "")
+
+    if isinstance(exporter_version_content, str) and exporter_version_content.startswith("Evernote"):
         return YinXiang_Type
 
     return Default_Type
@@ -37,7 +39,7 @@ def html2json_process(html_content):
 def _(html_content: str):
     converter = _get_converter(html_content)
     result = converter.process()
-    return converter.get_res(), result
+    return converter.get_notion_data(), result
 
 
 @html2json_process.register
@@ -51,7 +53,7 @@ def _(html_file: Path):
 
     converter = _get_converter(html_content)
     result = converter.process()
-    return converter.get_res(), result
+    return converter.get_notion_data(), result
 
 
 if __name__ == "__main__":

@@ -3,6 +3,8 @@ import os
 from aiohttp import ClientSession
 from pathlib import Path
 from notion_client import AsyncClient
+from notion_client.errors import RequestTimeoutError
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from ..utils import logger, test_prepare_conf, config
 from ..translate.html2json import html2json_process
 
@@ -28,14 +30,18 @@ class NotionImporter:
         notion_data, html_type = html2json_process(file_path)
         logger.info(f"path: {file_path}, html type: {html_type}")
 
-        create_result = await self.create_new_page(config['notion']['database_id'], notion_data)
+        create_result = await self.create_new_page(notion_data)
         logger.info(f"Create notion page: {create_result}")
         return "succ"
 
-    async def create_new_page(self, database_id, notion_data):
+    # Doc of create page: https://developers.notion.com/reference/post-page
+    @retry(stop=stop_after_attempt(5),
+           wait=wait_exponential(multiplier=1, min=3, max=30),
+           retry=retry_if_exception_type(RequestTimeoutError))
+    async def create_new_page(self, notion_data):
+        # logger.debug(f'Create new page: {notion_data["parent"]}, {notion_data["properties"]}')
         created_page = await self.notion_client.pages.create(
-            parent={"type": "database_id", "database_id": database_id},
-            properties=notion_data,
+            **notion_data
         )
         return created_page
 
