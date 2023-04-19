@@ -42,7 +42,7 @@ class Html2JsonBase:
         self.properties = {}
         self.parent = {}
         if 'GITHUB_ACTIONS' in os.environ:
-            notion_database_id = os.environ['notion_database_id']
+            notion_database_id = os.environ['notion_db_id_1']
         else:
             notion_database_id = config['notion']['database_id']
         self.parent = {"type": "database_id", "database_id": notion_database_id}
