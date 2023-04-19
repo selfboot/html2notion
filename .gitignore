@@ -5,3 +5,4 @@ build/
 html2notion.egg-info/
 logs/*
 .config.json
+.DS_Store
