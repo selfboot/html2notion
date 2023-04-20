@@ -56,7 +56,7 @@ def temp_dir_fixture():
             file_size = random.randint(1 * 1024, 1 * 1024 * 1024)
             random_text = "".join(random.choices(string.ascii_letters + string.digits, k=file_size))
 
-            temp_file = dir_path / f"file_{i}.txt"
+            temp_file = dir_path / f"file_{i}.html"
             temp_file.write_text(random_text)
             temp_files.append(temp_file)
 

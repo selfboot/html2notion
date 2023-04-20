@@ -25,9 +25,11 @@ async def mock_notion_api_request(file_path, *args, **kwargs):
         def __init__(self, status_code, file_content, elapsed_time):
             self.status_code = status_code
             self.file_content = file_content
+            self.elapsed_time = elapsed_time
 
         def json(self):
-            return {"result": "success", "file_content": self.file_content, "elapsed_time": elapsed_time}
+            return {"result": "success", "file_content": self.file_content, "elapsed_time": self.elapsed_time}
+
     start_time = time.perf_counter()
     content = file_path.read_text()
     if 'GITHUB_ACTIONS' not in os.environ:
@@ -46,7 +48,7 @@ def temp_dir_fixture(request):
         dir_path = Path(temp_dir)
         temp_files = []
         for i in range(num_files):
-            temp_file = dir_path / f"file{i}.txt"
+            temp_file = dir_path / f"file{i}.html"
             temp_file.write_text(f"file{i}")
             temp_files.append(temp_file)
 
