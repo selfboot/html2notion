@@ -11,13 +11,21 @@ from ..translate.html2json_yinxiang import YinXiang_Type
 
 def _infer_input_type(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
-    exporter_version_meta = soup.find('meta', attrs={'name': 'exporter-version'})
+    exporter_version_meta = soup.select_one(
+        'html > head > meta[name="exporter-version"]')
+    meta_source = soup.select_one('html > head > meta[name="source"]')
 
     exporter_version_content = ""
     if exporter_version_meta and isinstance(exporter_version_meta, Tag):
         exporter_version_content = exporter_version_meta.get('content', "")
+    meta_source_content = ""
+    if meta_source and isinstance(meta_source, Tag):
+        meta_source_content = meta_source.get('content', "")
 
-    if isinstance(exporter_version_content, str) and exporter_version_content.startswith("Evernote"):
+    if isinstance(exporter_version_content, str) \
+            and exporter_version_content.startswith("Evernote") \
+            and isinstance(meta_source_content, str) \
+            and meta_source_content.startswith("desktop"):
         return YinXiang_Type
 
     return Default_Type
@@ -62,6 +70,7 @@ if __name__ == "__main__":
     result, html_type = html2json_process(html_file)
     print(html_type)
     print(json.dumps(result, indent=4, ensure_ascii=False))
-    result2, html_type2 = html2json_process("<html><body><div>test</div></body></html>")
+    result2, html_type2 = html2json_process(
+        "<html><body><div>test</div></body></html>")
     print(html_type2)
     print(json.dumps(result2, indent=4, ensure_ascii=False))

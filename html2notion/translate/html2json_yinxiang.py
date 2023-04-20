@@ -202,6 +202,9 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
+        
+        # Remove all space such as \t \n in style
+        style = ''.join(style.split())
         logger.info(f'Support tag {tag_name} with style {style}')
 
         css_dict = {}

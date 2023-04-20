@@ -1,3 +1,7 @@
+# For notes that are clipped from web pages
+# that are not written manually by Evernote and have rich text formatting,
+# try to keep the format for conversion
+
 from ..translate.html2json_base import Html2JsonBase
 
 Default_Type = "default"
