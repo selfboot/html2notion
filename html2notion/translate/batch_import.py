@@ -1,8 +1,9 @@
 import asyncio
 import aiohttp
 import os
-from tqdm import tqdm
+import shutil
 import sys
+from tqdm import tqdm
 from pathlib import Path
 from notion_client import AsyncClient
 from ..translate.notion_import import NotionImporter
@@ -19,12 +20,13 @@ class BatchImport:
             self.notion_api_key = config['notion']['api_key']
         self.notion_client = AsyncClient(auth=self.notion_api_key)
 
-
     @staticmethod
     def print_above(message):
-        sys.stdout.write('\033[1A')  # Move cursor up one lines
-        sys.stdout.write('\033[K')   # Clear current line
-        sys.stdout.write('\r')   # Clear current line
+        term_width, _ = shutil.get_terminal_size()
+        sys.stdout.write('\033[1A')  # Move cursor up one line
+        sys.stdout.write('\r')       # Reset cursor position to the beginning of the line
+        sys.stdout.write(' ' * term_width)  # Fill the entire line with spaces
+        sys.stdout.write('\r')       # Reset cursor position to the beginning of the line again
         sys.stdout.write(message + '\n')
 
     @staticmethod
@@ -40,7 +42,8 @@ class BatchImport:
 
     async def process_directory(self):
         semaphore = asyncio.Semaphore(self.concurrent_limit)
-        files_len = len(list(self.directory.glob('*')))
+        html_files = [file_path for file_path in self.directory.glob('*.html') if file_path.name != 'index.html']
+        files_len = len(html_files)
         pbar = tqdm(total=files_len, bar_format='{l_bar}{bar}|{n_fmt}/{total_fmt}', dynamic_ncols=True)
         print("")  # Keep a placeholder row
         BatchImport.print_above("Begin...")
@@ -52,8 +55,7 @@ class BatchImport:
         async with aiohttp.ClientSession() as session:
             tasks = [
                 process_file_with_semaphore(session, self.notion_client, file_path, pbar)
-                for file_path in self.directory.iterdir()
-                if file_path.is_file()
+                for file_path in html_files
             ]
             results = await asyncio.gather(*tasks)
             await session.close()

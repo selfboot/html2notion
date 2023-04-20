@@ -1,9 +1,11 @@
 import argparse
+import os
 import sys
 from pathlib import Path
 import asyncio
 from aiohttp import ClientSession
-from .utils import setup_logger, read_config, logger
+from notion_client import AsyncClient
+from .utils import setup_logger, read_config, logger, config
 from .translate.notion_import import NotionImporter
 from .translate.batch_import import BatchImport
 
@@ -38,10 +40,16 @@ def prepare_env(args: argparse.Namespace):
 
 
 async def import_single_file(file):
+    notion_api_key = ""
+    if 'GITHUB_ACTIONS' in os.environ:
+        notion_api_key = os.environ['notion_api_key']
+    else:
+        notion_api_key = config['notion']['api_key']
     async with ClientSession() as session:
-        notion_importer = NotionImporter(session)
-        result = await notion_importer.process_file(file)
-        return result
+        async with AsyncClient(auth=notion_api_key) as notion_client:
+            notion_importer = NotionImporter(session, notion_client)
+            result = await notion_importer.process_file(file)
+            return result
 
 
 def main():
