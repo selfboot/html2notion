@@ -31,6 +31,13 @@ class Html2JsonYinXiang(Html2JsonBase):
             if source_url:
                 properties["url"] = source_url
 
+        # <meta name="keywords" content="openai"/>
+        meta_keywords_tag = soup.select_one('head > meta[name="keywords"]')
+        if meta_keywords_tag:
+            keywords = meta_keywords_tag['content']
+            if keywords:
+                properties["tags"] = [keywords]
+        
         self.properties = self.generate_properties(**properties)
         return
 

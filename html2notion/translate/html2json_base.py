@@ -120,6 +120,12 @@ class Html2JsonBase:
             properties_obj["URL"] = {}
             properties_obj["URL"]["url"] = url
             properties_obj["URL"]["type"] = "url"
+        
+        tags = kwargs.get("tags", [])
+        if tags:
+            properties_obj["Tags"] = {}
+            properties_obj["Tags"]["type"] = "multi_select"
+            properties_obj["Tags"]["multi_select"] = [{"name": tag} for tag in tags]
         return properties_obj
 
     @staticmethod

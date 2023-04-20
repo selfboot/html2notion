@@ -56,7 +56,7 @@ async def main(file_path, notion_api_key):
 
 if __name__ == "__main__":
     test_prepare_conf()
-    file = Path("./demos/TestCaseA.html")
+    file = Path("./demos/TestCaseB.html")
     notion_api_key = ""
     if 'GITHUB_ACTIONS' in os.environ:
         notion_api_key = os.environ['notion_api_key']
