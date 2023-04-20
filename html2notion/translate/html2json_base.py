@@ -126,12 +126,8 @@ class Html2JsonBase:
     def is_same_annotations_text(text_one: dict, text_another: dict):
         if text_one["type"] != "text" or text_another["type"] != "text":
             return False
-        elif "annotations" not in text_one and "annotations" not in text_another:
-            return True
-        elif "annotations" in text_one and "annotations" in text_another:
-            return text_one["annotations"] == text_another["annotations"]
-        else:
-            return False
+        attributes = ["annotations", "href"]
+        return all(text_one.get(attr) == text_another.get(attr) for attr in attributes)
 
     @staticmethod
     def merge_rich_text(rich_text: list):
@@ -141,12 +137,10 @@ class Html2JsonBase:
         current_text = rich_text[0]
         for text in rich_text[1:]:
             if Html2JsonBase.is_same_annotations_text(current_text, text):
-                text_content = current_text["text"]["content"] + "\n" + text["text"]["content"]
+                text_content = current_text["text"]["content"] + text["text"]["content"]
                 current_text["plain_text"] = text_content
                 current_text["text"]["content"] = text_content
             else:
-                current_text["text"]["content"] += "\n"
-                current_text["plain_text"] += "\n"
                 merged_text.append(current_text)
                 current_text = text
         if current_text:

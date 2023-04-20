@@ -66,7 +66,7 @@ def _(html_file: Path):
 
 if __name__ == "__main__":
     test_prepare_conf()
-    html_file = Path("./demos/yinxiang.html")
+    html_file = Path("./demos/TestCaseA.html")
     result, html_type = html2json_process(html_file)
     print(html_type)
     print(json.dumps(result, indent=4, ensure_ascii=False))

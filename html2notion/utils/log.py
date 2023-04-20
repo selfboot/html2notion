@@ -39,7 +39,7 @@ def setup_logger(log_path):
 
     logger.debug('Logging debug message')
     logger.info('Logging info message')
-    logger.warning('Logging debug message')
+    logger.warning('Logging warning message')
     logger.error('Logging error message')
 
 

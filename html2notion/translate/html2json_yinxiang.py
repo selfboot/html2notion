@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup, NavigableString
+from bs4 import BeautifulSoup, NavigableString, Tag
 from ..utils import logger
 from ..translate.html2json_base import Html2JsonBase, Block
 
@@ -24,7 +24,7 @@ class Html2JsonYinXiang(Html2JsonBase):
         if title_tag:
             title_text = title_tag.text
         properties = {"title": title_text}
-        
+
         meta_url_tag = soup.select_one('head > meta[name="source-url"]')
         if meta_url_tag:
             source_url = meta_url_tag['content']
@@ -39,12 +39,12 @@ class Html2JsonYinXiang(Html2JsonBase):
         if not content_tags:
             logger.warning("No content found")
             return
-        
+
         for child in content_tags[0].children:
             block_type = self.get_block_type(child)
             converter = getattr(self, f"convert_{block_type}")
             if converter:
-                block = converter(child) 
+                block = converter(child)
                 if block:
                     self.children.extend([block] if not isinstance(block, list) else block)
             else:
@@ -59,14 +59,10 @@ class Html2JsonYinXiang(Html2JsonBase):
             }
         }
         rich_text = json_obj["paragraph"]["rich_text"]
-        for child in soup.children:
-            tag_text = child.text if child.text else ""
-            if not tag_text:
-                continue
-            text_obj = self.parse_inline_tag(child, tag_text)
-            if text_obj:
-                rich_text.append(text_obj)
-
+        tag_text = soup.text if soup.text else ""
+        text_obj = self.parse_inline_block(soup, tag_text)
+        if text_obj:
+            rich_text.extend(text_obj)
         return json_obj
 
     def convert_fail(self, soup):
@@ -87,15 +83,18 @@ class Html2JsonYinXiang(Html2JsonBase):
             }
         }
         rich_text = json_obj["quote"]["rich_text"]
-        for child in soup.children:
+        children_list = list(soup.children)
+        for index, child in enumerate(children_list):
+            is_last_child = index == len(children_list) - 1
             tag_text = child.text if child.text else ""
-            if not tag_text:
-                continue
-            text_obj = self.parse_inline_tag(child, tag_text)
+            text_obj = self.parse_inline_block(child, tag_text)
             if text_obj:
-                rich_text.append(text_obj)
+                rich_text.extend(text_obj)
+            if not is_last_child:
+                rich_text.append(self.generate_text(plain_text='\n'))
 
         # Merge tags has same anotions
+        logger.debug(f'before merge: {rich_text}')
         json_obj["quote"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
 
@@ -137,14 +136,13 @@ class Html2JsonYinXiang(Html2JsonBase):
             tag_text = child.text if child.text else ""
             if not tag_text:
                 continue
-            text_obj = self.parse_inline_tag(child, tag_text)
+            text_obj = self.parse_inline_block(child, tag_text)
             if text_obj:
-                rich_text.append(text_obj)
+                rich_text.extend(text_obj)
 
         return json_obj
 
-
-    def _recursive_inline_tag(self, tag_soup, tag_text, text_params):
+    def _recursive_parse_style(self, tag_soup, tag_text, text_params):
         tag_name = tag_soup.name.lower() if tag_soup.name else ""
         style = tag_soup.get('style') if tag_name else ""
         styles = {}
@@ -171,25 +169,39 @@ class Html2JsonYinXiang(Html2JsonBase):
             return
 
         for child in tag_soup.children:
+            logger.debug(f'Recursive, child: {child}, {child.name}')
             if child.name:
-                self._recursive_inline_tag(child, child.text, text_params)
+                self._recursive_parse_style(child, child.text, text_params)
         return
-    
+
     # <b><u>unlineline and bold</u></b>
     # <div><font color="#ff2600">Red color4</font></div>
-    def parse_inline_tag(self, tag_soup, tag_text):
-        text_params = {}
-        self._recursive_inline_tag(tag_soup, tag_text, text_params)
-        tag_name = tag_soup.name.lower() if tag_soup.name else ""
-        if tag_name == 'a':
-            href = tag_soup.get('href', "")
-            if not href:
-                logger.warning("Link href is empty")
-            text_params["url"] = href
-            text_obj = self.generate_link(**text_params)
-        else:
-            text_obj = self.generate_text(**text_params)
-        return text_obj
+    def parse_inline_block(self, tag_soup, tag_text):
+        block_objs = []
+        for child in tag_soup.children:
+            text_params = {}
+            tag_name = child.name.lower() if child.name else ""
+            child_text = child.text if child.text else ""
+            # if tag_name == 'br':
+            #     child_text = ''
+            text_params["plain_text"] = child_text
+            if not isinstance(child, NavigableString):
+                self._recursive_parse_style(child, child_text, text_params)
+
+            text_obj = {}
+            if not isinstance(child, NavigableString) and tag_name == 'a':
+                href = child.get('href', "")
+                if not href:
+                    logger.warning("Link href is empty")
+                text_params["url"] = href
+                text_obj = self.generate_link(**text_params)
+            else:
+                text_obj = self.generate_text(**text_params)
+            logger.debug(f'parse_inline_block: {text_obj}')
+            if text_obj:
+                block_objs.append(text_obj)
+
+        return block_objs
 
     def get_block_type(self, single_tag):
         tag_name = single_tag.name
@@ -202,7 +214,7 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
-        
+
         # Remove all space such as \t \n in style
         style = ''.join(style.split())
         logger.info(f'Support tag {tag_name} with style {style}')
@@ -216,5 +228,6 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.QUOTE.value
 
         return Block.FAIL.value
+
 
 Html2JsonBase.register(YinXiang_Type, Html2JsonYinXiang)
