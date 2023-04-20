@@ -36,7 +36,7 @@ class Html2JsonYinXiang(Html2JsonBase):
         if meta_keywords_tag:
             keywords = meta_keywords_tag['content']
             if keywords:
-                properties["tags"] = [keywords]
+                properties["tags"] = keywords.split(",")
         
         self.properties = self.generate_properties(**properties)
         return
