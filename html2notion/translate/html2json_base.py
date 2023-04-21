@@ -108,39 +108,35 @@ class Html2JsonBase:
     @staticmethod
     def generate_properties(**kwargs):
         properties_obj = {}
-        properties_obj["Title"] = {}
-        properties_obj["Title"]["title"] = []
-
         title = kwargs.get("title", "")
-        title_obj = {"text": {"content": title}}
-        properties_obj["Title"]["title"].append(title_obj)
+        properties_obj["Title"] = {
+            "title": [{"text": {"content": title}}]
+        }
 
         url = kwargs.get("url", "")
         if url:
-            properties_obj["URL"] = {}
-            properties_obj["URL"]["url"] = url
-            properties_obj["URL"]["type"] = "url"
-        
+            properties_obj["URL"] = {
+                "url": url,
+                "type": "url"
+            }
+
         tags = kwargs.get("tags", [])
         if tags:
-            properties_obj["Tags"] = {}
-            properties_obj["Tags"]["type"] = "multi_select"
-            properties_obj["Tags"]["multi_select"] = [
-                {"name": tag} for tag in tags]
+            properties_obj["Tags"] = {
+                "type": "multi_select",
+                "multi_select": [
+                    {"name": tag} for tag in tags]
+            }
 
         created_time = kwargs.get("created_time", "")
         if created_time:
-            properties_obj["Created"] = {}
-            properties_obj["Created"]["created_time"] = created_time
-            properties_obj["Created"]["type"] = "created_time"
-
-        updated_time = kwargs.get("updated_time", "")
-        if updated_time:
-            properties_obj["Update"] = {}
-            properties_obj["Update"]["updated_time"] = updated_time
-            properties_obj["Update"]["type"] = "updated_time"
-
-        logger.debug(f"properties_obj: {properties_obj}")
+            properties_obj["Created"] = {
+                "date": {
+                    "start": created_time
+                },
+                "type": "date"
+            }
+        logger.debug(f"properties: {properties_obj}")
         return properties_obj
 
     @staticmethod

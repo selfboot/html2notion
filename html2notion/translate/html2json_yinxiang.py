@@ -45,12 +45,6 @@ class Html2JsonYinXiang(Html2JsonBase):
                 properties["created_time"] = DateStrToISO8601(created_time)
 
         self.properties = self.generate_properties(**properties)
-
-        updated_time_tag = soup.select_one('head > meta[name="updated"]')
-        if updated_time_tag:
-            updated_time = updated_time_tag['content']
-            if updated_time:
-                properties["updated_time"] = DateStrToISO8601(updated_time)
         return
 
     def convert_children(self, soup):

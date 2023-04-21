@@ -12,9 +12,6 @@ def DateStrToISO8601(date_string: str) -> str:
     """
 
     date_format = "%Y-%m-%d %H:%M:%S %z"
-    date_obj = datetime.strptime(date_string, date_format)
-    local_date_obj = date_obj.astimezone()
-    output_format = "%Y-%m-%dT%H:%M:%S.%fZ"
-    output_string = local_date_obj.strftime(output_format)
-    output_string = output_string[:-3] + "Z"
+    date_obj = datetime.strptime(date_string, date_format).astimezone()
+    output_string = date_obj.isoformat()
     return output_string
