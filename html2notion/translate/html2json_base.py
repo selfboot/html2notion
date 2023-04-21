@@ -65,77 +65,52 @@ class Html2JsonBase:
     def generate_link(**kwargs):
         if not kwargs.get("plain_text", ""):
             return
-        text_obj = {}
-        text_obj["href"] = kwargs.get("url", "")
-        text_obj["plain_text"] = kwargs.get("plain_text", "")
-        text_obj["text"] = {}
-        text_obj["text"]["link"] = {}
-        text_obj["text"]["link"]["url"] = kwargs.get("url", "")
-        text_obj["text"]["content"] = kwargs.get("plain_text", "")
-        text_obj["type"] = "text"
-        return text_obj
+        return {
+            "href": kwargs.get("url", ""),
+            "plain_text": kwargs.get("plain_text", ""),
+            "text": {
+                "link": {"url": kwargs.get("url", "")},
+                "content": kwargs.get("plain_text", "")
+            },
+            "type": "text"
+        }
 
     @staticmethod
     def generate_text(**kwargs):
-        if not kwargs.get("plain_text", ""):
+        plain_text = kwargs.get("plain_text", "")
+        if not plain_text:
             return
-        text_obj = {}
-        text_obj["plain_text"] = kwargs.get("plain_text", "")
-        text_obj["text"] = {}
-        text_obj["text"]["content"] = kwargs.get("plain_text", "")
-        text_obj["annotations"] = {}
-        for key, value in kwargs.items():
-            if key == "plain_text" or key not in Html2JsonBase._text_annotations:
-                continue
-            if not isinstance(value, Html2JsonBase._text_annotations[key]):
-                logger.warn(f"Invalid annotation: {key}={value}")
-            text_obj["annotations"][key] = value
-        if not text_obj["annotations"]:
-            del text_obj["annotations"]
-        text_obj["type"] = "text"
+        annotations = {
+            key: value
+            for key, value in kwargs.items()
+            if key in Html2JsonBase._text_annotations and isinstance(value, Html2JsonBase._text_annotations[key])
+        }
+        text_obj = {
+            "plain_text": plain_text,
+            "text": {"content": plain_text},
+            "type": "text"
+        }
+        if annotations:
+            text_obj["annotations"] = annotations
+
         return text_obj
 
-    # properties = {
-    # "Title": {
-    #     "title": [
-    #         {
-    #             "text": {
-    #                 "content": "Tuscan Kale"
-    #             }
-    #         }
-    #     ]
-    # }}
     @staticmethod
     def generate_properties(**kwargs):
-        properties_obj = {}
         title = kwargs.get("title", "")
-        properties_obj["Title"] = {
-            "title": [{"text": {"content": title}}]
+        url = kwargs.get("url", "")
+        tags = kwargs.get("tags", [])
+        created_time = kwargs.get("created_time", "")
+
+        property_map = {
+            "Title": {"title": [{"text": {"content": title}}]} if title else None,
+            "URL": {"url": url, "type": "url"} if url else None,
+            "Tags": {"type": "multi_select", "multi_select": [{"name": tag} for tag in tags]} if tags else None,
+            "Created": {"date": {"start": created_time}, "type": "date"} if created_time else None,
         }
 
-        url = kwargs.get("url", "")
-        if url:
-            properties_obj["URL"] = {
-                "url": url,
-                "type": "url"
-            }
+        properties_obj = {key: value for key, value in property_map.items() if value is not None}
 
-        tags = kwargs.get("tags", [])
-        if tags:
-            properties_obj["Tags"] = {
-                "type": "multi_select",
-                "multi_select": [
-                    {"name": tag} for tag in tags]
-            }
-
-        created_time = kwargs.get("created_time", "")
-        if created_time:
-            properties_obj["Created"] = {
-                "date": {
-                    "start": created_time
-                },
-                "type": "date"
-            }
         logger.debug(f"properties: {properties_obj}")
         return properties_obj
 
