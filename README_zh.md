@@ -2,9 +2,9 @@ html2notion 是一个非常有用的 Python 写的工具，它可以将 HTML 文
 
 html2notion 功能非常强大，它支持将 HTML 文件的各种标签转换为 Notion 中对应的 Block，比如富文本块、标题、图片、代码块、引用、链接等。下面是将印象笔记中的笔记转换为 notion page 中的示例。
 
-![迁移notion(保留格式)](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion.png)
+![迁移notion(保留格式)](https://raw.githubusercontent.com/selfboot/html2notion/master/demos/yinxiang_notion.png)
 
-![迁移notion2(保留格式)](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion2.png)
+![迁移notion2(保留格式)](https://raw.githubusercontent.com/selfboot/html2notion/master/demos/yinxiang_notion2.png)
 
 # 准备工作
 
@@ -14,7 +14,7 @@ html2notion 功能非常强大，它支持将 HTML 文件的各种标签转换�
 
 点击链接 [notion template](https://selfboot.notion.site/selfboot/130bb48c6cbd4abbbb713d4d8472481a?v=ddda20d3f46b4b44a055d06792c142f0), 如下面的图所示，通过 "Duplicate" 按钮，复制一个新的数据库到自己的notion工作空间。
 
-![notion template](https://github.com/selfboot/html2notion/blob/master/demos/notion_templage.png)
+![notion template](https://raw.githubusercontent.com/selfboot/html2notion/master/demos/notion_templage.png)
 
 ## 安装 html2notion
 需要 python>=3.8, 安装 html2notion 库。您可以使用 pip 命令来安装它：
