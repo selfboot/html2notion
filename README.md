@@ -1,16 +1,27 @@
-html2notion is a very useful Python library that allows you to import content from HTML documents into Notion notes, making it easier for you to organize information on the Notion platform. In addition, because html2notion is compatible with Evernote, you can also use it to export notes from Evernote to Notion.
+html2notion is an incredibly useful tool written in Python, which allows you to import content from HTML documents into Notion notes, making it more convenient for you to organize information on the Notion platform. In addition, html2notion has been specifically optimized for the content of Evernote, and you can also use it to import notes from Evernote into Notion.
 
-The html2notion library is very powerful and supports converting HTML files to various elements in Notion, such as text blocks, headings, images, code blocks, and more. These elements can be arranged and edited freely in Notion, which is very convenient.
+html2notion has powerful features and supports converting various tags in HTML files into corresponding Blocks in Notion, such as rich text blocks, headings, images, code blocks, quotes, links, etc. Below are examples of converting notes from Evernote into Notion pages.
 
-If you are looking for a way to better manage your notes and information and want to use the Notion platform, then the html2notion library is a great choice. You just need to install it and you can start converting HTML documents to Notion notes.
+![yinxiang notion(simple demos)](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion.png)
 
-# Installation
+![yinxiang notion2(rich text)](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion2.png)
 
-1. First, you need to install the html2notion library in your Python environment. You can use the pip command to install it:
+# Prepare
+
+You only need 3 steps to use htmlnotion to import HTML into Notion.
+
+## Duplicate database
+
+Click the link [notion template](https://selfboot.notion.site/selfboot/130bb48c6cbd4abbbb713d4d8472481a?v=ddda20d3f46b4b44a055d06792c142f0). As shown in the image below, use the "Duplicate" button to copy a new database to your own Notion workspace.
+
+![notion template](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion.png)
+
+## Install html2notion
+
+Requires python>=3.8, install the html2notion library. You can use the pip command to install it:
 
 ```
 pip install html2notion
-
 ```
 
 # Usage

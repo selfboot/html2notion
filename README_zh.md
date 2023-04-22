@@ -1,16 +1,26 @@
-html2notion 是一个非常有用的 Python 库，它可以将 HTML 文档中的内容导入到 Notion 笔记中，从而使您能够更方便地将信息整理到 Notion 平台上。此外，由于 html2notion 与印象笔记兼容，您还可以使用它来将印象笔记中的笔记导出到 Notion 中。
+html2notion 是一个非常有用的 Python 写的工具，它可以将 HTML 文档中的内容导入到 Notion 笔记中，从而使您能够更方便地将信息整理到 Notion 平台上。此外，html2notion 对印象笔记的内容进行了专门优化，还可以使用它来将印象笔记中的笔记导入到 Notion 中。
 
-html2notion 库的功能非常强大，它支持将 HTML 文件转换为 Notion 中的各种元素，如文本块、标题、图片、代码块等。这些元素可以在 Notion 中随意排列和编辑，非常方便。
+html2notion 功能非常强大，它支持将 HTML 文件的各种标签转换为 Notion 中对应的 Block，比如富文本块、标题、图片、代码块、引用、链接等。下面是将印象笔记中的笔记转换为 notion page 中的示例。
 
-如果您正在寻找一种方法来更好地管理您的笔记和信息，并且想要使用 Notion 平台，那么 html2notion 库就是一个非常不错的选择。您只需要简单地安装它，就可以开始将 HTML 文档转换为 Notion 笔记了。
+![迁移notion(保留格式)](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion.png)
 
-# 安装
+![迁移notion2(保留格式)](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion2.png)
 
-1. 首先，您需要在您的 Python 环境中安装 html2notion 库。您可以使用 pip 命令来安装它：
+# 准备工作
+
+只需要3步就可以使用 htmlnotion 来导入 html 到 notion 中。
+
+## 复制 notion 数据库
+
+点击链接 [notion template](https://selfboot.notion.site/selfboot/130bb48c6cbd4abbbb713d4d8472481a?v=ddda20d3f46b4b44a055d06792c142f0), 如下面的图所示，通过 "Duplicate" 按钮，复制一个新的数据库到自己的notion工作空间。
+
+![notion template](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion.png)
+
+## 安装 html2notion
+需要 python>=3.8, 安装 html2notion 库。您可以使用 pip 命令来安装它：
 
 ```
 pip install html2notion
-
 ```
 
 # 使用
