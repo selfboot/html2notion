@@ -5,9 +5,13 @@ from pathlib import Path
 import asyncio
 from aiohttp import ClientSession
 from notion_client import AsyncClient
+from rich.console import Console
+from rich.table import Table
+from rich.text import Text
 from .utils import setup_logger, read_config, logger, config
 from .translate.notion_import import NotionImporter
 from .translate.batch_import import BatchImport
+console = Console()
 
 
 def parse_args():
@@ -23,6 +27,24 @@ def parse_args():
     return parser.parse_args()
 
 
+def print_fail_details(failed_files):
+    if len(failed_files) == 0:
+        return
+    table = Table(title="\nFailed Detail")
+    table.add_column("File Name", justify="left", style="cyan", no_wrap=True)
+    table.add_column("Fail Reason", justify="left", style="red", no_wrap=True)
+
+    for row in failed_files:
+        table.add_row(str(row[0]), str(row[1]))
+    console.print(table)
+
+    text = Text("\nIf you need help, please submit an ")
+    link = Text("issue", style="cyan underline link https://github.com/selfboot/html2notion/issues")
+    text.append(link)
+    text.append(" on gitHub.\n")
+    console.print(text)
+
+
 def prepare_env(args: argparse.Namespace):
     log_path = Path(args.log) if args.log else Path.cwd() / 'logs/'
     if not log_path.is_dir():
@@ -30,7 +52,7 @@ def prepare_env(args: argparse.Namespace):
 
     conf_path = Path(args.conf)
     if not conf_path.is_file():
-        print(f"Read conf file({conf_path}) failed.")
+        console.print(f"Read conf file({conf_path}) failed.", style="red")
         logger.fatal(f"Read conf file({conf_path}) failed.")
         sys.exit(1)
 
@@ -63,15 +85,19 @@ def main():
         logger.info(f"Begin save single html file: {file_path}.")
         result = asyncio.run(import_single_file(file_path))
         logger.info(f"Finish save single html file: {file_path}.\n{result}")
-        print(f"File {file_path} saved.")
+        console.print(f"File {file_path} saved.", style="green")
     elif dir_path and dir_path.is_dir():
         logger.info(f"Begin save all html files in the dir: {dir_path}.")
         batch_import = BatchImport(dir_path, max_concurrency)
         result = asyncio.run(batch_import.process_directory())
         logger.info(f"Finish save all html files in the dir: {dir_path}.\n{result}")
-        print(f"Directory {dir_path} saved.")
+
+        if len(batch_import.success_files) == len(batch_import.all_files):
+            console.print(f"All files processed success.", style="green")
+
+        print_fail_details(batch_import.failed_files)
     else:
-        print("No impossible.")
+        console.print("No impossible.", style="red")
     return
 
 
