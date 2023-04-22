@@ -1,4 +1,4 @@
-[简体中文](https://raw.githubusercontent.com/selfboot/html2notion/master/README_zh.md)
+[简体中文](https://github.com/selfboot/html2notion/blob/master/README_zh.md)
 
 html2notion is an incredibly useful tool written in Python, which allows you to import content from HTML documents into Notion notes, making it more convenient for you to organize information on the Notion platform. In addition, html2notion has been specifically optimized for the content of Evernote, and you can also use it to import notes from Evernote into Notion.
 
