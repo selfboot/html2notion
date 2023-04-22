@@ -14,7 +14,7 @@ html2notion 功能非常强大，它支持将 HTML 文件的各种标签转换�
 
 点击链接 [notion template](https://selfboot.notion.site/selfboot/130bb48c6cbd4abbbb713d4d8472481a?v=ddda20d3f46b4b44a055d06792c142f0), 如下面的图所示，通过 "Duplicate" 按钮，复制一个新的数据库到自己的notion工作空间。
 
-![notion template](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion.png)
+![notion template](https://github.com/selfboot/html2notion/blob/master/demos/notion_templage.png)
 
 ## 安装 html2notion
 需要 python>=3.8, 安装 html2notion 库。您可以使用 pip 命令来安装它：

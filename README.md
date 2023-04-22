@@ -14,7 +14,7 @@ You only need 3 steps to use htmlnotion to import HTML into Notion.
 
 Click the link [notion template](https://selfboot.notion.site/selfboot/130bb48c6cbd4abbbb713d4d8472481a?v=ddda20d3f46b4b44a055d06792c142f0). As shown in the image below, use the "Duplicate" button to copy a new database to your own Notion workspace.
 
-![notion template](https://github.com/selfboot/html2notion/blob/master/demos/yinxiang_notion.png)
+![notion template](https://github.com/selfboot/html2notion/blob/master/demos/notion_templage.png)
 
 ## Install html2notion
 
