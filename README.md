@@ -1,3 +1,5 @@
+English / [简体中文](./README_zh.md)
+
 html2notion is an incredibly useful tool written in Python, which allows you to import content from HTML documents into Notion notes, making it more convenient for you to organize information on the Notion platform. In addition, html2notion has been specifically optimized for the content of Evernote, and you can also use it to import notes from Evernote into Notion.
 
 html2notion has powerful features and supports converting various tags in HTML files into corresponding Blocks in Notion, such as rich text blocks, headings, images, code blocks, quotes, links, etc. Below are examples of converting notes from Evernote into Notion pages.
@@ -24,57 +26,45 @@ Requires python>=3.8, install the html2notion library. You can use the pip comma
 pip install html2notion
 ```
 
+## Prepare Notion Configuration
+
+We need to use the `Notion API key` and `Database ID` to authorize html2notion to access the Notion database. Please follow these steps:
+
+1. Create an integration;
+2. Share a database with your integration;
+3. Export the database ID;
+
+When sharing the database here, you need to choose the previously duplicated database because the import operation requires some preset [properties](https://developers.notion.com/reference/property-object) information in this database.
+
+For specific methods, please refer to the Notion official documentation [create an integration](https://developers.notion.com/docs/create-a-notion-integration).
+
+After the setup is complete, write your API Key and database ID into a configuration file config.json.
+
 # Usage
 
-## Get Notion parameters
+You can use `html2notion -h` to view detailed help documentation.
 
-To get a Notion API key, follow these steps:
+```shell
+usage: html2notion [-h] --conf CONF [--log LOG] [--batch BATCH] (--file FILE | --dir DIR)
 
-1. Log in to [Notion](https://www.notion.so/). If you don't have a Notion account yet, please register one first.
-2. Go to the [Notion Developer](https://developers.notion.com/docs/getting-started#step-2-share-a-database-with-your-integration) page.
-3. Click "My integrations".
-4. Click "New integration".
-5. Enter a name and click "Submit".
-6. Click "Add a client secret".
-7. Copy the generated API key to your code.
+Html2notion: Save HTML to your Notion notes quickly and easily, while keeping the original format as much as possible
 
-To authorize a Notion API key to access a database, follow these steps:
+options:
+  -h, --help     show this help message and exit
+  --conf CONF    conf file path
+  --log LOG      log direct path
+  --batch BATCH  batch save concurrent limit
+  --file FILE    Save single html file to notion
+  --dir DIR      Save all html files in the dir to notion
+```
 
-1. Go to the database you want to share with the API key.
-2. Click the three dots next to the database name.
-3. Now your API key will be able to access this database.
+For example, if you want to import all html files in the `./demos` directory into Notion, you can use the following command:
 
-Note that in order for an API key to access a database, you must first add it as an integration to Notion. To add an integration, go to the Notion Developer page and follow the instructions. For more information, see Notion's API documentation: [Notion API Docs](https://developers.notion.com/docs/getting-started#step-2-share-a-database-with-your-integration).
+```shell
+html2notion --conf config.json --dir ./demos --log ~/logs --batch 10
+```
 
-To get the ID of a Notion database, follow these steps:
-
-1. Go to the Notion database you want to import HTML into.
-2. Click the three dots next to the database name.
-3. Select "Properties".
-4. Hover over the column where you want to import HTML and click the three dots next to the column name.
-5. Click "Property settings".
-6. Copy the database ID to your code.
-
-## Tencent Cloud COS key
-
-## Evernote migration
-
-If you want to import notes from Evernote into Notion, you can use Evernote's export function to export notes as HTML files and then use the above command to import them into Notion.
-
-# Supported HTML elements
-
-The following is a list of HTML elements supported by html2notion:
-
-- `p`
-- `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
-- `ul`, `ol`
-- `li`
-- `a`
-- `img`
-- `code`
-- `blockquote`
-- `hr`
-- `br`
+The above command will import all html files in the `./demos` directory into Notion, while outputting logs to the `~/logs` directory, with up to 10 concurrent tasks.
 
 # More information
 
@@ -82,8 +72,13 @@ You can find more information and examples in the html2notion library's Issue: [
 
 ## Contribution
 
-If you find any errors or have any improvement suggestions, please do not hesitate to submit a pull request or issue. We are happy to accept your contributions and feedback!
+If you find any errors or have any suggestions for improvement, please do not hesitate to submit a pull request or raise an issue, I am more than happy to accept your contributions and feedback!
+
+If you encounter import failures, you can submit the html file and log file together in the issue for easier problem identification.
+
+> If there are any private information in the files, please remove it first.
+
 
 ## License
 
-This project uses the MIT license. Please refer to the LICENSE file for details.
+This project uses the MIT license. Please refer to the [LICENSE](./LICENSE) for details.

@@ -23,56 +23,54 @@ html2notion 功能非常强大，它支持将 HTML 文件的各种标签转换�
 pip install html2notion
 ```
 
+## 准备 Notion 配置
+
+我们需要使用 Notion API 密钥和数据库 ID 来授权 html2notion 访问 Notion 数据库，请按照以下步骤操作：
+
+1. 创建 Integration
+2. 与 Integration 共享数据库
+3. 获取数据库 ID 和 API Key
+
+这里共享数据库的时候，要选择前面 Duplicate 的数据库，因为导入操作需要用到这个 database 里面的一些预设 [Properties](https://developers.notion.com/reference/property-object) 信息。
+
+具体方法请参考 notion 官方文档 [Create an integration](https://developers.notion.com/docs/create-a-notion-integration)。
+
+设置完成后，将自己的 API Key 和数据库 ID 写入到一个配置文件 `config.json`。
+
+```shell
+{
+    "notion": {
+        "database_id": "<***demo***>",
+        "api_key": "<***demo***>"
+    }
+}
+```
+
 # 使用
 
-## 获取 notion 参数
+可以使用 `html2notion -h` 查看详细的帮助文档;
 
-要获取 Notion API 密钥，请按照以下步骤操作：
+```
+usage: html2notion [-h] --conf CONF [--log LOG] [--batch BATCH] (--file FILE | --dir DIR)
 
-1. 登录 [Notion](https://www.notion.so/)。如果您还没有 Notion 帐户，请先注册一个。
-2. 转到 [Notion 开发人员页面](https://developers.notion.com/docs/getting-started#step-2-share-a-database-with-your-integration)。
-3. 单击 “My integrations”。
-4. 单击 “New integration”。
-5. 输入一个名称，然后单击 “Submit”。
-6. 单击 “Add a client secret”。
-7. 将生成的 API 密钥复制到您的代码中。
+Html2notion: Save HTML to your Notion notes quickly and easily, while keeping the original format as much as possible
 
-要授权 Notion 的 API Key 访问某个数据库，请按照以下步骤操作：
+options:
+  -h, --help     show this help message and exit
+  --conf CONF    conf file path
+  --log LOG      log direct path
+  --batch BATCH  batch save concurrent limit
+  --file FILE    Save single html file to notion
+  --dir DIR      Save all html files in the dir to notion
+```
 
-1. 转到您要与 API Key 共享的数据库。
-2. 单击数据库名称旁边的三个点。
-6. 现在，您的 API Key 将能够访问此数据库。
+比如要将路径 `./demos` 下的所有 html 文件导入到 notion 中，可以使用如下命令：
 
-请注意，为了使 API Key 能够访问数据库，您必须首先将其添加为 Notion 的集成。要添加集成，请转到 Notion 开发人员页面并按照指示操作。更多信息，请参阅 Notion 的 API 文档：[Notion API Docs](https://developers.notion.com/docs/getting-started#step-2-share-a-database-with-your-integration)。
+```shell
+html2notion --conf config.json --dir ./demos --log ~/logs --batch 10
+```
 
-要获取 Notion 数据库的 ID，请按照以下步骤操作：
-
-1. 转到您要将 HTML 导入到的 Notion 数据库。
-2. 单击数据库名称旁边的三个点。
-3. 选择 “Properties”。
-4. 将鼠标悬停在您想要导入 HTML 的列上，并单击列名称旁边的三个点。
-5. 单击 “Property settings”。
-6. 将数据库 ID 复制到您的代码中。
-
-## 腾讯云 COS 密钥
-
-## 印象笔记迁移
-如果您想将印象笔记中的笔记导入到 Notion 中，您可以使用印象笔记的导出功能将笔记导出为 HTML 文件，然后使用上述命令将其导入到 Notion。
-
-# 支持的 HTML 元素
-
-以下是 html2notion 支持的 HTML 元素列表：
-
-- `p`
-- `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
-- `ul`, `ol`
-- `li`
-- `a`
-- `img`
-- `code`
-- `blockquote`
-- `hr`
-- `br`
+上面命令会将 `./demos` 目录下的所有 html 文件导入到 notion 中，同时会将日志输出到 `~/logs` 目录下，最多有 10 个并发任务。
 
 # 更多信息
 
@@ -80,8 +78,12 @@ pip install html2notion
 
 ## 贡献
 
-如果您发现了任何错误或有任何改进意见，请不要犹豫，提交一个 pull request 或提出一个 issue。我们很乐意接受您的贡献和反馈！
+如果您发现了任何错误或有任何改进意见，请不要犹豫，提交一个 pull request 或提出一个 issue,我很乐意接受您的贡献和反馈！
+
+如果遇到导入失败，可以将 html 文件和日志文件一起提交到 issue 中，方便定位问题。
+
+> 如果 html 文件中有隐私信息，请先删除。
 
 ## 许可证
 
-此项目使用 MIT 许可证。详情请参阅 LICENSE 文件。
+此项目使用 MIT 许可证。详情请参阅 [LICENSE](./LICENSE) 文件。
