@@ -30,12 +30,12 @@ def parse_args():
 def print_fail_details(failed_files):
     if len(failed_files) == 0:
         return
-    table = Table(title="\nFailed Detail")
+    table = Table(title=f"\nFailed Detail\nLog path: {config.get('log_path')}")
     table.add_column("File Name", justify="left", style="cyan", no_wrap=True)
     table.add_column("Fail Reason", justify="left", style="red", no_wrap=True)
 
     for row in failed_files:
-        table.add_row(str(row[0]), str(row[1]))
+        table.add_row(str(row[0].name), str(row[1]))
     console.print(table)
 
     text = Text("\nIf you need help, please submit an ")
