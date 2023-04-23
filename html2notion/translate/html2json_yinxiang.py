@@ -217,7 +217,8 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.NUMBERED_LIST.value
         if tag_name == 'ul':
             return Block.BULLETED_LIST.value
-
+        if tag_name == 'p':
+            return Block.PARAGRAPH.value
         if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
 
