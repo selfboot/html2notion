@@ -19,30 +19,22 @@ class Html2JsonYinXiang(Html2JsonBase):
         return YinXiang_Type
 
     def convert_properties(self, soup):
+        properties = {"title": "Unknown"}
         title_tag = soup.select_one('head > title')
-        title_text = "Unknow"
         if title_tag:
-            title_text = title_tag.text
-        properties = {"title": title_text}
+            properties["title"] = title_tag.text
 
-        meta_url_tag = soup.select_one('head > meta[name="source-url"]')
-        if meta_url_tag:
-            source_url = meta_url_tag['content']
-            if source_url:
-                properties["url"] = source_url
+        meta_tags = [
+            ('head > meta[name="source-url"]', "url"),
+            ('head > meta[name="keywords"]', "tags", lambda x: x.split(",")),
+            ('head > meta[name="created"]', "created_time", DateStrToISO8601),
+        ]
 
-        # <meta name="keywords" content="openai"/>
-        meta_keywords_tag = soup.select_one('head > meta[name="keywords"]')
-        if meta_keywords_tag:
-            keywords = meta_keywords_tag['content']
-            if keywords:
-                properties["tags"] = keywords.split(",")
-        
-        created_time_tag = soup.select_one('head > meta[name="created"]')
-        if created_time_tag:
-            created_time = created_time_tag['content']
-            if created_time:
-                properties["created_time"] = DateStrToISO8601(created_time)
+        for selector, key, *converter in meta_tags:
+            tag = soup.select_one(selector)
+            if tag and tag.get('content', None):
+                content = tag['content']
+                properties[key] = converter[0](content) if converter else content
 
         self.properties = self.generate_properties(**properties)
         return
@@ -55,6 +47,7 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         for child in content_tags[0].children:
             block_type = self.get_block_type(child)
+            logger.debug(f'Support tag {child} with style {block_type}')
             converter = getattr(self, f"convert_{block_type}")
             if converter:
                 block = converter(child)
@@ -228,12 +221,10 @@ class Html2JsonYinXiang(Html2JsonBase):
         if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
 
-        # Remove all space such as \t \n in style
-        style = ''.join(style.split())
-        logger.info(f'Support tag {tag_name} with style {style}')
-
         css_dict = {}
         if style:
+            # Remove all space such as \t \n in style
+            style = ''.join(style.split())
             css_dict = {rule.split(':')[0].strip(): rule.split(
                 ':')[1].strip() for rule in style.split(';') if rule}
         en_codeblock = css_dict.get('-en-codeblock', None)
