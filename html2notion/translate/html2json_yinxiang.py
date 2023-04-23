@@ -66,7 +66,7 @@ class Html2JsonYinXiang(Html2JsonBase):
         }
         rich_text = json_obj["paragraph"]["rich_text"]
         tag_text = soup.text if soup.text else ""
-        text_obj = self.parse_inline_block(soup, tag_text)
+        text_obj = self.parse_inline_block(soup)
         if text_obj:
             rich_text.extend(text_obj)
         return json_obj
@@ -84,10 +84,39 @@ class Html2JsonYinXiang(Html2JsonBase):
             }
         }
         rich_text = json_obj[heading_level]["rich_text"]
-        tag_text = soup.text if soup.text else ""
-        text_obj = self.parse_inline_block(soup, tag_text)
+        text_obj = self.parse_inline_block(soup)
         if text_obj:
             rich_text.extend(text_obj)
+        return json_obj
+    
+    def convert_code(self, soup):
+        json_obj = {
+            "object": "block",
+            "type": "code",
+            "code": {
+                "rich_text": [],
+                "language": "plain text",
+            },
+        }
+        rich_text = json_obj["code"]["rich_text"]
+        children_list = list(soup.children) if soup.has_attr('children') else [soup]
+        for index, child in enumerate(children_list):
+            is_last_child = index == len(children_list) - 1
+            text_obj = self.parse_inline_block(child)
+            if text_obj:
+                rich_text.extend(text_obj)
+            if not is_last_child:
+                rich_text.append(self.generate_text(plain_text='\n'))
+        json_obj["code"]["rich_text"] = self.merge_rich_text(rich_text)
+
+        style = soup.get('style') if soup.name else ""
+        css_dict = {}
+        if style:
+            style = ''.join(style.split())
+            css_dict = {rule.split(':')[0].strip(): rule.split(':')[1].strip() for rule in style.split(';') if rule}
+            language = css_dict.get('--en-codeblockLanguage', 'plain text')
+            json_obj["code"]["language"] = language
+        
         return json_obj
     
     def convert_fail(self, soup):
@@ -111,8 +140,7 @@ class Html2JsonYinXiang(Html2JsonBase):
         children_list = list(soup.children)
         for index, child in enumerate(children_list):
             is_last_child = index == len(children_list) - 1
-            tag_text = child.text if child.text else ""
-            text_obj = self.parse_inline_block(child, tag_text)
+            text_obj = self.parse_inline_block(child)
             if text_obj:
                 rich_text.extend(text_obj)
             if not is_last_child:
@@ -158,10 +186,7 @@ class Html2JsonYinXiang(Html2JsonBase):
         }
         rich_text = json_obj[list_type]["rich_text"]
         for child in soup.children:
-            tag_text = child.text if child.text else ""
-            if not tag_text:
-                continue
-            text_obj = self.parse_inline_block(child, tag_text)
+            text_obj = self.parse_inline_block(child)
             if text_obj:
                 rich_text.extend(text_obj)
 
@@ -201,14 +226,13 @@ class Html2JsonYinXiang(Html2JsonBase):
 
     # <b><u>unlineline and bold</u></b>
     # <div><font color="#ff2600">Red color4</font></div>
-    def parse_inline_block(self, tag_soup, tag_text):
+    def parse_inline_block(self, tag_soup):
         block_objs = []
         for child in tag_soup.children:
             text_params = {}
             tag_name = child.name.lower() if child.name else ""
             child_text = child.text if child.text else ""
-            # if tag_name == 'br':
-            #     child_text = ''
+ 
             text_params["plain_text"] = child_text
             if not isinstance(child, NavigableString):
                 self._recursive_parse_style(child, child_text, text_params)
@@ -249,10 +273,13 @@ class Html2JsonYinXiang(Html2JsonBase):
             style = ''.join(style.split())
             css_dict = {rule.split(':')[0].strip(): rule.split(
                 ':')[1].strip() for rule in style.split(';') if rule}
-        en_codeblock = css_dict.get('-en-codeblock', None)
-        if en_codeblock == 'true':
+        if css_dict.get('--en-blockquote', None) == 'true':
             return Block.QUOTE.value
-
+        if css_dict.get('--en-codeblock', None) == 'true':
+            return Block.CODE.value
+        if css_dict.get('-en-codeblock', None) == 'true':
+            return Block.CODE.value
+        
         return Block.FAIL.value
 
 

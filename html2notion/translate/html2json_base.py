@@ -11,6 +11,7 @@ class Block(Enum):
     NUMBERED_LIST = "numbered_list_item"
     BULLETED_LIST = "bulleted_list_item"
     HEADING = "heading"
+    CODE = "code"
 
 class Html2JsonBase:
     _registry = {}
