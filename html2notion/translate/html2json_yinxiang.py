@@ -71,6 +71,25 @@ class Html2JsonYinXiang(Html2JsonBase):
             rich_text.extend(text_obj)
         return json_obj
 
+    def convert_heading(self, soup):
+        heading_map = {"h1": "heading_1", "h2": "heading_2", "h3": "heading_3",
+                       "h4": "heading_3", "h5": "heading_3", "h6": "heading_3"}
+
+        heading_level = heading_map.get(soup.name, "heading_3")
+        json_obj = {
+            "object": "block",
+            "type": heading_level,
+            heading_level: {
+                "rich_text": []
+            }
+        }
+        rich_text = json_obj[heading_level]["rich_text"]
+        tag_text = soup.text if soup.text else ""
+        text_obj = self.parse_inline_block(soup, tag_text)
+        if text_obj:
+            rich_text.extend(text_obj)
+        return json_obj
+    
     def convert_fail(self, soup):
         return {
             "object": "block",
@@ -215,10 +234,12 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         if tag_name == 'ol':
             return Block.NUMBERED_LIST.value
-        if tag_name == 'ul':
+        elif tag_name == 'ul':
             return Block.BULLETED_LIST.value
-        if tag_name == 'p':
+        elif tag_name == 'p':
             return Block.PARAGRAPH.value
+        elif tag_name in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
+            return Block.HEADING.value
         if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
 

@@ -376,6 +376,99 @@ paragram_rich_block = [
     }
 ]
 
+heading_content = '<h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>'
+heading_block = [
+    {
+        "object": "block",
+        "type": "heading_1",
+        "heading_1": {
+            "rich_text": [
+                {
+                    "plain_text": "Heading 1",
+                    "text": {
+                        "content": "Heading 1"
+                    },
+                    "type": "text"
+                }
+            ]
+        }
+    },
+    {
+        "object": "block",
+        "type": "heading_2",
+        "heading_2": {
+            "rich_text": [
+                {
+                    "plain_text": "Heading 2",
+                    "text": {
+                        "content": "Heading 2"
+                    },
+                    "type": "text"
+                }
+            ]
+        }
+    },
+    {
+        "object": "block",
+        "type": "heading_3",
+        "heading_3": {
+            "rich_text": [
+                {
+                    "plain_text": "Heading 3",
+                    "text": {
+                        "content": "Heading 3"
+                    },
+                    "type": "text"
+                }
+            ]
+        }
+    },
+    {
+        "object": "block",
+        "type": "heading_3",
+        "heading_3": {
+            "rich_text": [
+                {
+                    "plain_text": "Heading 4",
+                    "text": {
+                        "content": "Heading 4"
+                    },
+                    "type": "text"
+                }
+            ]
+        }
+    },
+    {
+        "object": "block",
+        "type": "heading_3",
+        "heading_3": {
+            "rich_text": [
+                {
+                    "plain_text": "Heading 5",
+                    "text": {
+                        "content": "Heading 5"
+                    },
+                    "type": "text"
+                }
+            ]
+        }
+    },
+    {
+        "object": "block",
+        "type": "heading_3",
+        "heading_3": {
+            "rich_text": [
+                {
+                    "plain_text": "Heading 6",
+                    "text": {
+                        "content": "Heading 6"
+                    },
+                    "type": "text"
+                }
+            ]
+        }
+    }
+]
 
 def test_convert():
     if 'GITHUB_ACTIONS' not in os.environ:
@@ -389,7 +482,8 @@ def test_convert():
         nested_bold_content: nested_bold_block,
         quote_content: quote_block,
         quote_multi_paragram: quote_multi_paragram_block,
-        paragram_rich_content: paragram_rich_block
+        paragram_rich_content: paragram_rich_block,
+        heading_content: heading_block,
     }
 
     for html_content in html_jsons:

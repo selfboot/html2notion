@@ -25,7 +25,8 @@ class NotionExporter:
                 "href": None
             }
         ],
-        "color": "default"
+        "color": "default",
+        "is_toggleable": False
     }
 
     delete_conf = {
@@ -42,7 +43,10 @@ class NotionExporter:
         "paragraph": delete_block,
         "quote": delete_block,
         "numbered_list_item": delete_block,
-        "bulleted_list_item": delete_block
+        "bulleted_list_item": delete_block,
+        "heading_1": delete_block,
+        "heading_2": delete_block,
+        "heading_3": delete_block,
     }
 
     def __init__(self, api_key, page_id, page_size=2):
