@@ -99,7 +99,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             },
         }
         rich_text = json_obj["code"]["rich_text"]
-        children_list = list(soup.children) if soup.has_attr('children') else [soup]
+        children_list = list(soup.children) if isinstance(soup, Tag) else [soup]
         for index, child in enumerate(children_list):
             is_last_child = index == len(children_list) - 1
             text_obj = self.parse_inline_block(child)
@@ -220,15 +220,17 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         for child in tag_soup.children:
             logger.debug(f'Recursive, child: {child}, {child.name}')
-            if child.name:
+            if isinstance(child, Tag):
                 self._recursive_parse_style(child, child.text, text_params)
         return
 
     # <b><u>unlineline and bold</u></b>
     # <div><font color="#ff2600">Red color4</font></div>
+    # <div> Code in super note</div>
     def parse_inline_block(self, tag_soup):
         block_objs = []
-        for child in tag_soup.children:
+        all_tags = tag_soup.children if isinstance(tag_soup, Tag) else [tag_soup]
+        for child in all_tags:
             text_params = {}
             tag_name = child.name.lower() if child.name else ""
             child_text = child.text if child.text else ""

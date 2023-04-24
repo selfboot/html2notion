@@ -408,6 +408,96 @@ code_block = [
     }
 ]
 
+code_paragraph_content = '<div style="-en-codeblock:true;"><div>Quote 1</div><div>2</div><div>3</div><div><span style="color: rgb(255, 38, 0);">Read 4</span></div><div><span style="color: rgb(255, 38, 0);">5</span></div><div>6. <a href="https://openai.com/">OpenAI</a>’s mission is to create artificial intelligence systems that benefit everyone. To that end, we invest heavily in research and engineering to ensure our AI systems are safe and secure. However, as with any <font color="#942192"><b>complex technology</b></font>, we understand that vulnerabilities and flaws can emerge.</div></div>'
+code_paragraph_block = [
+    {
+        "object": "block",
+        "type": "code",
+        "code": {
+            "rich_text": [
+                {
+                    "plain_text": "Quote 1\n2\n3\n",
+                    "text": {
+                        "content": "Quote 1\n2\n3\n"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "Read 4",
+                    "text": {
+                        "content": "Read 4"
+                    },
+                    "type": "text",
+                    "annotations": {
+                        "color": "red"
+                    }
+                },
+                {
+                    "plain_text": "\n",
+                    "text": {
+                        "content": "\n"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "5",
+                    "text": {
+                        "content": "5"
+                    },
+                    "type": "text",
+                    "annotations": {
+                        "color": "red"
+                    }
+                },
+                {
+                    "plain_text": "\n6. ",
+                    "text": {
+                        "content": "\n6. "
+                    },
+                    "type": "text"
+                },
+                {
+                    "href": "https://openai.com/",
+                    "plain_text": "OpenAI",
+                    "text": {
+                        "link": {
+                            "url": "https://openai.com/"
+                        },
+                        "content": "OpenAI"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "\u2019s mission is to create artificial intelligence systems that benefit everyone. To that end, we invest heavily in research and engineering to ensure our AI systems are safe and secure. However, as with any ",
+                    "text": {
+                        "content": "\u2019s mission is to create artificial intelligence systems that benefit everyone. To that end, we invest heavily in research and engineering to ensure our AI systems are safe and secure. However, as with any "
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "complex technology",
+                    "text": {
+                        "content": "complex technology"
+                    },
+                    "type": "text",
+                    "annotations": {
+                        "color": "purple",
+                        "bold": True
+                    }
+                },
+                {
+                    "plain_text": ", we understand that vulnerabilities and flaws can emerge.",
+                    "text": {
+                        "content": ", we understand that vulnerabilities and flaws can emerge."
+                    },
+                    "type": "text"
+                }
+            ],
+            "language": "plain text"
+        }
+    }
+]
+
 language_code_content = '<div style="--en-codeblock:true;--en-codeblockLanguage:python;">import os\nprint("hello")</div>'
 language_code_block = [
     {
@@ -441,6 +531,7 @@ def test_convert():
         paragram_rich_content: paragram_rich_block,
         heading_content: heading_block,
         code_content: code_block,
+        code_paragraph_content: code_paragraph_block,
         language_code_content: language_code_block
     }
 
@@ -449,8 +540,8 @@ def test_convert():
         yinxiang = Html2JsonYinXiang(body_content)
         yinxiang.process()
         json_obj = yinxiang.children
-        print(json.dumps(json_obj, indent=4))
-        # assert json_obj == html_jsons[html_content]
+        # print(json.dumps(json_obj, indent=4))
+        assert json_obj == html_jsons[html_content]
 
 
 if __name__ == '__main__':
