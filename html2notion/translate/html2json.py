@@ -7,6 +7,7 @@ from ..utils import logger, test_prepare_conf
 from ..translate.html2json_base import Html2JsonBase
 from ..translate.html2json_default import Default_Type
 from ..translate.html2json_yinxiang import YinXiang_Type
+from ..translate.html2json_clipper import YinXiangClipper_Type
 
 
 """
@@ -22,10 +23,28 @@ def _is_yinxiang_export_html(html_soup):
     if isinstance(exporter_version_content, str) and not exporter_version_content.startswith("Evernote"):
         return False
 
-    yinxiang_source_content = ["yinxiang", "desktop"]
+    yinxiang_source_content = ["yinxiang", "desktop", "web"]
     for prefix in yinxiang_source_content:
         if isinstance(meta_source_content, str) and meta_source_content.startswith(prefix):
             return True
+    return False
+
+
+"""
+<meta name="source-application" content="webclipper.evernote" />
+"""
+def _is_yinxiang_clipper_html(html_soup):
+    exporter_version_meta = html_soup.select_one('html > head > meta[name="exporter-version"]')
+    exporter_version_content = exporter_version_meta.get(
+        'content', "") if isinstance(
+        exporter_version_meta, Tag) else ""
+
+    if isinstance(exporter_version_content, str) and not exporter_version_content.startswith("Evernote"):
+        return False
+    clipper_source_meta = html_soup.select_one('html > head > meta[name="source-application"]')
+    clipper_source_content = clipper_source_meta.get('content', "") if isinstance(clipper_source_meta, Tag) else ""
+    if isinstance(clipper_source_content, str) and clipper_source_content.endswith("evernote"):
+        return True
     return False
 
 
@@ -33,7 +52,8 @@ def _infer_input_type(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
     if _is_yinxiang_export_html(soup):
         return YinXiang_Type
-
+    elif _is_yinxiang_clipper_html(soup):
+        return YinXiangClipper_Type
     return Default_Type
 
 
@@ -72,7 +92,7 @@ def _(html_file: Path):
 
 if __name__ == "__main__":
     test_prepare_conf()
-    html_file = Path("./demos/Test Case C.html")
+    html_file = Path("./demos/Test Case D.html")
     result, html_type = html2json_process(html_file)
     print(html_type)
     print(json.dumps(result, indent=4, ensure_ascii=False))
