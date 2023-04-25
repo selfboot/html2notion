@@ -65,7 +65,6 @@ class Html2JsonYinXiang(Html2JsonBase):
             }
         }
         rich_text = json_obj["paragraph"]["rich_text"]
-        tag_text = soup.text if soup.text else ""
         text_obj = self.parse_inline_block(soup)
         if text_obj:
             rich_text.extend(text_obj)
@@ -109,9 +108,9 @@ class Html2JsonYinXiang(Html2JsonBase):
                 rich_text.append(self.generate_text(plain_text='\n'))
         json_obj["code"]["rich_text"] = self.merge_rich_text(rich_text)
 
-        style = soup.get('style') if soup.name else ""
+        style = soup.get('style', "") if soup.name else ""
         css_dict = {}
-        if style:
+        if isinstance(style, str):
             style = ''.join(style.split())
             css_dict = {rule.split(':')[0].strip(): rule.split(':')[1].strip() for rule in style.split(';') if rule}
             language = css_dict.get('--en-codeblockLanguage', 'plain text')
@@ -150,6 +149,51 @@ class Html2JsonYinXiang(Html2JsonBase):
         logger.debug(f'before merge: {rich_text}')
         json_obj["quote"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
+
+    """
+    <div>
+    <div><br /></div>
+    <table> <tbody> <tr> <td> </td> </tr> </tbody>
+    <div><br /></div>
+    </div>
+    """
+    # ../examples/insert_table.ipynb
+    def convert_table(self, soup):
+        logger.debug(f'Convert table: {soup}')
+        # Assert: only one table in table div
+        table_rows = []
+        tr_tags = soup.find_all('tr')
+        if not tr_tags:
+            logger.error(f"No tr found in {soup}")
+            return
+        
+        table_width = len(tr_tags[0].find_all('td'))
+        if table_width == 0:
+            logger.error(f"No td found in {soup}")
+            return
+        
+        for tr in tr_tags:
+            td_tags = tr.find_all('td')
+            one_row = {
+                "type": "table_row",
+                "table_row": {
+                    "cells": []
+                }
+            }
+            for td in td_tags:
+                col = Html2JsonBase.generate_inline_obj(td)
+                one_row["table_row"]["cells"].append(col)
+            table_rows.append(one_row)
+
+        table_obj = {
+            "table": {
+                "has_row_header": False,
+                "has_column_header": False,
+                "table_width": table_width,
+                "children": table_rows,
+            }
+        }
+        return table_obj
 
     # <ol><li><div>first</div></li><li><div>second</div></li><li><div>third</div></li></ol>
     def convert_numbered_list_item(self, soup):
@@ -219,7 +263,6 @@ class Html2JsonYinXiang(Html2JsonBase):
             return
 
         for child in tag_soup.children:
-            logger.debug(f'Recursive, child: {child}, {child.name}')
             if isinstance(child, Tag):
                 self._recursive_parse_style(child, child.text, text_params)
         return
@@ -232,9 +275,13 @@ class Html2JsonYinXiang(Html2JsonBase):
         all_tags = tag_soup.children if isinstance(tag_soup, Tag) else [tag_soup]
         for child in all_tags:
             text_params = {}
+            # logger.debug(f'***** child: {child}, {child.text}')
+            if not isinstance(child, Tag):
+                block_objs.append(self.generate_text(plain_text=child.text))
+                continue
+
             tag_name = child.name.lower() if child.name else ""
-            child_text = child.text if child.text else ""
- 
+            child_text = child.text if child.text else "" 
             text_params["plain_text"] = child_text
             if not isinstance(child, NavigableString):
                 self._recursive_parse_style(child, child_text, text_params)
@@ -266,6 +313,8 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.PARAGRAPH.value
         elif tag_name in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
             return Block.HEADING.value
+        elif self._check_is_table(single_tag):
+            return Block.TABLE.value
         if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
 
@@ -283,6 +332,16 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.CODE.value
         
         return Block.FAIL.value
+
+    def _check_is_table(self, tag):
+        if tag.name == "div":
+            children = list(filter(lambda x: x != '\n', tag.contents))
+            table_count = sum(1 for child in children if child.name == "table")
+            div_br_count = sum(1 for child in children if child.name == "div" and len(
+                child.contents) == 1 and child.contents[0].name == "br")
+
+            return table_count == 1 and div_br_count >= 2 and (table_count + div_br_count) == len(children)
+        return False
 
 
 Html2JsonBase.register(YinXiang_Type, Html2JsonYinXiang)

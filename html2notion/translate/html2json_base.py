@@ -1,6 +1,7 @@
 import re
 import os
 from collections import namedtuple
+from bs4 import NavigableString, Tag
 from enum import Enum
 from ..utils import logger, config
 
@@ -12,6 +13,8 @@ class Block(Enum):
     BULLETED_LIST = "bulleted_list_item"
     HEADING = "heading"
     CODE = "code"
+    DIVIDER = "divider"
+    TABLE = "table"
 
 class Html2JsonBase:
     _registry = {}
@@ -63,6 +66,65 @@ class Html2JsonBase:
             if value
         }
 
+    @staticmethod
+    def extract_text_and_parents(tag, parents=[]):
+        results = []
+        for child in tag.children:
+            if isinstance(child, NavigableString):
+                if child.strip():
+                    text = child.strip()
+                    parent_tags = [p for p in parents + [tag]]
+                    results.append((text, parent_tags))
+            else:
+                results.extend(Html2JsonBase.extract_text_and_parents(child, parents + [tag]))
+        return results
+
+    @staticmethod
+    def parse_one_style(tag_soup: Tag, text_params: dict):
+        tag_name = tag_soup.name.lower()
+        style = tag_soup.get('style', "")
+        styles = {}
+        if str and isinstance(style, str):
+            styles = {rule.split(':')[0].strip(): rule.split(':')[1].strip() for rule in style.split(';') if rule}
+
+        if Html2JsonBase.is_bold(tag_name, styles):
+            text_params["bold"] = True
+        if Html2JsonBase.is_italic(tag_name, styles):
+            text_params["italic"] = True
+        if Html2JsonBase.is_strikethrough(tag_name, styles):
+            text_params["strikethrough"] = True
+        if Html2JsonBase.is_underline(tag_name, styles):
+            text_params["underline"] = True
+
+        color = Html2JsonBase.get_color(styles, tag_soup.attrs if tag_name else {})
+        if color != 'default':
+            text_params["color"] = color
+
+        if tag_name == 'a':
+            href = tag_soup.get('href', "")
+            if not href:
+                logger.warning("Link href is empty")
+            text_params["url"] = href
+        return
+
+    # Process one tag and return a list of objects
+    @staticmethod
+    def generate_inline_obj(tag: Tag):
+        res_obj = []
+        text_with_parents = Html2JsonBase.extract_text_and_parents(tag)
+        for (text, parent_tags) in text_with_parents:
+            text_params = {"plain_text": text}
+            for parent in parent_tags:
+                Html2JsonBase.parse_one_style(parent, text_params)
+
+            if text_params.get("url", ""):
+                text_obj = Html2JsonBase.generate_link(**text_params)
+            else:
+                text_obj = Html2JsonBase.generate_text(**text_params)
+            if text_obj:
+                res_obj.append(text_obj)
+        return res_obj
+    
     @staticmethod
     def generate_link(**kwargs):
         if not kwargs.get("plain_text", ""):

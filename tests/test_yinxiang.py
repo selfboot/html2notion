@@ -517,7 +517,141 @@ language_code_block = [
         }
     }
 ]
-    
+
+table_content = '<div><div><br /></div><table><tbody><tr><td><div>Row 1: <span style="color: rgb(0, 166, 125);">You are a helpful assistant.</span> Rember it.</div></td><td><div>Row 1: <a href="https://platform.openai.com/docs/guides/chat/introduction" >https://platform.openai.com/docs/guides/chat/introduction</a></div></td><td><div>Row 1: <b><u>Import Content</u></b> Read more.</div></td></tr><tr><td><div>Row 2: </div></td><td><div>Row 2: </div></td><td><div>Row 2: </div></td></tr></tbody></table><div><br /></div></div> '
+table_block = [
+    {
+        "table": {
+            "has_row_header": False,
+            "has_column_header": False,
+            "table_width": 3,
+            "children": [
+                {
+                    "type": "table_row",
+                    "table_row": {
+                        "cells": [
+                            [
+                                {
+                                    "plain_text": "Row 1:",
+                                    "text": {
+                                        "content": "Row 1:"
+                                    },
+                                    "type": "text"
+                                },
+                                {
+                                    "plain_text": "You are a helpful assistant.",
+                                    "text": {
+                                        "content": "You are a helpful assistant."
+                                    },
+                                    "type": "text",
+                                    "annotations": {
+                                        "color": "green"
+                                    }
+                                },
+                                {
+                                    "plain_text": "Rember it.",
+                                    "text": {
+                                        "content": "Rember it."
+                                    },
+                                    "type": "text"
+                                }
+                            ],
+                            [
+                                {
+                                    "plain_text": "Row 1:",
+                                    "text": {
+                                        "content": "Row 1:"
+                                    },
+                                    "type": "text"
+                                },
+                                {
+                                    "href": "https://platform.openai.com/docs/guides/chat/introduction",
+                                    "plain_text": "https://platform.openai.com/docs/guides/chat/introduction",
+                                    "text": {
+                                        "link": {
+                                            "url": "https://platform.openai.com/docs/guides/chat/introduction"
+                                        },
+                                        "content": "https://platform.openai.com/docs/guides/chat/introduction"
+                                    },
+                                    "type": "text"
+                                }
+                            ],
+                            [
+                                {
+                                    "plain_text": "Row 1:",
+                                    "text": {
+                                        "content": "Row 1:"
+                                    },
+                                    "type": "text"
+                                },
+                                {
+                                    "plain_text": "Import Content",
+                                    "text": {
+                                        "content": "Import Content"
+                                    },
+                                    "type": "text",
+                                    "annotations": {
+                                        "bold": True,
+                                        "underline": True
+                                    }
+                                },
+                                {
+                                    "plain_text": "Read more.",
+                                    "text": {
+                                        "content": "Read more."
+                                    },
+                                    "type": "text"
+                                }
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "type": "table_row",
+                    "table_row": {
+                        "cells": [
+                            [
+                                {
+                                    "plain_text": "Row 2:",
+                                    "text": {
+                                        "content": "Row 2:"
+                                    },
+                                    "type": "text"
+                                }
+                            ],
+                            [
+                                {
+                                    "plain_text": "Row 2:",
+                                    "text": {
+                                        "content": "Row 2:"
+                                    },
+                                    "type": "text"
+                                }
+                            ],
+                            [
+                                {
+                                    "plain_text": "Row 2:",
+                                    "text": {
+                                        "content": "Row 2:"
+                                    },
+                                    "type": "text"
+                                }
+                            ]
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "object": "block",
+        "type": "paragraph",
+        "paragraph": {
+            "rich_text": []
+        }
+    }
+]
+
 def test_convert():
     if 'GITHUB_ACTIONS' not in os.environ:
         from html2notion.utils import test_prepare_conf, logger
@@ -532,7 +666,8 @@ def test_convert():
         heading_content: heading_block,
         code_content: code_block,
         code_paragraph_content: code_paragraph_block,
-        language_code_content: language_code_block
+        language_code_content: language_code_block,
+        table_content: table_block,
     }
 
     for html_content in html_jsons:
