@@ -519,7 +519,8 @@ language_code_block = [
     }
 ]
 
-table_content = '<div><div><br /></div><table><tbody><tr><td><div>Row 1:<span style="color: rgb(0, 166, 125);">You are a helpful assistant.</span> Rember it.</div></td><td><div>Row 1:<a href="https://platform.openai.com/docs/guides/chat/introduction" >https://platform.openai.com/docs/guides/chat/introduction</a></div></td><td><div>Row 1:<b><u>Import Content</u></b> Read more.</div></td></tr><tr><td><div>Row 2:</div></td><td><div>Row 2:</div></td><td><div>Row 2:</div></td></tr></tbody></table><div><br /></div></div> '
+table_content = '<div><div><br /></div><table><tbody><tr><td><div>Row 1:<span style="color: rgb(0, 166, 125);">You are a helpful assistant.</span> Rember it.</div></td><td><div>Row 1:<a href="https://platform.openai.com/docs/guides/chat/introduction" >https://platform.openai.com/docs/guides/chat/introduction</a></div></td><td><div>Row 1:<b><u>Import Content</u></b> Read more.</div></td></tr><tr><td><div>Row 2:</div></td><td><div>Row 2:</div></td><td><div>Row 2:</div></td></tr></tbody></table><div><br /></div></div>'
+super_note_table_content = '<table><tbody><tr><td><div>Row 1:<span style="color: rgb(0, 166, 125);">You are a helpful assistant.</span> Rember it.</div></td><td><div>Row 1:<a href="https://platform.openai.com/docs/guides/chat/introduction" >https://platform.openai.com/docs/guides/chat/introduction</a></div></td><td><div>Row 1:<b><u>Import Content</u></b> Read more.</div></td></tr><tr><td><div>Row 2:</div></td><td><div>Row 2:</div></td><td><div>Row 2:</div></td></tr></tbody></table>'
 table_block = [
     {
         "table": {
@@ -643,13 +644,6 @@ table_block = [
                 }
             ]
         }
-    },
-    {
-        "object": "block",
-        "type": "paragraph",
-        "paragraph": {
-            "rich_text": []
-        }
     }
 ]
 
@@ -669,6 +663,7 @@ def test_convert():
         code_paragraph_content: code_paragraph_block,
         language_code_content: language_code_block,
         table_content: table_block,
+        super_note_table_content: table_block,
     }
 
     for html_content in html_jsons:

@@ -280,7 +280,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.PARAGRAPH.value
         elif tag_name in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
             return Block.HEADING.value
-        elif self._check_is_table(single_tag):
+        elif tag_name == 'table' or self._check_is_table(single_tag):
             return Block.TABLE.value
         if not style and tag_name == 'div':
             return Block.PARAGRAPH.value
