@@ -16,6 +16,7 @@ class Block(Enum):
     CODE = "code"
     DIVIDER = "divider"
     TABLE = "table"
+    TO_DO = "to_do"
 
 class Html2JsonBase:
     _registry = {}

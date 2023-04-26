@@ -50,9 +50,17 @@ class Html2JsonYinXiang(Html2JsonBase):
             logger.debug(f'Support tag {child} with style {block_type}')
             converter = getattr(self, f"convert_{block_type}")
             if converter:
-                block = converter(child)
-                if block:
-                    self.children.extend([block] if not isinstance(block, list) else block)
+                # Compatible with returning multiple blocks, such as todo.
+                childs = [child]
+                if block_type == Block.TO_DO.value:
+                    li_tags = child.find_all('li', recursive=True)
+                    if li_tags:
+                        childs = li_tags
+
+                for child in childs:
+                    block = converter(child)
+                    if block:
+                        self.children.extend([block] if not isinstance(block, list) else block)
             else:
                 logger.warning(f"Unknown block type: {block_type}")
 
@@ -197,6 +205,24 @@ class Html2JsonYinXiang(Html2JsonBase):
         }
         return table_obj
 
+    def convert_to_do(self, soup: Tag):
+        json_obj = {
+            "object": "block",
+            "type": "to_do",
+            "to_do": {
+                "rich_text": [],
+                "checked": False
+            }
+        }
+        text = json_obj["to_do"]["rich_text"]
+        text_obj = self.generate_inline_obj(soup)
+        if text_obj:
+            text.extend(text_obj)
+        input_tag = soup.find('input')
+        if input_tag and isinstance(input_tag, Tag) and input_tag.get('checked', 'false') == 'true':
+            json_obj["to_do"]["checked"] = True
+        return json_obj
+
     # <ol><li><div>first</div></li><li><div>second</div></li><li><div>third</div></li></ol>
     def convert_numbered_list_item(self, soup):
         return self.convert_list_items(soup, 'numbered_list_item')
@@ -272,7 +298,11 @@ class Html2JsonYinXiang(Html2JsonBase):
         tag_name = single_tag.name
         style = single_tag.get('style') if tag_name else ""
 
-        if tag_name == 'ol':
+        # There are priorities here. It is possible to hit multiple targets 
+        # at the same time, and the first one takes precedence.
+        if self._check_is_todo(single_tag):
+            return Block.TO_DO.value
+        elif tag_name == 'ol':
             return Block.NUMBERED_LIST.value
         elif tag_name == 'ul':
             return Block.BULLETED_LIST.value
@@ -310,5 +340,12 @@ class Html2JsonYinXiang(Html2JsonBase):
             return table_count == 1 and div_br_count >= 2 and (table_count + div_br_count) == len(children)
         return False
 
+    def _check_is_todo(self, tag):
+        if not isinstance(tag, Tag):
+            return False
+        input_tag = tag.find('input')
+        if input_tag and isinstance(input_tag, Tag) and input_tag.get('type') == 'checkbox':
+            return True
+        return False
 
 Html2JsonBase.register(YinXiang_Type, Html2JsonYinXiang)
