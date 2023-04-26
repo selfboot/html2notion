@@ -65,7 +65,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             }
         }
         rich_text = json_obj["paragraph"]["rich_text"]
-        text_obj = self.parse_inline_block(soup)
+        text_obj = self.generate_inline_obj(soup)
         if text_obj:
             rich_text.extend(text_obj)
         return json_obj
@@ -83,7 +83,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             }
         }
         rich_text = json_obj[heading_level]["rich_text"]
-        text_obj = self.parse_inline_block(soup)
+        text_obj = self.generate_inline_obj(soup)
         if text_obj:
             rich_text.extend(text_obj)
         return json_obj
@@ -98,10 +98,11 @@ class Html2JsonYinXiang(Html2JsonBase):
             },
         }
         rich_text = json_obj["code"]["rich_text"]
+
         children_list = list(soup.children) if isinstance(soup, Tag) else [soup]
         for index, child in enumerate(children_list):
             is_last_child = index == len(children_list) - 1
-            text_obj = self.parse_inline_block(child)
+            text_obj = self.generate_inline_obj(child)
             if text_obj:
                 rich_text.extend(text_obj)
             if not is_last_child:
@@ -136,10 +137,11 @@ class Html2JsonYinXiang(Html2JsonBase):
             }
         }
         rich_text = json_obj["quote"]["rich_text"]
+
         children_list = list(soup.children)
         for index, child in enumerate(children_list):
             is_last_child = index == len(children_list) - 1
-            text_obj = self.parse_inline_block(child)
+            text_obj = self.generate_inline_obj(child)
             if text_obj:
                 rich_text.extend(text_obj)
             if not is_last_child:
@@ -159,7 +161,7 @@ class Html2JsonYinXiang(Html2JsonBase):
     """
     # ../examples/insert_table.ipynb
     def convert_table(self, soup):
-        logger.debug(f'Convert table: {soup}')
+        # logger.debug(f'Convert table: {soup}')
         # Assert: only one table in table div
         table_rows = []
         tr_tags = soup.find_all('tr')
@@ -229,10 +231,9 @@ class Html2JsonYinXiang(Html2JsonBase):
             "type": list_type,
         }
         rich_text = json_obj[list_type]["rich_text"]
-        for child in soup.children:
-            text_obj = self.parse_inline_block(child)
-            if text_obj:
-                rich_text.extend(text_obj)
+        text_obj = Html2JsonBase.generate_inline_obj(soup)
+        if text_obj:
+            rich_text.extend(text_obj)
 
         return json_obj
 
@@ -267,40 +268,6 @@ class Html2JsonYinXiang(Html2JsonBase):
                 self._recursive_parse_style(child, child.text, text_params)
         return
 
-    # <b><u>unlineline and bold</u></b>
-    # <div><font color="#ff2600">Red color4</font></div>
-    # <div> Code in super note</div>
-    def parse_inline_block(self, tag_soup):
-        block_objs = []
-        all_tags = tag_soup.children if isinstance(tag_soup, Tag) else [tag_soup]
-        for child in all_tags:
-            text_params = {}
-            # logger.debug(f'***** child: {child}, {child.text}')
-            if not isinstance(child, Tag):
-                block_objs.append(self.generate_text(plain_text=child.text))
-                continue
-
-            tag_name = child.name.lower() if child.name else ""
-            child_text = child.text if child.text else "" 
-            text_params["plain_text"] = child_text
-            if not isinstance(child, NavigableString):
-                self._recursive_parse_style(child, child_text, text_params)
-
-            text_obj = {}
-            if not isinstance(child, NavigableString) and tag_name == 'a':
-                href = child.get('href', "")
-                if not href:
-                    logger.warning("Link href is empty")
-                text_params["url"] = href
-                text_obj = self.generate_link(**text_params)
-            else:
-                text_obj = self.generate_text(**text_params)
-            logger.debug(f'parse_inline_block: {text_obj}')
-            if text_obj:
-                block_objs.append(text_obj)
-
-        return block_objs
-
     def get_block_type(self, single_tag):
         tag_name = single_tag.name
         style = single_tag.get('style') if tag_name else ""
@@ -323,7 +290,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             # Remove all space such as \t \n in style
             style = ''.join(style.split())
             css_dict = {rule.split(':')[0].strip(): rule.split(
-                ':')[1].strip() for rule in style.split(';') if rule}
+                ':')[1].strip().lower() for rule in style.split(';') if rule}
         if css_dict.get('--en-blockquote', None) == 'true':
             return Block.QUOTE.value
         if css_dict.get('--en-codeblock', None) == 'true':

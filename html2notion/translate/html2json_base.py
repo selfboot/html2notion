@@ -1,7 +1,8 @@
 import re
 import os
 from collections import namedtuple
-from bs4 import NavigableString, Tag
+from bs4 import NavigableString, Tag, PageElement
+# from typing import Union
 from enum import Enum
 from ..utils import logger, config
 
@@ -67,16 +68,20 @@ class Html2JsonBase:
         }
 
     @staticmethod
-    def extract_text_and_parents(tag, parents=[]):
+    def extract_text_and_parents(tag: PageElement, parents=[]):
         results = []
-        for child in tag.children:
-            if isinstance(child, NavigableString):
-                if child.strip():
-                    text = child.strip()
-                    parent_tags = [p for p in parents + [tag]]
-                    results.append((text, parent_tags))
-            else:
-                results.extend(Html2JsonBase.extract_text_and_parents(child, parents + [tag]))
+        if isinstance(tag, NavigableString):
+            results.append((tag.text, parents))
+            return results
+        elif isinstance(tag, Tag):
+            for child in tag.children:
+                if isinstance(child, NavigableString):
+                    if child.strip():
+                        text = child.text
+                        parent_tags = [p for p in parents + [tag]]
+                        results.append((text, parent_tags))
+                else:
+                    results.extend(Html2JsonBase.extract_text_and_parents(child, parents + [tag]))
         return results
 
     @staticmethod
@@ -108,8 +113,11 @@ class Html2JsonBase:
         return
 
     # Process one tag and return a list of objects
+    # <b><u>unlineline and bold</u></b>
+    # <div><font color="#ff2600">Red color4</font></div>
+    # <div> Code in super note</div>
     @staticmethod
-    def generate_inline_obj(tag: Tag):
+    def generate_inline_obj(tag: PageElement):
         res_obj = []
         text_with_parents = Html2JsonBase.extract_text_and_parents(tag)
         for (text, parent_tags) in text_with_parents:

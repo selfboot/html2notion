@@ -116,10 +116,10 @@ paragram_rich_block = [
                     "text": {
                         "content": "Red text"
                     },
+                    "type": "text",
                     "annotations": {
                         "color": "red"
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "plain_text": ", ",
@@ -133,10 +133,10 @@ paragram_rich_block = [
                     "text": {
                         "content": "Green text"
                     },
+                    "type": "text",
                     "annotations": {
                         "color": "green"
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "plain_text": ", ",
@@ -150,20 +150,20 @@ paragram_rich_block = [
                     "text": {
                         "content": "Gray text"
                     },
+                    "type": "text",
                     "annotations": {
                         "color": "gray"
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "plain_text": "Purple text",
                     "text": {
                         "content": "Purple text"
                     },
+                    "type": "text",
                     "annotations": {
                         "color": "purple"
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "plain_text": ", ",
@@ -177,10 +177,10 @@ paragram_rich_block = [
                     "text": {
                         "content": "Orange text"
                     },
+                    "type": "text",
                     "annotations": {
                         "color": "orange"
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "plain_text": ", ",
@@ -194,10 +194,10 @@ paragram_rich_block = [
                     "text": {
                         "content": "Yellow text"
                     },
+                    "type": "text",
                     "annotations": {
                         "color": "yellow"
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "href": "http://www.baidu.com/",
@@ -222,10 +222,10 @@ paragram_rich_block = [
                     "text": {
                         "content": "Underline text"
                     },
+                    "type": "text",
                     "annotations": {
                         "underline": True
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "plain_text": ",",
@@ -239,10 +239,10 @@ paragram_rich_block = [
                     "text": {
                         "content": "Bold text"
                     },
+                    "type": "text",
                     "annotations": {
                         "bold": True
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "plain_text": ",",
@@ -256,10 +256,10 @@ paragram_rich_block = [
                     "text": {
                         "content": "Strikethrough text"
                     },
+                    "type": "text",
                     "annotations": {
                         "strikethrough": True
-                    },
-                    "type": "text"
+                    }
                 },
                 {
                     "plain_text": ",",
@@ -273,15 +273,16 @@ paragram_rich_block = [
                     "text": {
                         "content": "Italic text"
                     },
+                    "type": "text",
                     "annotations": {
                         "italic": True
-                    },
-                    "type": "text"
+                    }
                 }
             ]
         }
     }
 ]
+
 
 heading_content = '<h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>'
 heading_block = [
@@ -378,7 +379,7 @@ heading_block = [
 ]
 
 
-code_content = '<div style="-en-codeblock:true;"><div>Code Line 1</div><div>Code Line 2</div><div>Code Line 3</div><div><font color="#ff2600">Code Line 4(red)</font></div></div>'
+code_content = '<div style="-en-codeblock:True;"><div>Code Line 1</div><div>Code Line 2</div><div>Code Line 3</div><div><font color="#ff2600">Code Line 4(red)</font></div></div>'
 code_block = [
     {
         "object": "block",
@@ -408,7 +409,7 @@ code_block = [
     }
 ]
 
-code_paragraph_content = '<div style="-en-codeblock:true;"><div>Quote 1</div><div>2</div><div>3</div><div><span style="color: rgb(255, 38, 0);">Read 4</span></div><div><span style="color: rgb(255, 38, 0);">5</span></div><div>6. <a href="https://openai.com/">OpenAI</a>’s mission is to create artificial intelligence systems that benefit everyone. To that end, we invest heavily in research and engineering to ensure our AI systems are safe and secure. However, as with any <font color="#942192"><b>complex technology</b></font>, we understand that vulnerabilities and flaws can emerge.</div></div>'
+code_paragraph_content = '<div style="-en-codeblock:True;"><div>Quote 1</div><div>2</div><div>3</div><div><span style="color: rgb(255, 38, 0);">Read 4</span></div><div><span style="color: rgb(255, 38, 0);">5</span></div><div>6. <a href="https://openai.com/">OpenAI</a>’s mission is to create artificial intelligence systems that benefit everyone. To that end, we invest heavily in research and engineering to ensure our AI systems are safe and secure. However, as with any <font color="#942192"><b>complex technology</b></font>, we understand that vulnerabilities and flaws can emerge.</div></div>'
 code_paragraph_block = [
     {
         "object": "block",
@@ -498,7 +499,7 @@ code_paragraph_block = [
     }
 ]
 
-language_code_content = '<div style="--en-codeblock:true;--en-codeblockLanguage:python;">import os\nprint("hello")</div>'
+language_code_content = '<div style="--en-codeblock:True;--en-codeblockLanguage:python;">import os\nprint("hello")</div>'
 language_code_block = [
     {
         "object": "block",
@@ -518,7 +519,7 @@ language_code_block = [
     }
 ]
 
-table_content = '<div><div><br /></div><table><tbody><tr><td><div>Row 1: <span style="color: rgb(0, 166, 125);">You are a helpful assistant.</span> Rember it.</div></td><td><div>Row 1: <a href="https://platform.openai.com/docs/guides/chat/introduction" >https://platform.openai.com/docs/guides/chat/introduction</a></div></td><td><div>Row 1: <b><u>Import Content</u></b> Read more.</div></td></tr><tr><td><div>Row 2: </div></td><td><div>Row 2: </div></td><td><div>Row 2: </div></td></tr></tbody></table><div><br /></div></div> '
+table_content = '<div><div><br /></div><table><tbody><tr><td><div>Row 1:<span style="color: rgb(0, 166, 125);">You are a helpful assistant.</span> Rember it.</div></td><td><div>Row 1:<a href="https://platform.openai.com/docs/guides/chat/introduction" >https://platform.openai.com/docs/guides/chat/introduction</a></div></td><td><div>Row 1:<b><u>Import Content</u></b> Read more.</div></td></tr><tr><td><div>Row 2:</div></td><td><div>Row 2:</div></td><td><div>Row 2:</div></td></tr></tbody></table><div><br /></div></div> '
 table_block = [
     {
         "table": {
@@ -549,9 +550,9 @@ table_block = [
                                     }
                                 },
                                 {
-                                    "plain_text": "Rember it.",
+                                    "plain_text": " Rember it.",
                                     "text": {
-                                        "content": "Rember it."
+                                        "content": " Rember it."
                                     },
                                     "type": "text"
                                 }
@@ -596,9 +597,9 @@ table_block = [
                                     }
                                 },
                                 {
-                                    "plain_text": "Read more.",
+                                    "plain_text": " Read more.",
                                     "text": {
-                                        "content": "Read more."
+                                        "content": " Read more."
                                     },
                                     "type": "text"
                                 }
