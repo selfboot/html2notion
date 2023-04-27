@@ -101,6 +101,8 @@ class Html2JsonBase:
             text_params["strikethrough"] = True
         if Html2JsonBase.is_underline(tag_name, styles):
             text_params["underline"] = True
+        if Html2JsonBase.is_code(tag_name, styles):
+            text_params["code"] = True
 
         color = Html2JsonBase.get_color(styles, tag_soup.attrs if tag_name else {})
         if color != 'default':
@@ -254,13 +256,17 @@ class Html2JsonBase:
         if tag_name in ('code',):
             return True
 
+        # style="-en-code: true"
+        if styles.get('-en-code', "false") == "true":
+            return True
+
         # Check if the font-family is monospace
         font_family = styles.get('font-family', "")
         monospace_fonts = {'courier', 'monospace'}
         if not font_family:
             return False
         for font in monospace_fonts:
-            if font.lower() in font_family.lower():
+            if font.lower() == font_family.lower():
                 return True
 
     @staticmethod

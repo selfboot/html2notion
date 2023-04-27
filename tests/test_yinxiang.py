@@ -647,6 +647,108 @@ table_block = [
     }
 ]
 
+to_do_content = '''<ul style=""><li style=""><div><input type="checkbox"/>Choose classes that map to a single <a href="https://platform.openai.com/tokenizer" rev="en_rl_none">token</a>. At inference time, specify <span style="font-weight: 500;">max_tokens=1</span> since you only need the first token for classification.</div></li><li style=""><div><input type="checkbox"/>Use a separator at the end of the prompt, e.g. <code style="-en-code: true"><span style="font-weight: 500;">\n\n###\n\n</span></code>.Remember to also append this separator when you eventually make requests to your model.</div></li><li style=""><div><input checked="true" type="checkbox"/>Ensure that the prompt + completion doesn't exceed 2048 tokens, including the separator</div></li></ul>'''
+to_do_normal_content = '''<div><input type="checkbox"/>Choose classes that map to a single <a href="https://platform.openai.com/tokenizer" rev="en_rl_none">token</a>. At inference time, specify <span style="font-weight: 500;">max_tokens=1</span> since you only need the first token for classification.</div><div><input type="checkbox"/>Use a separator at the end of the prompt, e.g. <code style="-en-code: true"><span style="font-weight: 500;">\n\n###\n\n</span></code>.Remember to also append this separator when you eventually make requests to your model.</div><div><input checked="true" type="checkbox"/>Ensure that the prompt + completion doesn't exceed 2048 tokens, including the separator</div>'''
+to_do_block = [
+    {
+        "object": "block",
+        "type": "to_do",
+        "to_do": {
+            "rich_text": [
+                {
+                    "plain_text": "Choose classes that map to a single\u00a0",
+                    "text": {
+                        "content": "Choose classes that map to a single\u00a0"
+                    },
+                    "type": "text"
+                },
+                {
+                    "href": "https://platform.openai.com/tokenizer",
+                    "plain_text": "token",
+                    "text": {
+                        "link": {
+                            "url": "https://platform.openai.com/tokenizer"
+                        },
+                        "content": "token"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": ". At inference time, specify\u00a0",
+                    "text": {
+                        "content": ". At inference time, specify\u00a0"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "max_tokens=1",
+                    "text": {
+                        "content": "max_tokens=1"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "\u00a0since you only need the first token for classification.",
+                    "text": {
+                        "content": "\u00a0since you only need the first token for classification."
+                    },
+                    "type": "text"
+                }
+            ],
+            "checked": False
+        }
+    },
+    {
+        "object": "block",
+        "type": "to_do",
+        "to_do": {
+            "rich_text": [
+                {
+                    "plain_text": "Use a separator at the end of the prompt, e.g.\u00a0",
+                    "text": {
+                        "content": "Use a separator at the end of the prompt, e.g.\u00a0"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "\n\n###\n\n",
+                    "text": {
+                        "content": "\n\n###\n\n"
+                    },
+                    "type": "text",
+                    "annotations": {
+                        "code": True
+                    }
+                },
+                {
+                    "plain_text": ".Remember to also append this separator when you eventually make requests to your model.",
+                    "text": {
+                        "content": ".Remember to also append this separator when you eventually make requests to your model."
+                    },
+                    "type": "text"
+                }
+            ],
+            "checked": False
+        }
+    },
+    {
+        "object": "block",
+        "type": "to_do",
+        "to_do": {
+            "rich_text": [
+                {
+                    "plain_text": "Ensure that the prompt + completion doesn't exceed 2048 tokens, including the separator",
+                    "text": {
+                        "content": "Ensure that the prompt + completion doesn't exceed 2048 tokens, including the separator"
+                    },
+                    "type": "text"
+                }
+            ],
+            "checked": True
+        }
+    }
+]
+
 def test_convert():
     if 'GITHUB_ACTIONS' not in os.environ:
         from html2notion.utils import test_prepare_conf, logger
@@ -664,6 +766,8 @@ def test_convert():
         language_code_content: language_code_block,
         table_content: table_block,
         super_note_table_content: table_block,
+        to_do_content: to_do_block,
+        to_do_normal_content: to_do_block,
     }
 
     for html_content in html_jsons:
@@ -671,7 +775,7 @@ def test_convert():
         yinxiang = Html2JsonYinXiang(body_content)
         yinxiang.process()
         json_obj = yinxiang.children
-        # print(json.dumps(json_obj, indent=4))
+        print(json.dumps(json_obj, indent=4))
         assert json_obj == html_jsons[html_content]
 
 

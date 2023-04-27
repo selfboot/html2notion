@@ -50,17 +50,9 @@ class Html2JsonYinXiang(Html2JsonBase):
             logger.debug(f'Support tag {child} with style {block_type}')
             converter = getattr(self, f"convert_{block_type}")
             if converter:
-                # Compatible with returning multiple blocks, such as todo.
-                childs = [child]
-                if block_type == Block.TO_DO.value:
-                    li_tags = child.find_all('li', recursive=True)
-                    if li_tags:
-                        childs = li_tags
-
-                for child in childs:
-                    block = converter(child)
-                    if block:
-                        self.children.extend([block] if not isinstance(block, list) else block)
+                block = converter(child)
+                if block:
+                    self.children.extend([block] if not isinstance(block, list) else block)
             else:
                 logger.warning(f"Unknown block type: {block_type}")
 
@@ -206,22 +198,28 @@ class Html2JsonYinXiang(Html2JsonBase):
         return table_obj
 
     def convert_to_do(self, soup: Tag):
-        json_obj = {
-            "object": "block",
-            "type": "to_do",
-            "to_do": {
-                "rich_text": [],
-                "checked": False
+        # Compatible with the situation where input is under li tag(super note).
+        li_tags = soup.find_all('li', recursive=True)
+        childs = li_tags if li_tags else [soup]
+        to_do_blocks = []
+        for child in childs:
+            json_obj = {
+                "object": "block",
+                "type": "to_do",
+                "to_do": {
+                    "rich_text": [],
+                    "checked": False
+                }
             }
-        }
-        text = json_obj["to_do"]["rich_text"]
-        text_obj = self.generate_inline_obj(soup)
-        if text_obj:
-            text.extend(text_obj)
-        input_tag = soup.find('input')
-        if input_tag and isinstance(input_tag, Tag) and input_tag.get('checked', 'false') == 'true':
-            json_obj["to_do"]["checked"] = True
-        return json_obj
+            text = json_obj["to_do"]["rich_text"]
+            text_obj = self.generate_inline_obj(child)
+            if text_obj:
+                text.extend(text_obj)
+            input_tag = child.find('input')
+            if input_tag and isinstance(input_tag, Tag) and input_tag.get('checked', 'false') == 'true':
+                json_obj["to_do"]["checked"] = True
+            to_do_blocks.append(json_obj)
+        return to_do_blocks
 
     # <ol><li><div>first</div></li><li><div>second</div></li><li><div>third</div></li></ol>
     def convert_numbered_list_item(self, soup):
