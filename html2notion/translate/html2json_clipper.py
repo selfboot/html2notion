@@ -14,8 +14,14 @@ class Html2JsonYinXiang(Html2JsonBase):
 
     def process(self):
         soup = BeautifulSoup(self.html_content, 'html.parser')
-        # self.convert_children(soup)
         self.convert_properties(soup)
+
+        content_tags = soup.body
+        if not content_tags:
+            logger.warning("No content found")
+            return
+        self.convert_children(content_tags)  # Assesume only one body tag
+
         return YinXiangClipper_Type
 
     def convert_properties(self, soup):
@@ -39,5 +45,26 @@ class Html2JsonYinXiang(Html2JsonBase):
         self.properties = self.generate_properties(**properties)
         return
 
+    def get_block_type(self, element):
+        if element.name == "p":
+            return Block.PARAGRAPH.value
+
+        return Block.FAIL.value
+        
+    def convert_children(self, soup):
+
+        for element in soup.descendants:
+            if isinstance(element, NavigableString):
+                continue
+            block_type = self.get_block_type(element)
+            converter = getattr(self, f"convert_{block_type}")
+            if converter:
+                block = converter(element)
+                if block:
+                    self.children.extend(
+                        [block] if not isinstance(block, list) else block)
+            else:
+                logger.warning(f"Unknown block type: {block_type}")
+        return
 
 Html2JsonBase.register(YinXiangClipper_Type, Html2JsonYinXiang)

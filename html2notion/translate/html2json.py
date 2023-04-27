@@ -23,7 +23,7 @@ def _is_yinxiang_export_html(html_soup):
     if isinstance(exporter_version_content, str) and not exporter_version_content.startswith("Evernote"):
         return False
 
-    yinxiang_source_content = ["yinxiang", "desktop", "web"]
+    yinxiang_source_content = ["yinxiang", "desktop"]
     for prefix in yinxiang_source_content:
         if isinstance(meta_source_content, str) and meta_source_content.startswith(prefix):
             return True

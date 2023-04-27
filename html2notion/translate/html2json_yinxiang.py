@@ -55,45 +55,6 @@ class Html2JsonYinXiang(Html2JsonBase):
                     self.children.extend([block] if not isinstance(block, list) else block)
             else:
                 logger.warning(f"Unknown block type: {block_type}")
-
-    def convert_paragraph(self, soup):
-        json_obj = {
-            "object": "block",
-            "type": "paragraph",
-            "paragraph": {
-                "rich_text": []
-            }
-        }
-        rich_text = json_obj["paragraph"]["rich_text"]
-        text_obj = self.generate_inline_obj(soup)
-        if text_obj:
-            rich_text.extend(text_obj)
-        return json_obj
-
-    def convert_divider(self, soup):
-        return {
-            "object": "block",
-            "type": "divider",
-            "divider": {}
-        }
-    
-    def convert_heading(self, soup):
-        heading_map = {"h1": "heading_1", "h2": "heading_2", "h3": "heading_3",
-                       "h4": "heading_3", "h5": "heading_3", "h6": "heading_3"}
-
-        heading_level = heading_map.get(soup.name, "heading_3")
-        json_obj = {
-            "object": "block",
-            "type": heading_level,
-            heading_level: {
-                "rich_text": []
-            }
-        }
-        rich_text = json_obj[heading_level]["rich_text"]
-        text_obj = self.generate_inline_obj(soup)
-        if text_obj:
-            rich_text.extend(text_obj)
-        return json_obj
     
     def convert_code(self, soup):
         json_obj = {
@@ -125,15 +86,6 @@ class Html2JsonYinXiang(Html2JsonBase):
             json_obj["code"]["language"] = language
         
         return json_obj
-    
-    def convert_fail(self, soup):
-        return {
-            "object": "block",
-            "type": "paragraph",
-            "paragraph": {
-                "rich_text": []
-            }
-        }
 
     def convert_quote(self, soup):
         json_obj = {
