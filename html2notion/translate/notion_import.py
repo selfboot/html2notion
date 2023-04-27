@@ -40,9 +40,21 @@ class NotionImporter:
            retry=retry_if_exception_type(RequestTimeoutError))
     async def create_new_page(self, notion_data):
         # logger.debug(f'Create new page: {notion_data["parent"]}, {notion_data["properties"]}')
-        created_page = await self.notion_client.pages.create(
-            **notion_data
-        )
+        # body.children.length should be ≤ `100`,
+        blocks = notion_data.get("children", [])
+        limit_size = 100
+        chunks = [blocks[i: i + limit_size] for i in range(0, len(blocks), limit_size)]
+        notion_data.pop("children")
+        created_page = await self.notion_client.pages.create(**notion_data)
+        page_id = created_page["id"]
+
+        # 之后添加子元素
+        for chunk in chunks:
+            await self.notion_client.blocks.children.append(page_id, children=chunk)
+
+        # created_page = await self.notion_client.pages.create(
+        #     **notion_data
+        # )
         return created_page
 
 
