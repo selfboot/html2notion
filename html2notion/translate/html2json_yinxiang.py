@@ -70,6 +70,13 @@ class Html2JsonYinXiang(Html2JsonBase):
             rich_text.extend(text_obj)
         return json_obj
 
+    def convert_divider(self, soup):
+        return {
+            "object": "block",
+            "type": "divider",
+            "divider": {}
+        }
+    
     def convert_heading(self, soup):
         heading_map = {"h1": "heading_1", "h2": "heading_2", "h3": "heading_3",
                        "h4": "heading_3", "h5": "heading_3", "h6": "heading_3"}
@@ -300,6 +307,8 @@ class Html2JsonYinXiang(Html2JsonBase):
         # at the same time, and the first one takes precedence.
         if self._check_is_todo(single_tag):
             return Block.TO_DO.value
+        elif tag_name == 'hr':
+            return Block.DIVIDER.value
         elif tag_name == 'ol':
             return Block.NUMBERED_LIST.value
         elif tag_name == 'ul':

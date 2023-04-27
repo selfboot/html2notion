@@ -749,6 +749,68 @@ to_do_block = [
     }
 ]
 
+divider_content = '<hr/>'
+divider_block = [
+    {
+        "object": "block",
+        "type": "divider",
+        "divider": {}
+    }
+]
+
+quote_content = """<div style="--en-blockquote:true;box-sizing: border-box; padding-left: 19px; padding-top: 6px; padding-bottom: 6px; border-left: 3px solid #b4c0cc; background-position: initial initial; background-repeat: initial initial; margin-top: 6px"><div>We recommend completing our quickstart tutorial to get acquainted with key concepts through a <span style="color: #9B00FF;">hands-on, interactive example</span>.</div><div><br/></div><div>First, you’ll need a prompt that makes it clear what you want. Let’s start with an instruction. <b>Submit this prompt</b> to generate your first completion.</div></div>"""
+quote_block = [
+    {
+        "object": "block",
+        "type": "quote",
+        "quote": {
+            "rich_text": [
+                {
+                    "plain_text": "We recommend completing our quickstart tutorial to get acquainted with key concepts through a ",
+                    "text": {
+                        "content": "We recommend completing our quickstart tutorial to get acquainted with key concepts through a "
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "hands-on, interactive example",
+                    "text": {
+                        "content": "hands-on, interactive example"
+                    },
+                    "type": "text",
+                    "annotations": {
+                        "color": "purple"
+                    }
+                },
+                {
+                    "plain_text": ".\n\nFirst, you\u2019ll need a prompt that makes it clear what you want. Let\u2019s start with an instruction.\u00a0",
+                    "text": {
+                        "content": ".\n\nFirst, you\u2019ll need a prompt that makes it clear what you want. Let\u2019s start with an instruction.\u00a0"
+                    },
+                    "type": "text"
+                },
+                {
+                    "plain_text": "Submit this prompt",
+                    "text": {
+                        "content": "Submit this prompt"
+                    },
+                    "type": "text",
+                    "annotations": {
+                        "bold": True
+                    }
+                },
+                {
+                    "plain_text": "\u00a0to generate your first completion.",
+                    "text": {
+                        "content": "\u00a0to generate your first completion."
+                    },
+                    "type": "text"
+                }
+            ]
+        }
+    }
+]
+
 def test_convert():
     if 'GITHUB_ACTIONS' not in os.environ:
         from html2notion.utils import test_prepare_conf, logger
@@ -768,6 +830,8 @@ def test_convert():
         super_note_table_content: table_block,
         to_do_content: to_do_block,
         to_do_normal_content: to_do_block,
+        divider_content: divider_block,
+        quote_content: quote_block,
     }
 
     for html_content in html_jsons:
@@ -775,7 +839,7 @@ def test_convert():
         yinxiang = Html2JsonYinXiang(body_content)
         yinxiang.process()
         json_obj = yinxiang.children
-        print(json.dumps(json_obj, indent=4))
+        # print(json.dumps(json_obj, indent=4))
         assert json_obj == html_jsons[html_content]
 
 
