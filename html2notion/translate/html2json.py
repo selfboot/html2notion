@@ -32,6 +32,7 @@ def _is_yinxiang_export_html(html_soup):
 
 """
 <meta name="source-application" content="webclipper.evernote" />
+<meta name="source-application" content="微信" />
 """
 def _is_yinxiang_clipper_html(html_soup):
     exporter_version_meta = html_soup.select_one('html > head > meta[name="exporter-version"]')
@@ -44,6 +45,8 @@ def _is_yinxiang_clipper_html(html_soup):
     clipper_source_meta = html_soup.select_one('html > head > meta[name="source-application"]')
     clipper_source_content = clipper_source_meta.get('content', "") if isinstance(clipper_source_meta, Tag) else ""
     if isinstance(clipper_source_content, str) and clipper_source_content.endswith("evernote"):
+        return True
+    if isinstance(clipper_source_content, str) and clipper_source_content in ("微信"):
         return True
     return False
 

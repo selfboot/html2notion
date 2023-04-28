@@ -109,5 +109,5 @@ class Html2JsonYinXiang(Html2JsonBase):
         json_obj["code"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
 
-
+        
 Html2JsonBase.register(YinXiangClipper_Type, Html2JsonYinXiang)

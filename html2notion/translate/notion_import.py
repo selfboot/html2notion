@@ -44,7 +44,8 @@ class NotionImporter:
         blocks = notion_data.get("children", [])
         limit_size = 100
         chunks = [blocks[i: i + limit_size] for i in range(0, len(blocks), limit_size)]
-        notion_data.pop("children")
+        if blocks:
+            notion_data.pop("children")
         first_chunk = chunks[0] if chunks else []
         created_page = await self.notion_client.pages.create(**notion_data, children=first_chunk)
         page_id = created_page["id"]
@@ -63,7 +64,7 @@ async def main(file_path, notion_api_key):
 
 if __name__ == "__main__":
     test_prepare_conf()
-    file = Path("./demos/Test Case D.html")
+    file = Path("./demos/Test Case E.html")
     notion_api_key = ""
     if 'GITHUB_ACTIONS' in os.environ:
         notion_api_key = os.environ['notion_api_key']

@@ -71,7 +71,8 @@ class Html2JsonBase:
     @staticmethod
     def extract_text_and_parents(tag: PageElement, parents=[]):
         results = []
-        if isinstance(tag, NavigableString):
+        # Filter empty content
+        if isinstance(tag, NavigableString) and tag.text:
             results.append((tag.text, parents))
             return results
         elif isinstance(tag, Tag):
@@ -328,7 +329,7 @@ class Html2JsonBase:
             "type": "divider",
             "divider": {}
         }
-    
+
     def convert_heading(self, soup):
         heading_map = {"h1": "heading_1", "h2": "heading_2", "h3": "heading_3",
                        "h4": "heading_3", "h5": "heading_3", "h6": "heading_3"}
@@ -345,7 +346,8 @@ class Html2JsonBase:
         text_obj = self.generate_inline_obj(soup)
         if text_obj:
             rich_text.extend(text_obj)
-        return json_obj
+            return json_obj
+        return None
 
     # <ol><li><div>first</div></li><li><div>second</div></li><li><div>third</div></li></ol>
     def convert_numbered_list_item(self, soup):
@@ -356,6 +358,10 @@ class Html2JsonBase:
         return self.convert_list_items(soup, 'bulleted_list_item')
 
     def convert_list_items(self, soup, list_type):
+        # Remove heading tags in li
+        for heading in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+            heading.unwrap()
+
         items = soup.find_all('li', recursive=True)
         if not items:
             logger.warning("No list items found in {soup}")
