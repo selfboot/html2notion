@@ -45,16 +45,11 @@ class NotionImporter:
         limit_size = 100
         chunks = [blocks[i: i + limit_size] for i in range(0, len(blocks), limit_size)]
         notion_data.pop("children")
-        created_page = await self.notion_client.pages.create(**notion_data)
+        first_chunk = chunks[0] if chunks else []
+        created_page = await self.notion_client.pages.create(**notion_data, children=first_chunk)
         page_id = created_page["id"]
-
-        # 之后添加子元素
-        for chunk in chunks:
+        for chunk in chunks[1:]:
             await self.notion_client.blocks.children.append(page_id, children=chunk)
-
-        # created_page = await self.notion_client.pages.create(
-        #     **notion_data
-        # )
         return created_page
 
 
