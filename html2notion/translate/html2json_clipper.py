@@ -46,25 +46,38 @@ class Html2JsonYinXiang(Html2JsonBase):
         return
 
     def get_block_type(self, element):
-        if element.name == "p":
+        tag_name = element.name
+        if tag_name == "p":
             return Block.PARAGRAPH.value
-
+        elif tag_name in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
+            return Block.HEADING.value
+        elif tag_name == 'hr':
+            return Block.DIVIDER.value
+        elif tag_name == 'ol':
+            return Block.NUMBERED_LIST.value
+        elif tag_name == 'ul':
+            return Block.BULLETED_LIST.value
+        elif tag_name == 'p':
+            return Block.PARAGRAPH.value
         return Block.FAIL.value
-        
-    def convert_children(self, soup):
 
+    def convert_children(self, soup):
+        processed_tags = set()
         for element in soup.descendants:
             if isinstance(element, NavigableString):
                 continue
+            if any(id(ancestor) in processed_tags for ancestor in element.parents):
+                logger.debug(f"Skip processed tag {element}")
+                continue
             block_type = self.get_block_type(element)
-            converter = getattr(self, f"convert_{block_type}")
-            if converter:
+            if hasattr(self, f"convert_{block_type}"):
+                converter = getattr(self, f"convert_{block_type}")
                 block = converter(element)
                 if block:
-                    self.children.extend(
-                        [block] if not isinstance(block, list) else block)
+                    self.children.extend([block] if not isinstance(block, list) else block)
+                    processed_tags.add(id(element))
             else:
-                logger.warning(f"Unknown block type: {block_type}")
+                logger.warning(f"Unknown cnvert {element}, {block_type}")
         return
 
 Html2JsonBase.register(YinXiangClipper_Type, Html2JsonYinXiang)

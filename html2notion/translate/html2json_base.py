@@ -343,14 +343,54 @@ class Html2JsonBase:
             rich_text.extend(text_obj)
         return json_obj
 
-    def convert_fail(self, soup):
-        return {
+    # <ol><li><div>first</div></li><li><div>second</div></li><li><div>third</div></li></ol>
+    def convert_numbered_list_item(self, soup):
+        return self.convert_list_items(soup, 'numbered_list_item')
+
+    # <ul><li><div>itemA</div></li><li><div>itemB</div></li><li><div>itemC</div></li></ul>
+    def convert_bulleted_list_item(self, soup):
+        return self.convert_list_items(soup, 'bulleted_list_item')
+
+    def convert_list_items(self, soup, list_type):
+        items = soup.find_all('li', recursive=True)
+        if not items:
+            logger.warning("No list items found in {soup}")
+
+        json_arr = []
+        for item in items:
+            one_item = self._convert_one_list_item(item, list_type)
+            if one_item:
+                json_arr.append(one_item)
+            else:
+                logger.info(f'empty {item}')
+        return json_arr
+
+    def _convert_one_list_item(self, soup, list_type):
+        if list_type not in {'numbered_list_item', 'bulleted_list_item'}:
+            logger.warning(f'Not support list_type')
+
+        json_obj = {
             "object": "block",
-            "type": "paragraph",
-            "paragraph": {
+            list_type: {
                 "rich_text": []
-            }
+            },
+            "type": list_type,
         }
+        rich_text = json_obj[list_type]["rich_text"]
+        text_obj = Html2JsonBase.generate_inline_obj(soup)
+        if text_obj:
+            rich_text.extend(text_obj)
+
+        return json_obj
+
+    # def convert_fail(self, soup):
+    #     return {
+    #         "object": "block",
+    #         "type": "paragraph",
+    #         "paragraph": {
+    #             "rich_text": []
+    #         }
+    #     }
 
     @classmethod
     def register(cls, input_type, subclass):

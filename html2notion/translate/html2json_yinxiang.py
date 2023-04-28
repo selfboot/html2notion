@@ -179,78 +179,7 @@ class Html2JsonYinXiang(Html2JsonBase):
                 json_obj["to_do"]["checked"] = True
             to_do_blocks.append(json_obj)
         return to_do_blocks
-
-    # <ol><li><div>first</div></li><li><div>second</div></li><li><div>third</div></li></ol>
-    def convert_numbered_list_item(self, soup):
-        return self.convert_list_items(soup, 'numbered_list_item')
-
-    # <ul><li><div>itemA</div></li><li><div>itemB</div></li><li><div>itemC</div></li></ul>
-    def convert_bulleted_list_item(self, soup):
-        return self.convert_list_items(soup, 'bulleted_list_item')
-
-    def convert_list_items(self, soup, list_type):
-        items = soup.find_all('li', recursive=True)
-        if not items:
-            logger.warning("No list items found in {soup}")
-
-        json_arr = []
-        for item in items:
-            one_item = self._convert_one_list_item(item, list_type)
-            if one_item:
-                json_arr.append(one_item)
-            else:
-                logger.info(f'empty {item}')
-        return json_arr
-
-    def _convert_one_list_item(self, soup, list_type):
-        if list_type not in {'numbered_list_item', 'bulleted_list_item'}:
-            logger.warning(f'Not support list_type')
-
-        json_obj = {
-            "object": "block",
-            list_type: {
-                "rich_text": []
-            },
-            "type": list_type,
-        }
-        rich_text = json_obj[list_type]["rich_text"]
-        text_obj = Html2JsonBase.generate_inline_obj(soup)
-        if text_obj:
-            rich_text.extend(text_obj)
-
-        return json_obj
-
-    def _recursive_parse_style(self, tag_soup, tag_text, text_params):
-        tag_name = tag_soup.name.lower() if tag_soup.name else ""
-        style = tag_soup.get('style') if tag_name else ""
-        styles = {}
-        if style:
-            styles = {rule.split(':')[0].strip(): rule.split(
-                ':')[1].strip() for rule in style.split(';') if rule}
-
-        text_params["plain_text"] = tag_text
-        if Html2JsonBase.is_bold(tag_name, styles):
-            text_params["bold"] = True
-        if Html2JsonBase.is_italic(tag_name, styles):
-            text_params["italic"] = True
-        if Html2JsonBase.is_strikethrough(tag_name, styles):
-            text_params["strikethrough"] = True
-        if Html2JsonBase.is_underline(tag_name, styles):
-            text_params["underline"] = True
-
-        color = Html2JsonBase.get_color(
-            styles, tag_soup.attrs if tag_name else {})
-        if color != 'default':
-            text_params["color"] = color
-
-        if not tag_soup or isinstance(tag_soup, NavigableString):
-            return
-
-        for child in tag_soup.children:
-            if isinstance(child, Tag):
-                self._recursive_parse_style(child, child.text, text_params)
-        return
-
+  
     def get_block_type(self, single_tag):
         tag_name = single_tag.name
         style = single_tag.get('style') if tag_name else ""
