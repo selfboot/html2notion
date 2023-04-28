@@ -305,6 +305,8 @@ class Html2JsonBase:
                 return Html2JsonBase._closest_color(r, g, b)
         # Check if color is in hexadecimal format
         elif re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color):
+            if len(color) == 4:  # Short form like #abc -> #aabbcc
+                color = '#' + ''.join([c*2 for c in color[1:]])
             r, g, b = Html2JsonBase._hex_to_rgb(color)
             return Html2JsonBase._closest_color(r, g, b)
 
@@ -394,14 +396,47 @@ class Html2JsonBase:
 
         return json_obj
 
-    # def convert_fail(self, soup):
-    #     return {
-    #         "object": "block",
-    #         "type": "paragraph",
-    #         "paragraph": {
-    #             "rich_text": []
-    #         }
-    #     }
+    """
+    <div>
+    <div><br /></div>
+    <table> <tbody> <tr> <td> </td> </tr> </tbody>
+    <div><br /></div>
+    </div>
+    """
+    # ../examples/insert_table.ipynb
+    def convert_table(self, soup):
+        table_rows = []
+        tr_tags = soup.find_all('tr')
+        if not tr_tags:
+            logger.error(f"No tr found in {soup}")
+            return
+        
+        table_width = len(tr_tags[0].find_all('td'))
+        for tr in tr_tags:
+            td_tags = tr.find_all('td')
+            if not td_tags:
+                continue
+            table_width = max(table_width, len(td_tags))
+            one_row = {
+                "type": "table_row",
+                "table_row": {
+                    "cells": []
+                }
+            }
+            for td in td_tags:
+                col = Html2JsonBase.generate_inline_obj(td)
+                one_row["table_row"]["cells"].append(col)
+            table_rows.append(one_row)
+
+        table_obj = {
+            "table": {
+                "has_row_header": False,
+                "has_column_header": False,
+                "table_width": table_width,
+                "children": table_rows,
+            }
+        }
+        return table_obj
 
     @classmethod
     def register(cls, input_type, subclass):

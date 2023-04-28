@@ -49,6 +49,8 @@ class Html2JsonYinXiang(Html2JsonBase):
         tag_name = element.name
         if tag_name == "p":
             return Block.PARAGRAPH.value
+        elif tag_name == "table":
+            return Block.TABLE.value
         elif tag_name in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
             return Block.HEADING.value
         elif tag_name == 'hr':
@@ -126,21 +128,25 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         # Merge tags has same anotions
         return json_obj
-    
+
     def _check_is_block(self, element):
-        quote_elements = ['blockquote', 'q', 'cite']
+        quote_elements = {'blockquote', 'q', 'cite'}
         if element.name in quote_elements:
             return True
 
-        if 'class' in element.attrs:
-            if any('quote' in class_name.lower() for class_name in element.attrs['class']):
-                return True
+        if element.name != 'div':
+            return False
 
-        if 'style' in element.attrs:
-            style_attrs = element.attrs['style'].lower()
-            if 'border:' in style_attrs or 'padding:' in style_attrs:
-                return True
+        # if 'class' in element.attrs:
+        #     if any('quote' in class_name.lower() for class_name in element.attrs['class']):
+        #         return True
+
+        # if 'style' in element.attrs:
+        #     style_attrs = element.attrs['style'].lower()
+        #     if 'border:' in style_attrs or 'padding:' in style_attrs:
+        #         return True
 
         return False
 
+    
 Html2JsonBase.register(YinXiangClipper_Type, Html2JsonYinXiang)

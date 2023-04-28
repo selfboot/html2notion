@@ -111,51 +111,6 @@ class Html2JsonYinXiang(Html2JsonBase):
         json_obj["quote"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
 
-    """
-    <div>
-    <div><br /></div>
-    <table> <tbody> <tr> <td> </td> </tr> </tbody>
-    <div><br /></div>
-    </div>
-    """
-    # ../examples/insert_table.ipynb
-    def convert_table(self, soup):
-        # logger.debug(f'Convert table: {soup}')
-        # Assert: only one table in table div
-        table_rows = []
-        tr_tags = soup.find_all('tr')
-        if not tr_tags:
-            logger.error(f"No tr found in {soup}")
-            return
-        
-        table_width = len(tr_tags[0].find_all('td'))
-        if table_width == 0:
-            logger.error(f"No td found in {soup}")
-            return
-        
-        for tr in tr_tags:
-            td_tags = tr.find_all('td')
-            one_row = {
-                "type": "table_row",
-                "table_row": {
-                    "cells": []
-                }
-            }
-            for td in td_tags:
-                col = Html2JsonBase.generate_inline_obj(td)
-                one_row["table_row"]["cells"].append(col)
-            table_rows.append(one_row)
-
-        table_obj = {
-            "table": {
-                "has_row_header": False,
-                "has_column_header": False,
-                "table_width": table_width,
-                "children": table_rows,
-            }
-        }
-        return table_obj
-
     def convert_to_do(self, soup: Tag):
         # Compatible with the situation where input is under li tag(super note).
         li_tags = soup.find_all('li', recursive=True)

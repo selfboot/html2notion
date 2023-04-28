@@ -82,10 +82,13 @@ def main():
     dir_path = Path(args.dir) if args.dir else None
     max_concurrency = args.batch
     if file_path and file_path.is_file():
-        logger.info(f"Begin save single html file: {file_path}.")
+        logger.debug(f"Begin save single html file: {file_path}.")
         result = asyncio.run(import_single_file(file_path))
-        logger.info(f"Finish save single html file: {file_path}.\n{result}")
-        console.print(f"File {file_path} saved.", style="green")
+        logger.debug(f"Finish save single html file: {file_path}.\n{result}")
+        text = Text("Single file ", style="default")
+        text.append(f"{file_path} ", style="cyan")
+        text.append("save to notion success.", style="default")
+        console.print(text)
     elif dir_path and dir_path.is_dir():
         logger.info(f"Begin save all html files in the dir: {dir_path}.")
         batch_import = BatchImport(dir_path, max_concurrency)
@@ -97,7 +100,12 @@ def main():
 
         print_fail_details(batch_import.failed_files)
     else:
-        console.print("No impossible.", style="red")
+        text = Text("The parameters provided are incorrect, please check.", style="red")
+        text.append("\nIf you need help, please submit an ", style="default")
+        link = Text("issue", style="cyan underline link https://github.com/selfboot/html2notion/issues")
+        text.append(link)
+        text.append(" on gitHub.", style="default")
+        console.print(text)
     return
 
 
