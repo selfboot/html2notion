@@ -61,6 +61,8 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.PARAGRAPH.value
         elif element.name == 'pre' and element.code:
             return Block.CODE.value
+        elif self._check_is_block(element):
+            return Block.QUOTE.value
 
         return Block.FAIL.value
 
@@ -109,5 +111,36 @@ class Html2JsonYinXiang(Html2JsonBase):
         json_obj["code"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
 
-        
+    def convert_quote(self, soup):
+        json_obj = {
+            "object": "block",
+            "type": "quote",
+            "quote": {
+                "rich_text": []
+            }
+        }
+        rich_text = json_obj["quote"]["rich_text"]
+        text_obj = self.generate_inline_obj(soup)
+        if text_obj:
+            rich_text.extend(text_obj)
+
+        # Merge tags has same anotions
+        return json_obj
+    
+    def _check_is_block(self, element):
+        quote_elements = ['blockquote', 'q', 'cite']
+        if element.name in quote_elements:
+            return True
+
+        if 'class' in element.attrs:
+            if any('quote' in class_name.lower() for class_name in element.attrs['class']):
+                return True
+
+        if 'style' in element.attrs:
+            style_attrs = element.attrs['style'].lower()
+            if 'border:' in style_attrs or 'padding:' in style_attrs:
+                return True
+
+        return False
+
 Html2JsonBase.register(YinXiangClipper_Type, Html2JsonYinXiang)

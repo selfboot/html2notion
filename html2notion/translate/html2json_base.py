@@ -31,6 +31,7 @@ class Html2JsonBase:
 
     _color_tuple = namedtuple("Color", "name r g b")
     _notion_color = [
+        _color_tuple("default", 0, 0, 0),
         _color_tuple("gray", 128, 128, 128),
         _color_tuple("brown", 165, 42, 42),
         _color_tuple("orange", 255, 165, 0),
