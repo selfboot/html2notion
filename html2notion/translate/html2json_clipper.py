@@ -59,6 +59,9 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.BULLETED_LIST.value
         elif tag_name == 'p':
             return Block.PARAGRAPH.value
+        elif element.name == 'pre' and element.code:
+            return Block.CODE.value
+
         return Block.FAIL.value
 
     def convert_children(self, soup):
@@ -79,5 +82,32 @@ class Html2JsonYinXiang(Html2JsonBase):
             else:
                 logger.warning(f"Unknown cnvert {element}, {block_type}")
         return
+
+    # <pre><code><code>line number</code>... code content ...</code></pre>
+    def convert_code(self, soup):
+        json_obj = {
+            "object": "block",
+            "type": "code",
+            "code": {
+                "rich_text": [],
+                "language": "plain text",
+            },
+        }
+        rich_text = json_obj["code"]["rich_text"]
+        code_tag = soup.code
+        if not code_tag:
+            logger.error(f'No code tag found in {soup}')
+            return
+        children_list = list(code_tag.children) if isinstance(code_tag, Tag) else [code_tag]
+        for child in children_list:
+            if isinstance(child, Tag) and child.name == "code":
+                logger.debug(f'Skip line number')
+                continue
+            text_obj = self.generate_inline_obj(child)
+            if text_obj:
+                rich_text.extend(text_obj)
+        json_obj["code"]["rich_text"] = self.merge_rich_text(rich_text)
+        return json_obj
+
 
 Html2JsonBase.register(YinXiangClipper_Type, Html2JsonYinXiang)

@@ -294,15 +294,19 @@ class Html2JsonBase:
             color = attrs['color']
         if not color:
             return "default"
+        # If the color_values have 4 items, then it is RGBA and the last value is alpha
+        # rgba(174, 174, 188, 0.2)
         if color.startswith("rgb"):
-            r, g, b = [int(x.strip()) for x in color[4:-1].split(",")]
+            color_values = [int(x.strip()) for x in re.findall(r'\d+', color)]
+            if len(color_values) >= 3:
+                r, g, b = color_values[:3]
+                return Html2JsonBase._closest_color(r, g, b)
         # Check if color is in hexadecimal format
         elif re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color):
             r, g, b = Html2JsonBase._hex_to_rgb(color)
-        else:
-            return "default"
+            return Html2JsonBase._closest_color(r, g, b)
 
-        return Html2JsonBase._closest_color(r, g, b)
+        return "default"
 
     def convert_paragraph(self, soup):
         json_obj = {
