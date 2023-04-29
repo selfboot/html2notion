@@ -7,6 +7,7 @@ from unittest.mock import patch
 from tempfile import TemporaryDirectory
 from http import HTTPStatus
 from html2notion.translate.batch_import import BatchImport
+from html2notion.utils import rate_limit
 from html2notion.utils.log import log_only_local
 
 process_once_time = 0.5
@@ -40,6 +41,12 @@ async def mock_notion_api_request(file_path, *args, **kwargs):
     elapsed_time = end_time - start_time
     return MockResponse(HTTPStatus.OK, content, elapsed_time)
 
+
+async def mock_notion_create_page(notion_data, *args, **kwargs):
+    async with rate_limit:
+        await asyncio.sleep(0.01)
+        log_only_local(f"mock_notion_create_page")
+    return "succ"
 
 @pytest.fixture(params=[10, 20])
 def temp_dir_fixture(request):
@@ -78,3 +85,20 @@ async def test_batch_process(temp_dir_fixture, concurrent_limit):
         f"total_time: {total_time}, sync_time: {sync_time}, least_time: {least_time}")
     assert total_time >= least_time
     assert total_time <= sync_time
+
+
+@pytest.mark.parametrize("concurrent_limit", [5, 10, 20])
+@pytest.mark.asyncio
+async def test_reqlimit(temp_dir_fixture, concurrent_limit):
+    dir_path = temp_dir_fixture
+    start_time = time.perf_counter()
+    with patch("html2notion.translate.notion_import.NotionImporter.create_new_page", side_effect=mock_notion_create_page):
+        batch_processor = BatchImport(dir_path, concurrent_limit=concurrent_limit)
+        responses = await batch_processor.process_directory()
+
+    end_time = time.perf_counter()
+    total_time = end_time-start_time
+    num_files = len(list(dir_path.glob('*.html')))
+    log_only_local(f"file nums: {num_files}, concurrent {concurrent_limit}, total_time: {total_time}")
+    # The time deviation within 1 second is acceptable here.
+    assert (total_time >= num_files / 3 - 1)

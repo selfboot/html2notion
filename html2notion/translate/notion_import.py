@@ -5,7 +5,7 @@ from pathlib import Path
 from notion_client import AsyncClient
 from notion_client.errors import RequestTimeoutError
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
-from ..utils import logger, test_prepare_conf, config
+from ..utils import logger, test_prepare_conf, config, rate_limit
 from ..translate.html2json import html2json_process
 
 
@@ -34,6 +34,8 @@ class NotionImporter:
         logger.info(f"Create notion page: {create_result}")
         return "succ"
 
+    # https://developers.notion.com/reference/request-limits
+    # The rate limit for incoming requests per integration is an average of three requests per second. 
     # Doc of create page: https://developers.notion.com/reference/post-page
     @retry(stop=stop_after_attempt(5),
            wait=wait_exponential(multiplier=1, min=3, max=30),
@@ -47,10 +49,11 @@ class NotionImporter:
         if blocks:
             notion_data.pop("children")
         first_chunk = chunks[0] if chunks else []
-        created_page = await self.notion_client.pages.create(**notion_data, children=first_chunk)
-        page_id = created_page["id"]
-        for chunk in chunks[1:]:
-            await self.notion_client.blocks.children.append(page_id, children=chunk)
+        async with rate_limit:
+            created_page = await self.notion_client.pages.create(**notion_data, children=first_chunk)
+            page_id = created_page["id"]
+            for chunk in chunks[1:]:
+                await self.notion_client.blocks.children.append(page_id, children=chunk)
         return created_page
 
 

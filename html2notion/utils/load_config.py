@@ -1,7 +1,8 @@
 import json
 import sys
 from pathlib import Path
-
+from aiolimiter import AsyncLimiter
+rate_limit = AsyncLimiter(3, 1)
 config = {}
 
 
