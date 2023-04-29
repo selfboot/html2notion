@@ -117,6 +117,7 @@ class Html2JsonBase:
             text_params["url"] = href
         return
 
+    # https://developers.notion.com/reference/request-limits
     # Process one tag and return a list of objects
     # <b><u>unlineline and bold</u></b>
     # <div><font color="#ff2600">Red color4</font></div>
@@ -126,18 +127,21 @@ class Html2JsonBase:
         res_obj = []
         text_with_parents = Html2JsonBase.extract_text_and_parents(tag)
         for (text, parent_tags) in text_with_parents:
-            text_params = {"plain_text": text}
-            for parent in parent_tags:
-                Html2JsonBase.parse_one_style(parent, text_params)
+            # Split the text into chunks of 2000 characters
+            text_chunks = [text[i:i+2000] for i in range(0, len(text), 2000)]
+            for chunk in text_chunks:
+                text_params = {"plain_text": chunk}
+                for parent in parent_tags:
+                    Html2JsonBase.parse_one_style(parent, text_params)
 
-            if text_params.get("url", ""):
-                text_obj = Html2JsonBase.generate_link(**text_params)
-            else:
-                text_obj = Html2JsonBase.generate_text(**text_params)
-            if text_obj:
-                res_obj.append(text_obj)
+                if text_params.get("url", ""):
+                    text_obj = Html2JsonBase.generate_link(**text_params)
+                else:
+                    text_obj = Html2JsonBase.generate_text(**text_params)
+                if text_obj:
+                    res_obj.append(text_obj)
         return res_obj
-    
+
     @staticmethod
     def generate_link(**kwargs):
         if not kwargs.get("plain_text", ""):
