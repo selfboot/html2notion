@@ -44,6 +44,8 @@ class NotionImporter:
         # logger.debug(f'Create new page: {notion_data["parent"]}, {notion_data["properties"]}')
         # body.children.length should be ≤ `100`,
         blocks = notion_data.get("children", [])
+        # logger.debug(f'Create new page: {notion_data["parent"]}, {notion_data["properties"]}, blocks: {blocks}')
+        
         limit_size = 100
         chunks = [blocks[i: i + limit_size] for i in range(0, len(blocks), limit_size)]
         if blocks:

@@ -70,9 +70,13 @@ async def import_single_file(file):
     async with ClientSession() as session:
         async with AsyncClient(auth=notion_api_key) as notion_client:
             notion_importer = NotionImporter(session, notion_client)
-            result = await notion_importer.process_file(file)
-            return result
-
+            try:
+                result = await notion_importer.process_file(file)
+                logger.info(f"Finish file {file}")
+                return ("succ", result)
+            except Exception as e:
+                logger.error(f"Error processing {file}: {str(e)}")
+                return ("fail", str(e))
 
 def main():
     args = parse_args()
@@ -82,12 +86,14 @@ def main():
     dir_path = Path(args.dir) if args.dir else None
     max_concurrency = args.batch
     if file_path and file_path.is_file():
-        logger.debug(f"Begin save single html file: {file_path}.")
         result = asyncio.run(import_single_file(file_path))
-        logger.debug(f"Finish save single html file: {file_path}.\n{result}")
         text = Text("Single file ", style="default")
         text.append(f"{file_path} ", style="cyan")
-        text.append("save to notion success.", style="default")
+        if result[0] == "fail":
+            text.append("save to notion failed.", style="default")
+            text.append(f"\n{result[1]}", style="red")
+        else:
+            text.append("save to notion success.", style="default")
         console.print(text)
     elif dir_path and dir_path.is_dir():
         logger.info(f"Begin save all html files in the dir: {dir_path}.")
