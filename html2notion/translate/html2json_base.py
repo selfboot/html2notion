@@ -135,6 +135,15 @@ class Html2JsonBase:
                 for parent in parent_tags:
                     Html2JsonBase.parse_one_style(parent, text_params)
 
+                # process inline line break
+                if chunk == "<br>":
+                    try:
+                        res_obj[-1]["text"]["content"] += "\n"
+                        res_obj[-1]["plain_text"] += "\n"
+                    except Exception as e:
+                        logger.error(f'{res_obj}, {str(e)}')
+                    continue
+
                 if text_params.get("url", ""):
                     text_obj = Html2JsonBase.generate_link(**text_params)
                 else:
@@ -168,8 +177,6 @@ class Html2JsonBase:
             if key in Html2JsonBase._text_annotations and isinstance(value, Html2JsonBase._text_annotations[key])
         }
 
-        if plain_text == "<br>":
-            plain_text = "\n"
         text_obj = {
             "plain_text": plain_text,
             "text": {"content": plain_text},

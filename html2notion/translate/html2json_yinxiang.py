@@ -48,13 +48,14 @@ class Html2JsonYinXiang(Html2JsonBase):
         for child in content_tags[0].children:
             block_type = self.get_block_type(child)
             logger.debug(f'Support tag {child} with style {block_type}')
-            converter = getattr(self, f"convert_{block_type}")
-            if converter:
+            if hasattr(self, f"convert_{block_type}"):
+                converter = getattr(self, f"convert_{block_type}")
                 block = converter(child)
                 if block:
                     self.children.extend([block] if not isinstance(block, list) else block)
             else:
-                logger.warning(f"Unknown block type: {block_type}")
+                logger.warning(f"Unknown convert {child}, {block_type}")
+        return
     
     def convert_code(self, soup):
         json_obj = {
@@ -170,7 +171,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.CODE.value
         if css_dict.get('-en-codeblock', None) == 'true':
             return Block.CODE.value
-        
+
         return Block.FAIL.value
 
     def _check_is_table(self, tag):

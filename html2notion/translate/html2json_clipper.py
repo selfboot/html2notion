@@ -84,7 +84,7 @@ class Html2JsonYinXiang(Html2JsonBase):
                     self.children.extend([block] if not isinstance(block, list) else block)
                     processed_tags.add(id(element))
             else:
-                logger.warning(f"Unknown cnvert {element}, {block_type}")
+                logger.warning(f"Unknown convert {element}, {block_type}")
         return
 
     # <pre><code><code>line number</code>... code content ...</code></pre>

@@ -291,30 +291,16 @@ paragram_br_block = [
         "paragraph": {
             "rich_text": [
                 {
-                    "plain_text": "su",
+                    "plain_text": "su\n",
                     "text": {
-                        "content": "su"
+                        "content": "su\n"
                     },
                     "type": "text"
                 },
                 {
-                    "plain_text": "\n",
+                    "plain_text": "dd if=/sdcard/twrp.img of=/dev/block/platform/msm_sdcc.1/by-name/recovery\n",
                     "text": {
-                        "content": "\n"
-                    },
-                    "type": "text"
-                },
-                {
-                    "plain_text": "dd if=/sdcard/twrp.img of=/dev/block/platform/msm_sdcc.1/by-name/recovery",
-                    "text": {
-                        "content": "dd if=/sdcard/twrp.img of=/dev/block/platform/msm_sdcc.1/by-name/recovery"
-                    },
-                    "type": "text"
-                },
-                {
-                    "plain_text": "\n",
-                    "text": {
-                        "content": "\n"
+                        "content": "dd if=/sdcard/twrp.img of=/dev/block/platform/msm_sdcc.1/by-name/recovery\n"
                     },
                     "type": "text"
                 }
@@ -822,9 +808,9 @@ quote_block = [
                     }
                 },
                 {
-                    "plain_text": ".\n\n\nFirst, you\u2019ll need a prompt that makes it clear what you want. Let\u2019s start with an instruction.\u00a0",
+                    "plain_text": ".\n\nFirst, you\u2019ll need a prompt that makes it clear what you want. Let\u2019s start with an instruction.\u00a0",
                     "text": {
-                        "content": ".\n\n\nFirst, you\u2019ll need a prompt that makes it clear what you want. Let\u2019s start with an instruction.\u00a0"
+                        "content": ".\n\nFirst, you\u2019ll need a prompt that makes it clear what you want. Let\u2019s start with an instruction.\u00a0"
                     },
                     "type": "text"
                 },
@@ -879,7 +865,7 @@ def test_convert():
         yinxiang = Html2JsonYinXiang(body_content)
         yinxiang.process()
         json_obj = yinxiang.children
-        print(json.dumps(json_obj, indent=4))
+        # print(json.dumps(json_obj, indent=4))
         assert json_obj == html_jsons[html_content]
 
 

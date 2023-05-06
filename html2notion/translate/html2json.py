@@ -24,7 +24,7 @@ def _is_yinxiang_export_html(html_soup):
     if isinstance(exporter_version_content, str) and not exporter_version_content.startswith("Evernote"):
         return False
 
-    yinxiang_source_content = ["yinxiang", "desktop", "mobile", "web"]
+    yinxiang_source_content = ["yinxiang", "desktop", "mobile"]
     for prefix in yinxiang_source_content:
         if isinstance(meta_source_content, str) and meta_source_content.startswith(prefix):
             return True
@@ -54,10 +54,10 @@ def _is_yinxiang_clipper_html(html_soup):
 
 def _infer_input_type(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
-    if _is_yinxiang_export_html(soup):
-        return YinXiang_Type
-    elif _is_yinxiang_clipper_html(soup):
+    if _is_yinxiang_clipper_html(soup):
         return YinXiangClipper_Type
+    elif _is_yinxiang_export_html(soup):
+        return YinXiang_Type
     return Default_Type
 
 
