@@ -2,7 +2,6 @@ import re
 import os
 from collections import namedtuple
 from bs4 import NavigableString, Tag, PageElement
-# from typing import Union
 from enum import Enum
 from ..utils import logger, config
 
@@ -83,6 +82,8 @@ class Html2JsonBase:
                         text = child.text
                         parent_tags = [p for p in parents + [tag]]
                         results.append((text, parent_tags))
+                elif isinstance(child, Tag) and child.name == 'br':  
+                    results.append(('<br>', []))
                 else:
                     results.extend(Html2JsonBase.extract_text_and_parents(child, parents + [tag]))
         return results
@@ -166,6 +167,9 @@ class Html2JsonBase:
             for key, value in kwargs.items()
             if key in Html2JsonBase._text_annotations and isinstance(value, Html2JsonBase._text_annotations[key])
         }
+
+        if plain_text == "<br>":
+            plain_text = "\n"
         text_obj = {
             "plain_text": plain_text,
             "text": {"content": plain_text},

@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup, NavigableString, Tag
+from bs4 import BeautifulSoup, Tag
 from ..utils import logger
 from ..translate.html2json_base import Html2JsonBase, Block
 from ..utils.timeutil import DateStrToISO8601

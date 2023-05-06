@@ -13,6 +13,7 @@ from ..translate.html2json_clipper import YinXiangClipper_Type
 """
 <meta name="source" content="yinxiang.superNote"/>
 <meta name="source" content="desktop.mac"/>
+<meta name="source" content="mobile.android"/>
 """
 def _is_yinxiang_export_html(html_soup):
     exporter_version_meta = html_soup.select_one('html > head > meta[name="exporter-version"]')
@@ -23,7 +24,7 @@ def _is_yinxiang_export_html(html_soup):
     if isinstance(exporter_version_content, str) and not exporter_version_content.startswith("Evernote"):
         return False
 
-    yinxiang_source_content = ["yinxiang", "desktop"]
+    yinxiang_source_content = ["yinxiang", "desktop", "mobile", "web"]
     for prefix in yinxiang_source_content:
         if isinstance(meta_source_content, str) and meta_source_content.startswith(prefix):
             return True
@@ -46,7 +47,7 @@ def _is_yinxiang_clipper_html(html_soup):
     clipper_source_content = clipper_source_meta.get('content', "") if isinstance(clipper_source_meta, Tag) else ""
     if isinstance(clipper_source_content, str) and clipper_source_content.endswith("evernote"):
         return True
-    if isinstance(clipper_source_content, str) and clipper_source_content in ("微信"):
+    if isinstance(clipper_source_content, str) and clipper_source_content in ["微信",]:
         return True
     return False
 
