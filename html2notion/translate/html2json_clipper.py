@@ -59,8 +59,6 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.NUMBERED_LIST.value
         elif tag_name == 'ul':
             return Block.BULLETED_LIST.value
-        elif tag_name == 'p':
-            return Block.PARAGRAPH.value
         elif element.name == 'pre' and element.code:
             return Block.CODE.value
         elif self._check_is_block(element):

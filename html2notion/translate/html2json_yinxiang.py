@@ -156,8 +156,6 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.HEADING.value
         elif tag_name == 'table' or self._check_is_table(single_tag):
             return Block.TABLE.value
-        if not style and tag_name == 'div':
-            return Block.PARAGRAPH.value
 
         css_dict = {}
         if style:
@@ -172,6 +170,9 @@ class Html2JsonYinXiang(Html2JsonBase):
         if css_dict.get('-en-codeblock', None) == 'true':
             return Block.CODE.value
 
+        # Issue 5: <div style="orphans: 2; widows: 2">
+        if tag_name == 'div':
+            return Block.PARAGRAPH.value
         return Block.FAIL.value
 
     def _check_is_table(self, tag):
