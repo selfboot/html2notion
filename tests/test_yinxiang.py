@@ -1,6 +1,7 @@
 import json
 import os
 from html2notion.translate.html2json_yinxiang import Html2JsonYinXiang
+from html2notion.translate.import_stats import ImportStats
 
 link_content = "<div><a href='https://google.com'>Google</a></div>"
 link_block = [
@@ -862,7 +863,8 @@ def test_convert():
 
     for html_content in html_jsons:
         body_content = '<body>' + html_content + '</body>'
-        yinxiang = Html2JsonYinXiang(body_content)
+        import_stats = ImportStats()
+        yinxiang = Html2JsonYinXiang(body_content, import_stats)
         yinxiang.process()
         json_obj = yinxiang.children
         # print(json.dumps(json_obj, indent=4))

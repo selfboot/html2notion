@@ -9,8 +9,8 @@ YinXiang_Type = "yinxiang"
 class Html2JsonYinXiang(Html2JsonBase):
     input_type = YinXiang_Type
 
-    def __init__(self, html_content):
-        super().__init__(html_content)
+    def __init__(self, html_content, import_stat):
+        super().__init__(html_content, import_stat)
 
     def process(self):
         soup = BeautifulSoup(self.html_content, 'html.parser')
@@ -43,10 +43,12 @@ class Html2JsonYinXiang(Html2JsonBase):
         content_tags = soup.find_all('body', recursive=True)
         if not content_tags:
             logger.warning("No content found")
-            return
+            raise Exception("No content found")
 
+        self.import_stat.add_text(content_tags[0].get_text())
         for child in content_tags[0].children:
             block_type = self.get_block_type(child)
+            # Computer all text len in html
             logger.debug(f'Support tag {child} with style {block_type}')
             if hasattr(self, f"convert_{block_type}"):
                 converter = getattr(self, f"convert_{block_type}")
@@ -54,8 +56,8 @@ class Html2JsonYinXiang(Html2JsonBase):
                 if block:
                     self.children.extend([block] if not isinstance(block, list) else block)
             else:
-                logger.warning(f"Unknown convert {child}, {block_type}")
-        return
+                self.import_stat.add_skip_tag(child.get_text())
+                logger.warning(f"Unknown tag : {child}")
     
     def convert_code(self, soup):
         json_obj = {
@@ -75,7 +77,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             if text_obj:
                 rich_text.extend(text_obj)
             if not is_last_child:
-                rich_text.append(self.generate_text(plain_text='\n'))
+                rich_text.append(self.generate_text(plain_text='\n', stats_count=False))
         json_obj["code"]["rich_text"] = self.merge_rich_text(rich_text)
 
         style = soup.get('style', "") if soup.name else ""
@@ -105,7 +107,7 @@ class Html2JsonYinXiang(Html2JsonBase):
             if text_obj:
                 rich_text.extend(text_obj)
             if not is_last_child:
-                rich_text.append(self.generate_text(plain_text='\n'))
+                rich_text.append(self.generate_text(plain_text='\n', stats_count=False))
 
         # Merge tags has same anotions
         logger.debug(f'before merge: {rich_text}')

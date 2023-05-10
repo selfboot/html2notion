@@ -1,16 +1,18 @@
 import argparse
 import os
 import sys
-from pathlib import Path
 import asyncio
+from pathlib import Path
 from aiohttp import ClientSession
 from notion_client import AsyncClient
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
+from rich import box
 from .utils import setup_logger, read_config, logger, config
 from .translate.notion_import import NotionImporter
 from .translate.batch_import import BatchImport
+from .translate.import_stats import StatLevel
 console = Console()
 
 
@@ -27,22 +29,62 @@ def parse_args():
     return parser.parse_args()
 
 
-def print_fail_details(failed_files):
-    if len(failed_files) == 0:
+def print_single_stats(stat):
+    if stat.get_level() == StatLevel.EXCEPTION.value:
+        text = Text(f"Failed to import {stat.filename}", style="default")
+        text.append(f"\nException: {stat.exception}", style="red")
+        console.print(text)
         return
-    table = Table(title=f"\nFailed Detail\nLog path: {config.get('log_path')}")
-    table.add_column("File Name", justify="left", style="cyan", no_wrap=True)
-    table.add_column("Fail Reason", justify="left", style="red", no_wrap=True)
-
-    for row in failed_files:
-        table.add_row(str(row[0].name), str(row[1]))
+    
+    title = f"{stat.filename}" if stat.filename else "Import Result (Loss filename)"
+    style = "default"
+    if stat.get_level() == StatLevel.LOSS.value:
+        title += " (Loss some content)"
+        style = "yellow"
+    elif stat.get_level() == StatLevel.SUCC.value:
+        title += "(Import successfully)"
+        style = "green"
+        
+    table = Table(title=title, title_style=style, expand=True, box=box.HEAVY_HEAD, show_lines=True)
+    table.add_column("Item", justify="right", style="default")
+    table.add_column("Html", style="default")
+    table.add_column("Notion", justify="left", style="default")
+    table.add_row("Text Len", str(stat.text_count), str(stat.notion_text_count))
+    table.add_row("Image Count", str(stat.image_count), str(stat.notion_image_count))
+    if stat.skip_tag:
+        table.add_row("Skip Tag Count", "", 'Detail: [yellow]' + ";".join([repr(s)
+                      for s in stat.skip_tag])[:2000] + "[/yellow]")
+ 
     console.print(table)
 
-    text = Text("\nIf you need help, please submit an ")
-    link = Text("issue", style="cyan underline link https://github.com/selfboot/html2notion/issues")
-    text.append(link)
-    text.append(" on gitHub.\n")
-    console.print(text)
+
+def print_batch_stats(batch_import):
+    all_files = batch_import.all_files
+    batch_stats = batch_import.batch_stats
+    success_stats = [stat for stat in batch_stats if not stat.get_level() == StatLevel.SUCC.value]
+    if len(success_stats) == len(all_files):
+        console.print(f"All files migrated successfully and there is no data loss.", style="green")
+
+    failed_stats = [stat for stat in batch_stats if stat.get_level() == StatLevel.EXCEPTION.value]
+    if failed_stats:
+        table = Table(title=f"\nImport Fail Exception Detail\nLog path: {config.get('log_path')}", expand=True, box=box.HEAVY_HEAD, show_lines=True)
+        table.add_column("File Name", justify="left", style="default")
+        table.add_column("Fail Reason", justify="left", style="default")
+
+        for stat in failed_stats:
+            table.add_row(str(stat.filename), str(stat))
+        console.print(table)
+
+    less_stats = [stat for stat in batch_stats if stat.get_level() == StatLevel.LOSS.value]
+    if less_stats:
+        table = Table(title=f"\nImport Data Loss Detail (You can use --file to import single file for more info)\n", expand=True, box=box.HEAVY_HEAD, show_lines=True)
+        table.add_column("File Name", justify="left", style="default")
+        table.add_column("Loss Detail", justify="left", style="default")
+
+        for stat in less_stats:
+            table.add_row(str(stat.filename), str(stat))
+        console.print(table)
+
 
 
 def prepare_env(args: argparse.Namespace):
@@ -70,13 +112,9 @@ async def import_single_file(file):
     async with ClientSession() as session:
         async with AsyncClient(auth=notion_api_key) as notion_client:
             notion_importer = NotionImporter(session, notion_client)
-            try:
-                result = await notion_importer.process_file(file)
-                logger.info(f"Finish file {file}")
-                return ("succ", result)
-            except Exception as e:
-                logger.error(f"Error processing {file}: {str(e)}")
-                return ("fail", str(e))
+            await notion_importer.process_file(file)
+            return notion_importer.import_stats
+
 
 def main():
     args = parse_args()
@@ -86,32 +124,22 @@ def main():
     dir_path = Path(args.dir) if args.dir else None
     max_concurrency = args.batch
     if file_path and file_path.is_file():
-        result = asyncio.run(import_single_file(file_path))
-        text = Text("Single file ", style="default")
-        text.append(f"{file_path} ", style="cyan")
-        if result[0] == "fail":
-            text.append("save to notion failed.", style="default")
-            text.append(f"\n{result[1]}", style="red")
-        else:
-            text.append("save to notion success.", style="default")
-        console.print(text)
+        stats = asyncio.run(import_single_file(file_path))
+        print_single_stats(stats)
     elif dir_path and dir_path.is_dir():
         logger.info(f"Begin save all html files in the dir: {dir_path}.")
         batch_import = BatchImport(dir_path, max_concurrency)
         result = asyncio.run(batch_import.process_directory())
         logger.info(f"Finish save all html files in the dir: {dir_path}.\n{result}")
-
-        if len(batch_import.success_files) == len(batch_import.all_files):
-            console.print(f"All files processed success.", style="green")
-
-        print_fail_details(batch_import.failed_files)
+        print_batch_stats(batch_import)
     else:
         text = Text("The parameters provided are incorrect, please check.", style="red")
-        text.append("\nIf you need help, please submit an ", style="default")
-        link = Text("issue", style="cyan underline link https://github.com/selfboot/html2notion/issues")
-        text.append(link)
-        text.append(" on gitHub.", style="default")
-        console.print(text)
+
+    text = Text("\nIf you need help, please submit an ", style="default")
+    link = Text("issue", style="cyan underline link https://github.com/selfboot/html2notion/issues")
+    text.append(link)
+    text.append(" on gitHub.", style="default")
+    console.print(text)
     return
 
 

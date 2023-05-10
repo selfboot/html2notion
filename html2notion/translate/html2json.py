@@ -61,35 +61,35 @@ def _infer_input_type(html_content):
     return Default_Type
 
 
-def _get_converter(html_content):
+def _get_converter(html_content, import_stat):
     html_type = _infer_input_type(html_content)
     logger.info(f"Input type: {html_type}")
-    converter = Html2JsonBase.create(html_type, html_content)
+    converter = Html2JsonBase.create(html_type, html_content, import_stat)
     return converter
 
 
 @singledispatch
-def html2json_process(html_content):
-    raise TypeError("Unsupported param type")
+def html2json_process(html_content, import_stat):
+    raise TypeError(f"Unsupported {type(html_content)}, {import_stat}")
 
 
 @html2json_process.register
-def _(html_content: str):
-    converter = _get_converter(html_content)
+def _(html_content: str, import_stat):
+    converter = _get_converter(html_content, import_stat)
     result = converter.process()
     return converter.get_notion_data(), result
 
 
 @html2json_process.register
-def _(html_file: Path):
+def _(html_file: Path, import_stat):
     if not html_file.is_file():
         print(f"Load file: {html_file.resolve()} failed")
-        sys.exit(1)
+        raise FileNotFoundError
 
     with open(html_file, "r") as file:
         html_content = file.read()
 
-    converter = _get_converter(html_content)
+    converter = _get_converter(html_content, import_stat)
     result = converter.process()
     return converter.get_notion_data(), result
 

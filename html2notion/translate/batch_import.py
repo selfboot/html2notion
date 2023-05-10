@@ -24,33 +24,19 @@ class BatchImport:
         else:
             self.notion_api_key = config['notion']['api_key']
         self.notion_client = AsyncClient(auth=self.notion_api_key)
-        self.all_files = []
-        self.failed_files = []
-        self.success_files = []
+        self.batch_stats = []
         self.files_lock = Lock()
 
     @staticmethod
-    async def process_file(session, notion_client, file_path, files_lock, failed_files, success_files):
+    async def process_file(session, notion_client, file_path, files_lock, batch_stats):
         logger.info(f"Begin file, file {file_path}")
         notion_import = NotionImporter(session, notion_client)
-        if file_path.is_file():
-            try:
-                response = await notion_import.process_file(file_path)
-                logger.info(f"Finish file {file_path}")
-                async with files_lock:
-                    success_files.append(file_path)
-                return response
-            except Exception as e:
-                logger.error(f"Error processing {file_path}: {str(e)}")
-                async with files_lock:
-                    failed_files.append((file_path, str(e)))
-                return None
-        else:
-            logger.error(f"Error processing {file_path}: File not found")
-            async with files_lock:
-                    failed_files.append((file_path, "File not found"))
-            return None
-
+        response = await notion_import.process_file(file_path)
+        logger.info(f"Finish file {file_path}, status {str(notion_import.import_stats)}")
+        async with files_lock:
+            batch_stats.append(notion_import.import_stats)
+        return response
+       
     async def process_directory(self):
         semaphore = asyncio.Semaphore(self.concurrent_limit)
         self.all_files = [file_path for file_path in self.directory.glob('*.html') if file_path.name != 'index.html']
@@ -71,8 +57,8 @@ class BatchImport:
             failed_task_id = progress.add_task("[red]Failed", total=files_len, style="red")
             async def process_file_with_semaphore(session, notion_client, file_path):
                 async with semaphore:
-                    result = await self.process_file(session, notion_client, file_path, self.files_lock, self.failed_files, self.success_files)
-                    if result:
+                    result = await self.process_file(session, notion_client, file_path, self.files_lock, self.batch_stats)
+                    if result == "succ":
                         progress.update(success_task_id, advance=1)
                     else:
                         progress.update(failed_task_id, advance=1)

@@ -43,11 +43,12 @@ class Html2JsonBase:
     ]
 
     # Page content should be: https://developers.notion.com/reference/post-page
-    def __init__(self, html_content):
+    def __init__(self, html_content, import_stat):
         self.html_content = html_content
         self.children = []
         self.properties = {}
         self.parent = {}
+        self.import_stat = import_stat
         if 'GITHUB_ACTIONS' in os.environ:
             notion_database_id = os.environ['notion_db_id_1']
         else:
@@ -123,8 +124,7 @@ class Html2JsonBase:
     # <b><u>unlineline and bold</u></b>
     # <div><font color="#ff2600">Red color4</font></div>
     # <div> Code in super note</div>
-    @staticmethod
-    def generate_inline_obj(tag: PageElement):
+    def generate_inline_obj(self, tag: PageElement):
         res_obj = []
         text_with_parents = Html2JsonBase.extract_text_and_parents(tag)
         for (text, parent_tags) in text_with_parents:
@@ -134,7 +134,6 @@ class Html2JsonBase:
                 text_params = {"plain_text": chunk}
                 for parent in parent_tags:
                     Html2JsonBase.parse_one_style(parent, text_params)
-
                 # process inline line break
                 if chunk == "<br>":
                     try:
@@ -145,29 +144,32 @@ class Html2JsonBase:
                     continue
 
                 if text_params.get("url", ""):
-                    text_obj = Html2JsonBase.generate_link(**text_params)
+                    text_obj = self.generate_link(**text_params)
                 else:
-                    text_obj = Html2JsonBase.generate_text(**text_params)
+                    text_obj = self.generate_text(**text_params)
                 if text_obj:
                     res_obj.append(text_obj)
         return res_obj
 
-    @staticmethod
-    def generate_link(**kwargs):
-        if not kwargs.get("plain_text", ""):
+
+    
+    def generate_link(self, **kwargs):
+        plain_text = kwargs.get("plain_text", "")
+        if not plain_text:
             return
+        
+        self.import_stat.add_notion_text(plain_text)
         return {
             "href": kwargs.get("url", ""),
-            "plain_text": kwargs.get("plain_text", ""),
+            "plain_text": plain_text,
             "text": {
                 "link": {"url": kwargs.get("url", "")},
-                "content": kwargs.get("plain_text", "")
+                "content": plain_text
             },
             "type": "text"
         }
 
-    @staticmethod
-    def generate_text(**kwargs):
+    def generate_text(self, **kwargs):
         plain_text = kwargs.get("plain_text", "")
         if not plain_text:
             return
@@ -176,7 +178,9 @@ class Html2JsonBase:
             for key, value in kwargs.items()
             if key in Html2JsonBase._text_annotations and isinstance(value, Html2JsonBase._text_annotations[key])
         }
-
+        stats_count = kwargs.get("stats_count", True)
+        if stats_count:
+            self.import_stat.add_notion_text(plain_text)
         text_obj = {
             "plain_text": plain_text,
             "text": {"content": plain_text},
@@ -187,8 +191,7 @@ class Html2JsonBase:
 
         return text_obj
 
-    @staticmethod
-    def generate_properties(**kwargs):
+    def generate_properties(self, **kwargs):
         title = kwargs.get("title", "")
         url = kwargs.get("url", "")
         tags = kwargs.get("tags", [])
@@ -405,7 +408,7 @@ class Html2JsonBase:
             "type": list_type,
         }
         rich_text = json_obj[list_type]["rich_text"]
-        text_obj = Html2JsonBase.generate_inline_obj(soup)
+        text_obj = self.generate_inline_obj(soup)
         if text_obj:
             rich_text.extend(text_obj)
 
@@ -439,7 +442,7 @@ class Html2JsonBase:
                 }
             }
             for td in td_tags:
-                col = Html2JsonBase.generate_inline_obj(td)
+                col = self.generate_inline_obj(td)
                 one_row["table_row"]["cells"].append(col)
             table_rows.append(one_row)
 
@@ -458,8 +461,8 @@ class Html2JsonBase:
         cls._registry[input_type] = subclass
 
     @classmethod
-    def create(cls, input_type, html_content):
+    def create(cls, input_type, html_content, import_stat):
         subclass = cls._registry.get(input_type)
         if subclass is None:
             raise ValueError(f"noknown: {input_type}")
-        return subclass(html_content)
+        return subclass(html_content, import_stat)

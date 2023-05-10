@@ -7,17 +7,22 @@ from notion_client.errors import RequestTimeoutError
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from ..utils import logger, test_prepare_conf, config, rate_limit
 from ..translate.html2json import html2json_process
+from ..translate.import_stats import ImportStats
 
 
 class NotionImporter:
     def __init__(self, session: ClientSession, notion_client):
         self.session = session
         self.notion_client = notion_client
+        self.import_stats = ImportStats()
 
     async def process_file(self, file_path: Path):
+        self.import_stats.set_filename(file_path)
+
         if not file_path.is_file():
+            self.import_stats.set_exception(Exception(f"{file_path} is not file"))
             logger.error(f"{file_path} is not a file.")
-            return
+            return "fail"
 
         with file_path.open() as f:
             content = f.read()
@@ -27,10 +32,20 @@ class NotionImporter:
             await asyncio.sleep(1)
             return "main_hold"
 
-        notion_data, html_type = html2json_process(file_path)
-        logger.info(f"path: {file_path}, html type: {html_type}")
+        try:
+            notion_data, html_type = html2json_process(file_path, self.import_stats)
+        except Exception as e:
+            self.import_stats.set_exception(e)
+            logger.error(f"Error processing {file_path}: {str(e)}")
+            return "fail"
 
-        create_result = await self.create_new_page(notion_data)
+        logger.info(f"Process path: {file_path}, html type: {html_type}, {self.import_stats.get_detail()}")
+        try:
+            create_result = await self.create_new_page(notion_data)
+        except Exception as e:
+            self.import_stats.set_exception(e)
+            logger.error(f"Error create notion page {file_path}: {str(e)}")
+            return "fail"
         logger.info(f"Create notion page: {create_result}")
         return "succ"
 

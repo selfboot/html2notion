@@ -10,6 +10,9 @@ Default_Type = "default"
 class Html2JsonDefault(Html2JsonBase):
     input_type = Default_Type
 
+    def __init__(self, html_content, import_stat):
+        super().__init__(html_content, import_stat)
+
     # todo
     def process(self):
         return Default_Type

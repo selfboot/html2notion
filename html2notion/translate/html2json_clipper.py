@@ -9,8 +9,8 @@ YinXiangClipper_Type = "clipper.yinxiang"
 class Html2JsonYinXiang(Html2JsonBase):
     input_type = YinXiangClipper_Type
 
-    def __init__(self, html_content):
-        super().__init__(html_content)
+    def __init__(self, html_content, import_stat):
+        super().__init__(html_content, import_stat)
 
     def process(self):
         soup = BeautifulSoup(self.html_content, 'html.parser')
@@ -18,8 +18,10 @@ class Html2JsonYinXiang(Html2JsonBase):
 
         content_tags = soup.body
         if not content_tags:
-            logger.warning("No content found")
-            return
+            logger.error("No content found")
+            raise Exception("No content found")
+
+        self.import_stat.add_text(content_tags.get_text())
         self.convert_children(content_tags)  # Assesume only one body tag
 
         return YinXiangClipper_Type
@@ -81,8 +83,17 @@ class Html2JsonYinXiang(Html2JsonBase):
                 if block:
                     self.children.extend([block] if not isinstance(block, list) else block)
                     processed_tags.add(id(element))
-            else:
-                logger.warning(f"Unknown convert {element}, {block_type}")
+        unprocessed_tags = set()
+        for element in soup.descendants:
+            if not isinstance(element, NavigableString) or id(element) in processed_tags:
+                continue
+            if any(id(ancestor) in processed_tags for ancestor in element.parents):
+                continue
+            unprocessed_tags.add(element)
+
+        for unprocessed_tag in unprocessed_tags:
+            logger.warning(f"Unknown tag {unprocessed_tag.name}, {self.get_block_type(unprocessed_tag)}")
+            self.import_stat.add_skip_tag(unprocessed_tag.get_text())
         return
 
     # <pre><code><code>line number</code>... code content ...</code></pre>
