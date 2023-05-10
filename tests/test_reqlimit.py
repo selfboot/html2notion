@@ -1,6 +1,8 @@
 import json
 import os
 from html2notion.translate.html2json_yinxiang import Html2JsonYinXiang
+from html2notion.translate.import_stats import ImportStats
+
 
 paragram_rich_content = f'<div>{"Some words" * 400} more words</div>'
 block_max_conent = "Some words" * 200
@@ -49,7 +51,8 @@ def test_reqlimit():
 
     for html_content in html_jsons:
         body_content = '<body>' + html_content + '</body>'
-        yinxiang = Html2JsonYinXiang(body_content)
+        import_stats = ImportStats()
+        yinxiang = Html2JsonYinXiang(body_content, import_stats)
         yinxiang.process()
         json_obj = yinxiang.children
         # print(json.dumps(json_obj, indent=4))
