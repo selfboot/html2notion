@@ -1,5 +1,6 @@
 import asyncio
 import os
+import traceback
 from aiohttp import ClientSession
 from pathlib import Path
 from notion_client import AsyncClient
@@ -21,16 +22,18 @@ class NotionImporter:
         try:
             notion_data, html_type = html2json_process(file_path, self.import_stats)
         except Exception as e:
+            error_message = traceback.format_exc()
             self.import_stats.set_exception(e)
-            logger.error(f"Error processing {file_path}: {str(e)}")
+            logger.error(f"Error processing {file_path}: {str(e)}, {error_message}")
             return "fail"
 
         logger.info(f"Process path: {file_path}, html type: {html_type}, {self.import_stats.get_detail()}")
         try:
             create_result = await self.create_new_page(notion_data)
         except Exception as e:
+            error_message = traceback.format_exc()
             self.import_stats.set_exception(e)
-            logger.error(f"Error create notion page {file_path}: {str(e)}")
+            logger.error(f"Error create notion page {file_path}: {str(e)}, {error_message}")
             return "fail"
         logger.info(f"Create notion page: {create_result}")
         return "succ"

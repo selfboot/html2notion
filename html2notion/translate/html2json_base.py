@@ -16,6 +16,7 @@ class Block(Enum):
     DIVIDER = "divider"
     TABLE = "table"
     TO_DO = "to_do"
+    EQUATION = "equation"
 
 class Html2JsonBase:
     _registry = {}
@@ -28,6 +29,17 @@ class Html2JsonBase:
         "color": str,
     }
 
+    _language = {"abap", "agda", "arduino",
+    "assembly", "bash", "basic", "bnf", "c", "c#", "c++", "clojure", "coffeescript", "coq", "css",
+    "dart", "dhall", "diff", "docker", "ebnf", "elixir", "elm", "erlang", "f#", "flow", "fortran",
+    "gherkin", "glsl", "go", "graphql", "groovy", "haskell", "html", "idris", "java", "javascript",
+    "json", "julia", "kotlin", "latex", "less", "lisp", "livescript", "llvm ir", "lua", "makefile",
+    "markdown", "markup", "matlab", "mathematica", "mermaid", "nix", "objective-c", "ocaml", "pascal",
+    "perl", "php", "plain text", "powershell", "prolog", "protobuf", "purescript", "python", "r",
+    "racket", "reason", "ruby", "rust", "sass", "scala", "scheme", "scss", "shell", "solidity", "sql",
+    "swift", "toml", "typescript", "vb.net", "verilog", "vhdl", "visual basic", "webassembly", "xml",
+    "yaml", "java/c/c++/c#"}
+    
     _color_tuple = namedtuple("Color", "name r g b")
     _notion_color = [
         _color_tuple("default", 0, 0, 0),
@@ -92,11 +104,7 @@ class Html2JsonBase:
     @staticmethod
     def parse_one_style(tag_soup: Tag, text_params: dict):
         tag_name = tag_soup.name.lower()
-        style = tag_soup.get('style', "")
-        styles = {}
-        if str and isinstance(style, str):
-            styles = {rule.split(':')[0].strip(): rule.split(':')[1].strip() for rule in style.split(';') if rule}
-
+        styles = Html2JsonBase.get_tag_style(tag_soup)
         if Html2JsonBase.is_bold(tag_name, styles):
             text_params["bold"] = True
         if Html2JsonBase.is_italic(tag_name, styles):
@@ -456,6 +464,27 @@ class Html2JsonBase:
         }
         return table_obj
 
+    # Only if there is no ";" in the value of the attribute, you can use this method to get all attributes.
+    # Can't use this way like: background-image: url('data:image/png;base64...') 
+    @staticmethod
+    def get_tag_style(tag_soup):
+        style = tag_soup.get('style', "")
+        styles = {}
+        if str and isinstance(style, str):
+            # style = ''.join(style.split())
+            styles = {
+                rule.split(':')[0].strip(): rule.split(':')[1].strip().lower()
+                for rule in style.split(';')
+                if rule and len(rule.split(':')) > 1
+            }
+        return styles
+
+    @staticmethod
+    def get_valid_language(language):
+        if language in Html2JsonBase._language:
+            return language
+        return "plain text"
+    
     @classmethod
     def register(cls, input_type, subclass):
         cls._registry[input_type] = subclass

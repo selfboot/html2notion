@@ -6,7 +6,7 @@ from ..utils.timeutil import DateStrToISO8601
 YinXiangClipper_Type = "clipper.yinxiang"
 
 
-class Html2JsonYinXiang(Html2JsonBase):
+class Html2JsonClipper(Html2JsonBase):
     input_type = YinXiangClipper_Type
 
     def __init__(self, html_content, import_stat):
@@ -158,4 +158,4 @@ class Html2JsonYinXiang(Html2JsonBase):
         return False
 
     
-Html2JsonBase.register(YinXiangClipper_Type, Html2JsonYinXiang)
+Html2JsonBase.register(YinXiangClipper_Type, Html2JsonClipper)

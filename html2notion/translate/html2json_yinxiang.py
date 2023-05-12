@@ -79,14 +79,9 @@ class Html2JsonYinXiang(Html2JsonBase):
             if not is_last_child:
                 rich_text.append(self.generate_text(plain_text='\n', stats_count=False))
         json_obj["code"]["rich_text"] = self.merge_rich_text(rich_text)
-
-        style = soup.get('style', "") if soup.name else ""
-        css_dict = {}
-        if isinstance(style, str):
-            style = ''.join(style.split())
-            css_dict = {rule.split(':')[0].strip(): rule.split(':')[1].strip() for rule in style.split(';') if rule}
-            language = css_dict.get('--en-codeblockLanguage', 'plain text')
-            json_obj["code"]["language"] = language
+        css_dict = Html2JsonBase.get_tag_style(soup)
+        language = css_dict.get('--en-codeblockLanguage', 'plain text')
+        json_obj["code"]["language"] = language
         
         return json_obj
 
@@ -158,13 +153,8 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.HEADING.value
         elif tag_name == 'table' or self._check_is_table(single_tag):
             return Block.TABLE.value
-
-        css_dict = {}
-        if style:
-            # Remove all space such as \t \n in style
-            style = ''.join(style.split())
-            css_dict = {rule.split(':')[0].strip(): rule.split(
-                ':')[1].strip().lower() for rule in style.split(';') if rule}
+        
+        css_dict = Html2JsonBase.get_tag_style(single_tag)
         if css_dict.get('--en-blockquote', None) == 'true':
             return Block.QUOTE.value
         if css_dict.get('--en-codeblock', None) == 'true':
