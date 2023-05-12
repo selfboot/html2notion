@@ -9,3 +9,4 @@ cos-python-sdk-v5>=1.9.23
 tenacity>=8.2.2
 rich>=13.3.4
 aiolimiter>=1.0.0
+chardet>=5.1.0

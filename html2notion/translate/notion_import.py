@@ -18,20 +18,6 @@ class NotionImporter:
 
     async def process_file(self, file_path: Path):
         self.import_stats.set_filename(file_path)
-
-        if not file_path.is_file():
-            self.import_stats.set_exception(Exception(f"{file_path} is not file"))
-            logger.error(f"{file_path} is not a file.")
-            return "fail"
-
-        with file_path.open() as f:
-            content = f.read()
-
-        logger.info(f"Process file {file_path}")
-        if content == "main_hold":                  # local debug
-            await asyncio.sleep(1)
-            return "main_hold"
-
         try:
             notion_data, html_type = html2json_process(file_path, self.import_stats)
         except Exception as e:

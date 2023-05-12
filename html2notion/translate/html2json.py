@@ -1,5 +1,6 @@
-import sys
 import json
+import chardet
+import time
 from functools import singledispatch
 from pathlib import Path
 from bs4 import BeautifulSoup, Tag
@@ -86,8 +87,16 @@ def _(html_file: Path, import_stat):
         print(f"Load file: {html_file.resolve()} failed")
         raise FileNotFoundError
 
-    with open(html_file, "r") as file:
-        html_content = file.read()
+    html_content = ""
+    with html_file.open('rb') as f:
+        data = f.read()
+        result = chardet.detect(data)
+        encoding = result['encoding'] if result['encoding'] else 'utf-8'
+        html_content = data.decode(encoding)
+
+        if html_content == "main_hold":                  # just for local debug
+            time.sleep(1)
+            return "main_hold"
 
     converter = _get_converter(html_content, import_stat)
     result = converter.process()
