@@ -469,8 +469,10 @@ class Html2JsonBase:
     # Can't use this way like: background-image: url('data:image/png;base64...') 
     @staticmethod
     def get_tag_style(tag_soup):
-        style = tag_soup.get('style', "")
         styles = {}
+        if not isinstance(tag_soup, Tag):
+            return styles
+        style = tag_soup.get('style', "")
         if str and isinstance(style, str):
             # style = ''.join(style.split())
             styles = {
