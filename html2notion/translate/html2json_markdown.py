@@ -130,7 +130,7 @@ class Html2JsonMarkdown(Html2JsonBase):
 
         css_dict = Html2JsonBase.get_tag_style(code_tag)
         language = css_dict.get('language', 'plain text')
-        json_obj["code"]["language"] = language
+        json_obj["code"]["language"] = Html2JsonBase.get_valid_language(language)
         json_obj["code"]["rich_text"] = self.merge_rich_text(rich_text)
         return json_obj
 
@@ -148,6 +148,24 @@ class Html2JsonMarkdown(Html2JsonBase):
             rich_text.extend(text_obj)
         return json_obj
 
+    def convert_equation(self, soup: Tag):
+        json_obj = {
+            "object": "block",
+            "type": "paragraph",
+            "paragraph": {
+                "rich_text": []
+            }
+        }
+        expression = soup.get_text()
+        equation = json_obj["paragraph"]["rich_text"]
+        equation.append({
+            "type": "equation",
+            "equation": {
+                "expression": expression
+            }
+        })
+        return json_obj
+    
     def convert_to_do(self, soup: Tag):
         li_tags = soup.find_all('li', recursive=True)
         childs = li_tags if li_tags else [soup]
@@ -183,7 +201,7 @@ class Html2JsonMarkdown(Html2JsonBase):
     def _extract_code_blocks(self):
         code_pattern = re.compile(r'```(\w+)?\n(.*?)```', re.DOTALL)
         matches = code_pattern.findall(self.markdown)
-        code_blocks = [{'language': Html2JsonBase.get_valid_language(match[0]), 'code': match[1]} for match in matches]
+        code_blocks = [{'language': match[0], 'code': match[1].rstrip('\n')} for match in matches]
         return code_blocks
 
     def _replace_pre_code(self, soup):

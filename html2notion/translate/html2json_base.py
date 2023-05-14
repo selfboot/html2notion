@@ -160,7 +160,6 @@ class Html2JsonBase:
         return res_obj
 
 
-    
     def generate_link(self, **kwargs):
         plain_text = kwargs.get("plain_text", "")
         if not plain_text:
@@ -425,7 +424,7 @@ class Html2JsonBase:
     """
     <div>
     <div><br /></div>
-    <table> <tbody> <tr> <td> </td> </tr> </tbody>
+    <table> <thead> </thead><tbody> <tr> <td> </td> </tr> </tbody> </table>
     <div><br /></div>
     </div>
     """
@@ -438,10 +437,12 @@ class Html2JsonBase:
             return
         
         table_width = len(tr_tags[0].find_all('td'))
+        has_header = False
         for tr in tr_tags:
             td_tags = tr.find_all('td')
             if not td_tags:
-                continue
+                td_tags = tr.find_all('th')
+                has_header = True
             table_width = max(table_width, len(td_tags))
             one_row = {
                 "type": "table_row",
@@ -457,7 +458,7 @@ class Html2JsonBase:
         table_obj = {
             "table": {
                 "has_row_header": False,
-                "has_column_header": False,
+                "has_column_header": has_header,
                 "table_width": table_width,
                 "children": table_rows,
             }
