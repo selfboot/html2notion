@@ -19,6 +19,8 @@ class ImportStats:
         self.filename = "None"
         self.html_content = ""
         self.notion_content = ""
+        self.html_image_src = []
+        self.notion_image_src = []
 
     def add_text(self, text: str):
         self.text_count += len(text)
@@ -28,11 +30,13 @@ class ImportStats:
         self.notion_content += text
         self.notion_text_count += len(text)
 
-    def add_image(self, count: int):
-        self.image_count += count
+    def add_image(self, src: str):
+        self.html_image_src.append(src)
+        self.image_count += 1
 
-    def add_notion_image(self, count: int):
-        self.notion_image_count += count
+    def add_notion_image(self, src: str):
+        self.notion_image_src.append(src)
+        self.notion_image_count += 1
 
     def add_skip_tag(self, tag):
         self.skip_tag.append(tag)

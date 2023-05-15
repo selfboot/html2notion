@@ -1,9 +1,10 @@
 import re
 import os
+import copy
 from collections import namedtuple
 from bs4 import NavigableString, Tag, PageElement
 from enum import Enum
-from ..utils import logger, config
+from ..utils import logger, config, is_valid_url
 
 class Block(Enum):
     FAIL = "fail"
@@ -84,21 +85,26 @@ class Html2JsonBase:
     @staticmethod
     def extract_text_and_parents(tag: PageElement, parents=[]):
         results = []
-        # Filter empty content
-        if isinstance(tag, NavigableString) and tag.text:
-            results.append((tag.text, parents))
+        # Filter empty content when tag is not img
+        if isinstance(tag, NavigableString) and tag.strip():
+            results.append((tag, parents))
             return results
         elif isinstance(tag, Tag):
-            for child in tag.children:
-                if isinstance(child, NavigableString):
-                    if child.strip():
-                        text = child.text
-                        parent_tags = [p for p in parents + [tag]]
-                        results.append((text, parent_tags))
-                elif isinstance(child, Tag) and child.name == 'br':  
-                    results.append(('<br>', []))
-                else:
-                    results.extend(Html2JsonBase.extract_text_and_parents(child, parents + [tag]))
+            if tag.name == 'img':
+                img_src = tag.get('src', '')
+                parent_tags = [p for p in parents + [tag]]
+                results.append((img_src, parent_tags))
+            else:
+                for child in tag.children:
+                    if isinstance(child, NavigableString):
+                        if tag.name != 'img' and child.strip():
+                            text = child.text
+                            parent_tags = [p for p in parents + [tag]]
+                            results.append((text, parent_tags))
+                    elif isinstance(child, Tag) and child.name == 'br':  
+                        results.append(('<br>', []))
+                    else:
+                        results.extend(Html2JsonBase.extract_text_and_parents(child, parents + [tag]))
         return results
 
     @staticmethod
@@ -125,6 +131,12 @@ class Html2JsonBase:
             if not href:
                 logger.warning("Link href is empty")
             text_params["url"] = href
+        elif tag_name == 'img':
+            src = tag_soup.get('src', "")
+            # only support external image here.
+            if not src:
+                logger.warning("Image src is empty")
+            text_params["src"] = src
         return
 
     # https://developers.notion.com/reference/request-limits
@@ -153,6 +165,9 @@ class Html2JsonBase:
 
                 if text_params.get("url", ""):
                     text_obj = self.generate_link(**text_params)
+                # Here image is a independent block, split out in the outer layer
+                elif text_params.get("src", ""):
+                    text_obj = self.generate_image(**text_params)
                 else:
                     text_obj = self.generate_text(**text_params)
                 if text_obj:
@@ -175,6 +190,23 @@ class Html2JsonBase:
             },
             "type": "text"
         }
+
+    def generate_image(self, **kwargs):
+        source = kwargs.get("src", "")
+        if not source or not is_valid_url(source):
+            return
+        self.import_stat.add_notion_image(source)
+        image_block = {
+            "object": "block",
+            "type": "image",
+            "image": {
+                "type": "external",
+                "external": {
+                    "url": source
+                }
+            }
+        }
+        return image_block
 
     def generate_text(self, **kwargs):
         plain_text = kwargs.get("plain_text", "")
@@ -349,7 +381,10 @@ class Html2JsonBase:
         text_obj = self.generate_inline_obj(soup)
         if text_obj:
             rich_text.extend(text_obj)
-        return json_obj
+
+        # Split out image into a independent blocks
+        split_objs = Html2JsonBase.split_image_src(json_obj)
+        return split_objs
 
     def convert_divider(self, soup):
         return {
@@ -464,6 +499,33 @@ class Html2JsonBase:
             }
         }
         return table_obj
+
+    @staticmethod
+    def split_image_src(text_obj):
+        rich_text = text_obj["paragraph"]["rich_text"]
+        need_split = any(text.get("object") == "block" for text in rich_text)
+        if not need_split:
+            return text_obj
+        
+        split_obj = []
+        cur_obj = {
+            "object": "block",
+            "type": "paragraph",
+            "paragraph": {
+                "rich_text": []
+            }
+        }
+        for text in rich_text:
+            if text.get("object") == "block":
+                if len(cur_obj["paragraph"]["rich_text"]) > 0:
+                    split_obj.append(copy.deepcopy(cur_obj))
+                    cur_obj["paragraph"]["rich_text"].clear()
+                split_obj.append(text)
+                continue
+            cur_obj["paragraph"]["rich_text"].append(text)
+        if len(cur_obj["paragraph"]["rich_text"]) > 0:
+            split_obj.append(cur_obj)
+        return split_obj
 
     # Only if there is no ";" in the value of the attribute, you can use this method to get all attributes.
     # Can't use this way like: background-image: url('data:image/png;base64...') 

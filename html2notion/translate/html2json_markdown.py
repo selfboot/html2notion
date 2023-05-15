@@ -1,7 +1,7 @@
 import re
 from bs4 import BeautifulSoup, Tag
 from urllib.parse import unquote
-from ..utils import logger
+from ..utils import logger, is_valid_url
 from ..translate.html2json_base import Html2JsonBase, Block
 from ..utils.timeutil import DateStrToISO8601
 
@@ -40,6 +40,12 @@ class Html2JsonMarkdown(Html2JsonBase):
         # because some chart blocks are converted into images and cannot be processed directly
         self._replace_pre_code(soup)
         self.import_stat.add_text(content_tags.get_text())
+        img_tags = content_tags.find_all('img')
+        for img in img_tags:
+            img_src = img.get('src', '')
+            if is_valid_url(img_src):
+                self.import_stat.add_image(img_src)
+
         self.convert_children(content_tags)  # Assesume only one body tag
 
         return YinXiangMarkdown_Type
