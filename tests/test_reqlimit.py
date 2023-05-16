@@ -1,4 +1,3 @@
-import json
 import os
 from html2notion.translate.html2json_yinxiang import Html2JsonYinXiang
 from html2notion.translate.import_stats import ImportStats

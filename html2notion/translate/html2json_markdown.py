@@ -1,9 +1,8 @@
 import re
 from bs4 import BeautifulSoup, Tag
 from urllib.parse import unquote
-from ..utils import logger, is_valid_url
+from ..utils import logger, is_valid_url, DateStrToISO8601
 from ..translate.html2json_base import Html2JsonBase, Block
-from ..utils.timeutil import DateStrToISO8601
 
 YinXiangMarkdown_Type = "markdown.yinxiang"
 

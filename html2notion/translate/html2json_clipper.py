@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup, NavigableString, Tag
-from ..utils import logger
+from ..utils import logger, DateStrToISO8601
 from ..translate.html2json_base import Html2JsonBase, Block
-from ..utils.timeutil import DateStrToISO8601
 
 YinXiangClipper_Type = "clipper.yinxiang"
 

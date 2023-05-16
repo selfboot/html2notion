@@ -1,4 +1,5 @@
 from datetime import datetime
+from . import logger
 
 
 def DateStrToISO8601(date_string: str) -> str:
@@ -12,6 +13,11 @@ def DateStrToISO8601(date_string: str) -> str:
     """
 
     date_format = "%Y-%m-%d %H:%M:%S %z"
-    date_obj = datetime.strptime(date_string, date_format).astimezone()
+    try:
+        date_obj = datetime.strptime(date_string, date_format).astimezone()
+    except ValueError:
+        logger.warning(f"Invalid date string: {date_string}")
+        return ""
+
     output_string = date_obj.isoformat()
     return output_string
