@@ -162,8 +162,9 @@ class Html2JsonBase:
                     except Exception as e:
                         logger.error(f'{res_obj}, {str(e)}')
                     continue
-
-                if text_params.get("url", ""):
+                
+                link_url = text_params.get("url", "")
+                if text_params.get("url", "") and is_valid_url(link_url):
                     text_obj = self.generate_link(**text_params)
                 # Here image is a independent block, split out in the outer layer
                 elif text_params.get("src", ""):
@@ -174,18 +175,18 @@ class Html2JsonBase:
                     res_obj.append(text_obj)
         return res_obj
 
-
     def generate_link(self, **kwargs):
+        link_url = kwargs.get("url", "")
         plain_text = kwargs.get("plain_text", "")
         if not plain_text:
             return
-        
+
         self.import_stat.add_notion_text(plain_text)
         return {
-            "href": kwargs.get("url", ""),
+            "href": link_url,
             "plain_text": plain_text,
             "text": {
-                "link": {"url": kwargs.get("url", "")},
+                "link": {"url": link_url},
                 "content": plain_text
             },
             "type": "text"
