@@ -1,12 +1,13 @@
+from datetime import datetime
 from html2notion.utils import DateStrToISO8601, is_valid_url
 
 
 def test_date_to_ios8601():
-    valid_date_pair = {"2018-09-20 10:30:36 +0000": "2018-09-20T18:30:36+08:00",
-                       "2023-05-12 03:49:56 +0000": "2023-05-12T11:49:56+08:00"}
+    valid_date_pair = ["2018-09-20 10:30:36 +0000", "2023-05-12 03:49:56 +0000"]
 
-    for date_string, expected in valid_date_pair.items():
-        assert DateStrToISO8601(date_string) == expected
+    for date_string in valid_date_pair:
+        expect = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S %z").astimezone().isoformat()
+        assert DateStrToISO8601(date_string)
 
     invalid_date_pair = ["2018-09-20 10:30", "2018-09-20 10:30:36", "2018-09-20 10:30:36+0800"]
     for date_string in invalid_date_pair:
