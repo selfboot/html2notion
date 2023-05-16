@@ -167,14 +167,12 @@ class Html2JsonYinXiang(Html2JsonBase):
             return Block.PARAGRAPH.value
         return Block.FAIL.value
 
+    # <div> <table> </table> </div>
     def _check_is_table(self, tag):
         if tag.name == "div":
             children = list(filter(lambda x: x != '\n', tag.contents))
             table_count = sum(1 for child in children if child.name == "table")
-            div_br_count = sum(1 for child in children if child.name == "div" and len(
-                child.contents) == 1 and child.contents[0].name == "br")
-
-            return table_count == 1 and div_br_count >= 2 and (table_count + div_br_count) == len(children)
+            return table_count >= 1
         return False
 
     def _check_is_todo(self, tag):

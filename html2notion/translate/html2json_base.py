@@ -160,7 +160,8 @@ class Html2JsonBase:
                         res_obj[-1]["text"]["content"] += "\n"
                         res_obj[-1]["plain_text"] += "\n"
                     except Exception as e:
-                        logger.error(f'{res_obj}, {str(e)}')
+                        pass
+                        # logger.error(f'{res_obj}, {str(e)}')
                     continue
                 
                 link_url = text_params.get("url", "")
