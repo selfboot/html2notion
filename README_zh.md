@@ -1,3 +1,13 @@
+<h1 align="center">Html2notion <a href='https://github.com/selfboot/html2notion/blob/master/READMEh.md'>English</a></h1>
+<p align="center">
+  <a href="https://github.com/selfboot/html2notion/actions/workflows/python-package.yml">
+    <img src="https://github.com/selfboot/html2notion/actions/workflows/python-package.yml/badge.svg" alt="CI Test Status">
+  </a>
+ <a href="https://codecov.io/gh/selfboot/html2notion" >
+ <img src="https://codecov.io/gh/selfboot/html2notion/branch/master/graph/badge.svg?token=SIM6I7BZU6" alt="Test coverage"/>
+ </a>
+</p>
+
 html2notion 是一个非常有用的 Python 写的工具，它可以将 HTML 文档中的内容导入到 Notion 笔记中，从而使您能够更方便地将信息整理到 Notion 平台上。此外，html2notion 对印象笔记的内容进行了专门优化，还可以使用它来将印象笔记中的笔记导入到 Notion 中。
 
 html2notion 功能非常强大，它支持将 HTML 文件的各种标签转换为 Notion 中对应的 Block，比如富文本块、标题、图片、代码块、引用、链接等。下面是将印象笔记中的笔记转换为 notion page 中的示例。
