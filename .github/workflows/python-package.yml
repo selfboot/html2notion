@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install flake8 pytest pytest-asyncio
+        python -m pip install flake8 pytest pytest-asyncio pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install -e .
     - name: Lint with flake8
@@ -38,7 +38,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        pytest --cov=html2notion
       env:
         notion_api_key: ${{ secrets.NOTION_API_KEY }}
         notion_db_id_1: ${{ secrets.NOTION_DATABASE_ID_1 }}
@@ -47,3 +47,5 @@ jobs:
         cos_secret_key: ${{ secrets.COS_SECRET_KEY }}
         cos_region: ${{ secrets.COS_REGION }}
         cos_bucket: ${{ secrets.COS_BUCKET }}
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
