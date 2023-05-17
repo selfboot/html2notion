@@ -1,6 +1,5 @@
 import json
 import sys
-from pathlib import Path
 from aiolimiter import AsyncLimiter
 rate_limit = AsyncLimiter(3, 1)
 config = {}
@@ -31,7 +30,4 @@ def read_config(file_path):
         raise Exception("database_id is not set in config.json")
     if "api_key" not in notion_conf:
         raise Exception("api_key is not set in config.json")
-
-    if "log_path" not in config:
-        config["log_path"] = Path('~/logs')
     return

@@ -1,13 +1,13 @@
 {
     "notion": {
-        "database_id": "<***demo***>",
-        "api_key": "<***demo***>"
+        "database_id": "********",
+        "api_key": "********"
     },
 
     "cos": {
-        "secret_id": "<***demo***>",
-        "secret_key": "<***demo***>",
-        "region": "<***demo***>",
-        "bucket": "<***demo***>"
+        "secret_id": "********",
+        "secret_key": "********",
+        "region": "********",
+        "bucket": "********"
     }
 }
