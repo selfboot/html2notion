@@ -17,24 +17,25 @@ from .translate.import_stats import StatLevel
 console = Console()
 
 
-def parse_args():
+def prepare_args():
     parser = argparse.ArgumentParser(
         description='Html2notion: Save HTML to your Notion notes quickly and easily, while keeping the original format as much as possible')
     parser.add_argument('--conf', type=str, help='conf file path', required=True)
-    parser.add_argument('--log', type=str, help='log direct path')
+    parser.add_argument('--log', type=str, help='log directory path')
     parser.add_argument('--batch', type=int, default=15, help='batch save concurrent limit')
 
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--file', type=str, help='Save single html file to notion')
     group.add_argument('--dir', type=str, help='Save all html files in the dir to notion')
-    return parser.parse_args()
+    return parser
 
 
 def print_single_stats(stat):
     if stat.get_level() == StatLevel.EXCEPTION.value:
         text = Text(f"Failed to import {stat.filename}", style="default")
         text.append(f"\nException: {stat.exception}", style="red")
-        text.append(f"\nHeadmeta : \n{json.dumps(stat.head_meta, indent=4)}", style="yellow")
+        if 'body.parent.page_id should be defined' in str(stat.exception):
+            text.append(f"\nHeadmeta : \n{json.dumps(stat.head_meta, indent=4)}", style="yellow")
         console.print(text)
         return
     
@@ -96,8 +97,8 @@ def prepare_env(args: argparse.Namespace):
 
     conf_path = Path(args.conf)
     if not conf_path.is_file():
-        console.print(f"Read conf file({conf_path}) failed.", style="red")
-        logger.fatal(f"Read conf file({conf_path}) failed.")
+        text = Text(f"Read conf {conf_path} failed.", style="red")
+        console.print(text)
         sys.exit(1)
 
     setup_logger(log_path)
@@ -119,9 +120,11 @@ async def import_single_file(file):
 
 
 def main():
-    args = parse_args()
+    arg_parse = prepare_args()
+    args = arg_parse.parse_args()
     prepare_env(args)
 
+    text = Text("")
     file_path = Path(args.file) if args.file else None
     dir_path = Path(args.dir) if args.dir else None
     max_concurrency = args.batch
@@ -135,9 +138,10 @@ def main():
         logger.info(f"Finish save all html files in the dir: {dir_path}.\n{result}")
         print_batch_stats(batch_import)
     else:
-        text = Text("The parameters provided are incorrect, please check.", style="red")
+        text.append("The parameters provided are incorrect, please check.", style="red")
+        text.append(f"\n{arg_parse.format_help()}", style="default")
 
-    text = Text("\nIf you need help, please submit an ", style="default")
+    text.append("\nIf you need help, please submit an ", style="default")
     link = Text("issue", style="cyan underline link https://github.com/selfboot/html2notion/issues")
     text.append(link)
     text.append(" on gitHub.", style="default")
