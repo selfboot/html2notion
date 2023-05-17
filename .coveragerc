@@ -1,7 +1,9 @@
 [run]
 omit = 
     */__init__.py
+    main.py
 
 [report]
 exclude_lines = 
     if __name__ == .__main__.:
+    async def main(.*):
