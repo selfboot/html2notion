@@ -21,6 +21,7 @@ class ImportStats:
         self.notion_content = ""
         self.html_image_src = []
         self.notion_image_src = []
+        self.head_meta = {}
 
     def add_text(self, text: str):
         self.text_count += len(text)
@@ -55,9 +56,12 @@ class ImportStats:
         return StatLevel.SUCC.value
 
     def __str__(self):
-        if self.get_level() == StatLevel.EXCEPTION.value:
-            return f"[red]{str(self.exception)}[/red]"
         msg = ""
+        if self.get_level() == StatLevel.EXCEPTION.value:
+            msg += f"[red]{str(self.exception)}[/red]"
+            if 'body.parent.page_id should be defined' in str(self.exception):
+                msg += f"\nHeadmeta: [yellow]{self.head_meta}[/yellow]"
+
         if self.get_level() == StatLevel.LOSS.value:
             if self.text_count != self.notion_text_count:
                 msg += f"Text Len {self.text_count} -> {self.notion_text_count}, Loss [yellow]{self.text_count-self.notion_text_count}[/yellow]"

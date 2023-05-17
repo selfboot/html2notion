@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+import json
 import asyncio
 from pathlib import Path
 from aiohttp import ClientSession
@@ -33,6 +34,7 @@ def print_single_stats(stat):
     if stat.get_level() == StatLevel.EXCEPTION.value:
         text = Text(f"Failed to import {stat.filename}", style="default")
         text.append(f"\nException: {stat.exception}", style="red")
+        text.append(f"\nHeadmeta : \n{json.dumps(stat.head_meta, indent=4)}", style="yellow")
         console.print(text)
         return
     
