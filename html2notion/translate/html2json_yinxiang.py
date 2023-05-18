@@ -81,7 +81,6 @@ class Html2JsonYinXiang(Html2JsonBase):
         css_dict = Html2JsonBase.get_tag_style(soup)
         language = css_dict.get('--en-codeblockLanguage', 'plain text')
         json_obj["code"]["language"] = language
-        
         return json_obj
 
     def convert_quote(self, soup):

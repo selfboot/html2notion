@@ -838,11 +838,6 @@ quote_block = [
 ]
 
 def test_convert():
-    if 'GITHUB_ACTIONS' not in os.environ:
-        from html2notion.utils import test_prepare_conf, logger
-        test_prepare_conf()
-        logger.info("prepare_conf_fixture")
-
     html_jsons = {
         paragram_br_content: paragram_br_block,
         link_content: link_block,

@@ -1,6 +1,7 @@
-from html2notion.translate.notion_export import NotionExporter
 import os
 import json
+from html2notion.translate.notion_export import NotionExporter
+from html2notion.utils import config
 
 
 def test_check_is_delete():
@@ -40,8 +41,6 @@ def test_export_blocks():
         api_key = os.environ['notion_api_key']
         page_id = os.environ['notion_page_id_1']
     else:
-        from html2notion.utils import config, test_prepare_conf
-        test_prepare_conf()
         api_key = config['notion']['api_key']
         page_id = config['notion']['page_id']
 

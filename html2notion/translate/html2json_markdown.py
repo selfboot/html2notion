@@ -161,7 +161,7 @@ class Html2JsonMarkdown(Html2JsonBase):
                 "rich_text": []
             }
         }
-        expression = soup.get_text()
+        expression = soup.get_text()[:Html2JsonBase.EXPRESSION_MAX_LENGTH]
         equation = json_obj["paragraph"]["rich_text"]
         equation.append({
             "type": "equation",

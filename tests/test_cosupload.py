@@ -12,14 +12,6 @@ from html2notion.translate.cos_uploader import TencentCosUploaderAsync
 from html2notion.utils.log import log_only_local
 
 
-@pytest.fixture(scope="session", autouse=True)
-def prepare_conf_fixture():
-    if 'GITHUB_ACTIONS' not in os.environ:
-        from html2notion.utils import test_prepare_conf
-        test_prepare_conf()
-        log_only_local("prepare_conf_fixture")
-
-
 async def mock_cos_upload_request(file_path, *args, **kwargs):
     if 'GITHUB_ACTIONS' not in os.environ:
         from html2notion.utils import config

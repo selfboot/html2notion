@@ -19,7 +19,14 @@ class Block(Enum):
     TO_DO = "to_do"
     EQUATION = "equation"
 
+
 class Html2JsonBase:
+    # https://developers.notion.com/reference/request-limits
+    URL_MAX_LENGTH = 2000
+    TEXT_MAX_LENGTH = 2000
+    EXPRESSION_MAX_LENGTH = 1000
+    RICHTEXT_ARRAY_LENGTH = 100
+
     _registry = {}
     _text_annotations = {
         "bold": bool,
@@ -148,40 +155,45 @@ class Html2JsonBase:
         res_obj = []
         text_with_parents = Html2JsonBase.extract_text_and_parents(tag)
         for (text, parent_tags) in text_with_parents:
-            # Split the text into chunks of 2000 characters
-            text_chunks = [text[i:i+2000] for i in range(0, len(text), 2000)]
-            for chunk in text_chunks:
-                text_params = {"plain_text": chunk}
-                for parent in parent_tags:
-                    Html2JsonBase.parse_one_style(parent, text_params)
-                # process inline line break
-                if chunk == "<br>":
-                    try:
-                        res_obj[-1]["text"]["content"] += "\n"
-                        res_obj[-1]["plain_text"] += "\n"
-                    except Exception as e:
-                        pass
-                        # logger.error(f'{res_obj}, {str(e)}')
-                    continue
-                
-                link_url = text_params.get("url", "")
-                if text_params.get("url", "") and is_valid_url(link_url):
-                    text_obj = self.generate_link(**text_params)
-                # Here image is a independent block, split out in the outer layer
-                elif text_params.get("src", ""):
-                    text_obj = self.generate_image(**text_params)
-                else:
+            text_params = {"plain_text": text}
+            for parent in parent_tags:
+                Html2JsonBase.parse_one_style(parent, text_params)
+            if text == "<br>":
+                try:
+                    res_obj[-1]["text"]["content"] += "\n"
+                    res_obj[-1]["plain_text"] += "\n"
+                except Exception as e:
+                    pass
+                continue
+
+            link_url = text_params.get("url", "")
+            text_obj = {}
+            if text_params.get("url", "") and is_valid_url(link_url):
+                text_obj = self.generate_link(**text_params)
+            # Here image is a independent block, split out in the outer layer
+            elif text_params.get("src", ""):
+                text_obj = self.generate_image(**text_params)
+            else:
+                if len(text) <= self.TEXT_MAX_LENGTH:
                     text_obj = self.generate_text(**text_params)
-                if text_obj:
-                    res_obj.append(text_obj)
+                else:
+                    for chunk in [text[i:i+self.TEXT_MAX_LENGTH] for i in range(0, len(text), self.TEXT_MAX_LENGTH)]:
+                        text_params["plain_text"] = chunk
+                        text_obj = self.generate_text(**text_params)
+                        if text_obj:
+                            res_obj.append(text_obj)
+                    text_obj = None
+            if text_obj:
+                res_obj.append(text_obj)
         return res_obj
 
     def generate_link(self, **kwargs):
         link_url = kwargs.get("url", "")
         plain_text = kwargs.get("plain_text", "")
-        if not plain_text:
+        if not plain_text or not is_valid_url(link_url):
             return
 
+        link_url = link_url[:self.URL_MAX_LENGTH]
         self.import_stat.add_notion_text(plain_text)
         return {
             "href": link_url,
@@ -255,6 +267,12 @@ class Html2JsonBase:
         if text_one["type"] != "text" or text_another["type"] != "text":
             return False
         attributes = ["annotations", "href"]
+
+        # When merging, be careful not to let the text length exceed the limit
+        total_size = len(text_one["text"]["content"]) + len(text_another["text"]["content"])
+        if total_size > Html2JsonBase.TEXT_MAX_LENGTH:
+            return False
+
         return all(text_one.get(attr) == text_another.get(attr) for attr in attributes)
 
     @staticmethod
@@ -386,7 +404,7 @@ class Html2JsonBase:
 
         # Split out image into a independent blocks
         split_objs = Html2JsonBase.split_image_src(json_obj)
-        return split_objs
+        return Html2JsonBase.ensure_array_len(split_objs)
 
     def convert_divider(self, soup):
         return {
@@ -507,7 +525,7 @@ class Html2JsonBase:
         rich_text = text_obj["paragraph"]["rich_text"]
         need_split = any(text.get("object") == "block" for text in rich_text)
         if not need_split:
-            return text_obj
+            return [text_obj]
         
         split_obj = []
         cur_obj = {
@@ -552,6 +570,30 @@ class Html2JsonBase:
             return language
         return "plain text"
     
+    @staticmethod
+    def ensure_array_len(blocks):
+        final_objs = []
+        for obj in blocks:
+            if "paragraph" not in obj or "rich_text" not in obj["paragraph"] or len(
+                    obj["paragraph"]["rich_text"]) <= Html2JsonBase.RICHTEXT_ARRAY_LENGTH:
+                final_objs.append(obj)
+                continue
+
+            # If the length of rich_text is greater than RICHTEXT_ARRAY_LENGTH, we split it
+            rich_text_arr = obj["paragraph"]["rich_text"]
+            rich_texts = [rich_text_arr[i:i+Html2JsonBase.RICHTEXT_ARRAY_LENGTH]
+                          for i in range(0, len(rich_text_arr), Html2JsonBase.RICHTEXT_ARRAY_LENGTH)]
+            for rich_text in rich_texts:
+                new_json_obj = {
+                    "object": "block",
+                    "type": "paragraph",
+                    "paragraph": {
+                        "rich_text": rich_text
+                    }
+                }
+                final_objs.append(new_json_obj)
+        return final_objs
+
     @classmethod
     def register(cls, input_type, subclass):
         cls._registry[input_type] = subclass

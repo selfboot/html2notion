@@ -13,14 +13,6 @@ from html2notion.utils.log import log_only_local
 process_once_time = 0.5
 
 
-@pytest.fixture(scope="session", autouse=True)
-def prepare_conf_fixture():
-    if 'GITHUB_ACTIONS' not in os.environ:
-        from html2notion.utils import test_prepare_conf, logger
-        test_prepare_conf()
-        logger.info("prepare_conf_fixture")
-
-
 async def mock_notion_api_request(file_path, *args, **kwargs):
     class MockResponse:
         def __init__(self, status_code, file_content, elapsed_time):
