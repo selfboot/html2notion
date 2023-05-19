@@ -10,7 +10,7 @@ from html2notion.utils import logger, config
 
 def test_demo_files():
     if 'GITHUB_ACTIONS' in os.environ:
-        database_id = os.environ['notion_database_id_1']
+        database_id = os.environ['notion_db_id_1']
     else:
         database_id = config['notion']['database_id']
 
