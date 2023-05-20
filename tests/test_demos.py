@@ -40,10 +40,10 @@ def test_demo_files():
         except KeyError as e:
             pass
         
-        import dictdiffer
-        diff = dictdiffer.diff(notion_data, expect)
-        for d in diff:
-            logger.debug(f'Diff: {d}')
+        # import dictdiffer
+        # diff = dictdiffer.diff(notion_data, expect)
+        # for d in diff:
+        #     logger.debug(f'Diff: {d}')
         # aa = json.dumps(notion_data, ensure_ascii=False)
         # logger.debug(f'notion_data: {aa}')
         assert notion_data ==expect 
