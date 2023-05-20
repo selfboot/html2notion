@@ -1,1 +1,928 @@
-{"children": [{"object": "block", "type": "heading_1", "heading_1": {"rich_text": [{"plain_text": "Header", "text": {"content": "Header"}, "type": "text", "annotations": {"bold": true}}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "bold", "text": {"content": "bold"}, "type": "text", "annotations": {"bold": true}}, {"plain_text": ", ", "text": {"content": ", "}, "type": "text"}, {"plain_text": "ite", "text": {"content": "ite"}, "type": "text", "annotations": {"italic": true}}, {"plain_text": ", ", "text": {"content": ", "}, "type": "text"}, {"plain_text": "other", "text": {"content": "other"}, "type": "text", "annotations": {"strikethrough": true}}, {"plain_text": ", more...\n", "text": {"content": ", more...\n"}, "type": "text"}, {"plain_text": "inline code", "text": {"content": "inline code"}, "type": "text", "annotations": {"code": true, "color": "gray"}}, {"plain_text": " here.", "text": {"content": " here."}, "type": "text"}]}}, {"object": "block", "type": "code", "code": {"rich_text": [{"plain_text": "import os\nos.print('hello')", "text": {"content": "import os\nos.print('hello')"}, "type": "text"}], "language": "python"}}, {"object": "block", "type": "quote", "quote": {"rich_text": [{"plain_text": "Please work through this document in its entirety to better understand how OpenAI\u2019s rate limit system works. We include code examples and possible solutions to handle common issues. It is recommended to ", "text": {"content": "Please work through this document in its entirety to better understand how OpenAI\u2019s rate limit system works. We include code examples and possible solutions to handle common issues. It is recommended to "}, "type": "text", "annotations": {"color": "gray"}}, {"plain_text": "follow", "text": {"content": "follow"}, "type": "text", "annotations": {"color": "gray", "bold": true}}, {"plain_text": " this guidance before filling out the ", "text": {"content": " this guidance before filling out the "}, "type": "text", "annotations": {"color": "gray"}}, {"href": "https://docs.google.com/forms/d/e/1FAIpQLSc6gSL3zfHFlL6gNIyUcjkEv29jModHGxg5_XGyr-PrE2LaHw/viewform", "plain_text": "Rate Limit Increase Request form", "text": {"link": {"url": "https://docs.google.com/forms/d/e/1FAIpQLSc6gSL3zfHFlL6gNIyUcjkEv29jModHGxg5_XGyr-PrE2LaHw/viewform"}, "content": "Rate Limit Increase Request form"}, "type": "text"}, {"plain_text": " with details regarding how to fill it out in the last section.", "text": {"content": " with details regarding how to fill it out in the last section."}, "type": "text", "annotations": {"color": "gray"}}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "divider", "text": {"content": "divider"}, "type": "text"}]}}, {"object": "block", "type": "divider", "divider": {}}, {"object": "block", "type": "heading_3", "heading_3": {"rich_text": [{"plain_text": "image", "text": {"content": "image"}, "type": "text", "annotations": {"bold": true}}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "local images:", "text": {"content": "local images:"}, "type": "text"}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": []}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "web image:\n", "text": {"content": "web image:\n"}, "type": "text"}]}}, {"object": "block", "type": "image", "image": {"type": "external", "external": {"url": "https://raw.githubusercontent.com/selfboot/html2notion/master/demos/notion_templage.png"}}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"href": "https://docs.microsoft.com/zh-tw/previous-versions/visualstudio/design-tools/expression-studio-2/cc294571(v=expression.10)", "plain_text": "link", "text": {"link": {"url": "https://docs.microsoft.com/zh-tw/previous-versions/visualstudio/design-tools/expression-studio-2/cc294571(v=expression.10)"}, "content": "link"}, "type": "text"}]}}, {"object": "block", "type": "heading_3", "heading_3": {"rich_text": [{"plain_text": "Table", "text": {"content": "Table"}, "type": "text", "annotations": {"bold": true}}]}}, {"table": {"has_row_header": false, "has_column_header": true, "table_width": 3, "children": [{"type": "table_row", "table_row": {"cells": [[{"plain_text": "header", "text": {"content": "header"}, "type": "text", "annotations": {"color": "pink"}}], [{"plain_text": "column1", "text": {"content": "column1"}, "type": "text", "annotations": {"color": "pink"}}], [{"plain_text": "column 2", "text": {"content": "column 2"}, "type": "text", "annotations": {"color": "pink"}}]]}}, {"type": "table_row", "table_row": {"cells": [[{"plain_text": "row 1", "text": {"content": "row 1"}, "type": "text"}], [{"plain_text": "row 1_1", "text": {"content": "row 1_1"}, "type": "text"}], [{"plain_text": "row 1_2", "text": {"content": "row 1_2"}, "type": "text"}]]}}, {"type": "table_row", "table_row": {"cells": [[{"plain_text": "row 2", "text": {"content": "row 2"}, "type": "text"}], [{"plain_text": "row 2_2 ", "text": {"content": "row 2_2 "}, "type": "text"}, {"plain_text": "bold", "text": {"content": "bold"}, "type": "text", "annotations": {"bold": true}}, {"plain_text": ", ", "text": {"content": ", "}, "type": "text"}, {"plain_text": "ite", "text": {"content": "ite"}, "type": "text", "annotations": {"italic": true}}, {"plain_text": ", ", "text": {"content": ", "}, "type": "text"}, {"plain_text": "other", "text": {"content": "other"}, "type": "text", "annotations": {"strikethrough": true}}, {"plain_text": ", more...", "text": {"content": ", more..."}, "type": "text"}], [{"plain_text": "row 2_3", "text": {"content": "row 2_3"}, "type": "text"}]]}}]}}, {"object": "block", "type": "heading_3", "heading_3": {"rich_text": [{"plain_text": "list", "text": {"content": "list"}, "type": "text", "annotations": {"bold": true}}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"href": "https://platform.openai.com/docs/guides/rate-limits/overview", "plain_text": "Why do we have rate limits?\n", "text": {"link": {"url": "https://platform.openai.com/docs/guides/rate-limits/overview"}, "content": "Why do we have rate limits?\n"}, "type": "text"}, {"plain_text": "\nRate limits are a common practice for APIs, and they're put in place for a few different reasons:", "text": {"content": "\nRate limits are a common practice for APIs, and they're put in place for a few different reasons:"}, "type": "text"}]}}, {"object": "block", "bulleted_list_item": {"rich_text": [{"plain_text": "They help protect against abuse or misuse of the API. For example, a malicious actor could flood the API with requests in an attempt to overload it or cause disruptions in service. By setting rate limits, ", "text": {"content": "They help protect against abuse or misuse of the API. For example, a malicious actor could flood the API with requests in an attempt to overload it or cause disruptions in service. By setting rate limits, "}, "type": "text"}, {"plain_text": "OpenAI", "text": {"content": "OpenAI"}, "type": "text", "annotations": {"code": true, "color": "gray"}}, {"plain_text": " can prevent this kind of activity.", "text": {"content": " can prevent this kind of activity."}, "type": "text"}]}, "type": "bulleted_list_item"}, {"object": "block", "bulleted_list_item": {"rich_text": [{"plain_text": "Rate limits help ensure that everyone has fair access to the API. If one person or organization makes an excessive number of requests, it could bog down the API for everyone else. By throttling the number of requests that a single user can make, OpenAI ensures that the most number of people have an opportunity to use the API without experiencing slowdowns.", "text": {"content": "Rate limits help ensure that everyone has fair access to the API. If one person or organization makes an excessive number of requests, it could bog down the API for everyone else. By throttling the number of requests that a single user can make, OpenAI ensures that the most number of people have an opportunity to use the API without experiencing slowdowns."}, "type": "text"}]}, "type": "bulleted_list_item"}, {"object": "block", "bulleted_list_item": {"rich_text": [{"plain_text": "Rate limits can help OpenAI manage the aggregate load on its infrastructure. If requests to the API increase dramatically, it could tax the servers and cause performance issues. By setting rate limits, OpenAI can help maintain a smooth and consistent experience for all users.", "text": {"content": "Rate limits can help OpenAI manage the aggregate load on its infrastructure. If requests to the API increase dramatically, it could tax the servers and cause performance issues. By setting rate limits, OpenAI can help maintain a smooth and consistent experience for all users."}, "type": "text"}]}, "type": "bulleted_list_item"}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "number list", "text": {"content": "number list"}, "type": "text"}]}}, {"object": "block", "numbered_list_item": {"rich_text": [{"plain_text": "number list1", "text": {"content": "number list1"}, "type": "text"}]}, "type": "numbered_list_item"}, {"object": "block", "numbered_list_item": {"rich_text": [{"plain_text": "numner list2", "text": {"content": "numner list2"}, "type": "text"}]}, "type": "numbered_list_item"}, {"object": "block", "type": "heading_2", "heading_2": {"rich_text": [{"plain_text": "checkbox", "text": {"content": "checkbox"}, "type": "text", "annotations": {"bold": true}}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "Three frogs", "text": {"content": "Three frogs"}, "type": "text"}]}}, {"object": "block", "type": "to_do", "to_do": {"rich_text": [{"plain_text": " The first frog", "text": {"content": " The first frog"}, "type": "text"}], "checked": true}}, {"object": "block", "type": "to_do", "to_do": {"rich_text": [{"plain_text": " The second frog", "text": {"content": " The second frog"}, "type": "text"}], "checked": false}}, {"object": "block", "type": "to_do", "to_do": {"rich_text": [{"plain_text": " The third frog", "text": {"content": " The third frog"}, "type": "text"}], "checked": false}}, {"object": "block", "type": "heading_1", "heading_1": {"rich_text": [{"plain_text": "math and grapth", "text": {"content": "math and grapth"}, "type": "text", "annotations": {"bold": true}}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "Here is math", "text": {"content": "Here is math"}, "type": "text"}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"type": "equation", "equation": {"expression": "e^{i\\pi} + 1 = 0"}}]}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "mermaid grapth:", "text": {"content": "mermaid grapth:"}, "type": "text"}]}}, {"object": "block", "type": "code", "code": {"rich_text": [{"plain_text": "graph TD\nA[Module A] -->|A1| B( Module B)\nB --> C{Confidition C}\nC -->|condition C1| D[Module D]\nC -->|condition C2| E[Module E]\nC -->|condition C3| F[Module F]", "text": {"content": "graph TD\nA[Module A] -->|A1| B( Module B)\nB --> C{Confidition C}\nC -->|condition C1| D[Module D]\nC -->|condition C2| E[Module E]\nC -->|condition C3| F[Module F]"}, "type": "text"}], "language": "mermaid"}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "sequenceDiagram", "text": {"content": "sequenceDiagram"}, "type": "text"}]}}, {"object": "block", "type": "code", "code": {"rich_text": [{"plain_text": "sequenceDiagram\nA->>B: Have you received a message?\nB-->>A: Message received", "text": {"content": "sequenceDiagram\nA->>B: Have you received a message?\nB-->>A: Message received"}, "type": "text"}], "language": "mermaid"}}, {"object": "block", "type": "paragraph", "paragraph": {"rich_text": [{"plain_text": "gantt", "text": {"content": "gantt"}, "type": "text"}]}}, {"object": "block", "type": "code", "code": {"rich_text": [{"plain_text": "gantt\ntitle Gantt chart\ndateFormat  YYYY-MM-DD\nsection Proj A\nTask 1           :a1, 2018-06-06, 30d\nTask 2     :after a1  , 20d\nsection Proj B\nTask 3      :2018-06-12  , 12d\nTask 4      : 24d", "text": {"content": "gantt\ntitle Gantt chart\ndateFormat  YYYY-MM-DD\nsection Proj A\nTask 1           :a1, 2018-06-06, 30d\nTask 2     :after a1  , 20d\nsection Proj B\nTask 3      :2018-06-12  , 12d\nTask 4      : 24d"}, "type": "text"}], "language": "mermaid"}}, {"object": "block", "type": "heading_3", "heading_3": {"rich_text": [{"plain_text": "chart", "text": {"content": "chart"}, "type": "text", "annotations": {"bold": true}}]}}, {"object": "block", "type": "code", "code": {"rich_text": [{"plain_text": ", budget, income, expenses, debt\nJune,5000,8000,4000,6000\nJuly,3000,1000,4000,3000\nAug,5000,7000,6000,3000\nSep,7000,2000,3000,1000\nOct,6000,5000,4000,2000\nNov,4000,3000,5000,\n\ntype: pie\ntitle: \u6bcf\u6708\u6536\u76ca\nx.title: Amount\ny.title: Month\ny.suffix: $", "text": {"content": ", budget, income, expenses, debt\nJune,5000,8000,4000,6000\nJuly,3000,1000,4000,3000\nAug,5000,7000,6000,3000\nSep,7000,2000,3000,1000\nOct,6000,5000,4000,2000\nNov,4000,3000,5000,\n\ntype: pie\ntitle: \u6bcf\u6708\u6536\u76ca\nx.title: Amount\ny.title: Month\ny.suffix: $"}, "type": "text"}], "language": "plain text"}}, {"object": "block", "type": "code", "code": {"rich_text": [{"plain_text": ",Budget,Income,Expenses,Debt\nJune,5000,8000,4000,6000\nJuly,3000,1000,4000,3000\nAug,5000,7000,6000,3000\nSep,7000,2000,3000,1000\nOct,6000,5000,4000,2000\nNov,4000,3000,5000,\n\ntype: line\ntitle: Monthly Revenue\nx.title: Amount\ny.title: Month\ny.suffix: $", "text": {"content": ",Budget,Income,Expenses,Debt\nJune,5000,8000,4000,6000\nJuly,3000,1000,4000,3000\nAug,5000,7000,6000,3000\nSep,7000,2000,3000,1000\nOct,6000,5000,4000,2000\nNov,4000,3000,5000,\n\ntype: line\ntitle: Monthly Revenue\nx.title: Amount\ny.title: Month\ny.suffix: $"}, "type": "text"}], "language": "plain text"}}], "properties": {"Title": {"title": [{"text": {"content": "yinxiang_markdown"}}]}, "URL": {"url": "http://selfboot.cn", "type": "url"}, "Tags": {"type": "multi_select", "multi_select": [{"name": "md"}]}, "Created": {"date": {"start": "2018-09-20T18:30:36+08:00"}, "type": "date"}}, "parent": {"type": "database_id", "database_id": "###database_id###"}}
+{
+    "children":[
+        {
+            "object":"block",
+            "type":"heading_1",
+            "heading_1":{
+                "rich_text":[
+                    {
+                        "plain_text":"Header",
+                        "text":{
+                            "content":"Header"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"bold",
+                        "text":{
+                            "content":"bold"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    },
+                    {
+                        "plain_text":", ",
+                        "text":{
+                            "content":", "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"ite",
+                        "text":{
+                            "content":"ite"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "italic":true
+                        }
+                    },
+                    {
+                        "plain_text":", ",
+                        "text":{
+                            "content":", "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"other",
+                        "text":{
+                            "content":"other"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "strikethrough":true
+                        }
+                    },
+                    {
+                        "plain_text":", more...\n",
+                        "text":{
+                            "content":", more...\n"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"inline code",
+                        "text":{
+                            "content":"inline code"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true,
+                            "color":"gray"
+                        }
+                    },
+                    {
+                        "plain_text":" here.",
+                        "text":{
+                            "content":" here."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"import os\nos.print('hello')",
+                        "text":{
+                            "content":"import os\nos.print('hello')"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"python"
+            }
+        },
+        {
+            "object":"block",
+            "type":"quote",
+            "quote":{
+                "rich_text":[
+                    {
+                        "plain_text":"Please work through this document in its entirety to better understand how OpenAI\u2019s rate limit system works. We include code examples and possible solutions to handle common issues. It is recommended to ",
+                        "text":{
+                            "content":"Please work through this document in its entirety to better understand how OpenAI\u2019s rate limit system works. We include code examples and possible solutions to handle common issues. It is recommended to "
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"gray"
+                        }
+                    },
+                    {
+                        "plain_text":"follow",
+                        "text":{
+                            "content":"follow"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"gray",
+                            "bold":true
+                        }
+                    },
+                    {
+                        "plain_text":" this guidance before filling out the ",
+                        "text":{
+                            "content":" this guidance before filling out the "
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"gray"
+                        }
+                    },
+                    {
+                        "href":"https://docs.google.com/forms/d/e/1FAIpQLSc6gSL3zfHFlL6gNIyUcjkEv29jModHGxg5_XGyr-PrE2LaHw/viewform",
+                        "plain_text":"Rate Limit Increase Request form",
+                        "text":{
+                            "link":{
+                                "url":"https://docs.google.com/forms/d/e/1FAIpQLSc6gSL3zfHFlL6gNIyUcjkEv29jModHGxg5_XGyr-PrE2LaHw/viewform"
+                            },
+                            "content":"Rate Limit Increase Request form"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":" with details regarding how to fill it out in the last section.",
+                        "text":{
+                            "content":" with details regarding how to fill it out in the last section."
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"gray"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"divider",
+                        "text":{
+                            "content":"divider"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"divider",
+            "divider":{
+
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"image",
+                        "text":{
+                            "content":"image"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"local images:",
+                        "text":{
+                            "content":"local images:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"web image:\n",
+                        "text":{
+                            "content":"web image:\n"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"image",
+            "image":{
+                "type":"external",
+                "external":{
+                    "url":"https://raw.githubusercontent.com/selfboot/html2notion/master/demos/notion_templage.png"
+                }
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "href":"https://docs.microsoft.com/zh-tw/previous-versions/visualstudio/design-tools/expression-studio-2/cc294571(v=expression.10)",
+                        "plain_text":"link",
+                        "text":{
+                            "link":{
+                                "url":"https://docs.microsoft.com/zh-tw/previous-versions/visualstudio/design-tools/expression-studio-2/cc294571(v=expression.10)"
+                            },
+                            "content":"link"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"Table",
+                        "text":{
+                            "content":"Table"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "table":{
+                "has_row_header":false,
+                "has_column_header":true,
+                "table_width":3,
+                "children":[
+                    {
+                        "type":"table_row",
+                        "table_row":{
+                            "cells":[
+                                [
+                                    {
+                                        "plain_text":"header",
+                                        "text":{
+                                            "content":"header"
+                                        },
+                                        "type":"text",
+                                        "annotations":{
+                                            "color":"pink"
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        "plain_text":"column1",
+                                        "text":{
+                                            "content":"column1"
+                                        },
+                                        "type":"text",
+                                        "annotations":{
+                                            "color":"pink"
+                                        }
+                                    }
+                                ],
+                                [
+                                    {
+                                        "plain_text":"column 2",
+                                        "text":{
+                                            "content":"column 2"
+                                        },
+                                        "type":"text",
+                                        "annotations":{
+                                            "color":"pink"
+                                        }
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
+                        "type":"table_row",
+                        "table_row":{
+                            "cells":[
+                                [
+                                    {
+                                        "plain_text":"row 1",
+                                        "text":{
+                                            "content":"row 1"
+                                        },
+                                        "type":"text"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "plain_text":"row 1_1",
+                                        "text":{
+                                            "content":"row 1_1"
+                                        },
+                                        "type":"text"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "plain_text":"row 1_2",
+                                        "text":{
+                                            "content":"row 1_2"
+                                        },
+                                        "type":"text"
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
+                        "type":"table_row",
+                        "table_row":{
+                            "cells":[
+                                [
+                                    {
+                                        "plain_text":"row 2",
+                                        "text":{
+                                            "content":"row 2"
+                                        },
+                                        "type":"text"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "plain_text":"row 2_2 ",
+                                        "text":{
+                                            "content":"row 2_2 "
+                                        },
+                                        "type":"text"
+                                    },
+                                    {
+                                        "plain_text":"bold",
+                                        "text":{
+                                            "content":"bold"
+                                        },
+                                        "type":"text",
+                                        "annotations":{
+                                            "bold":true
+                                        }
+                                    },
+                                    {
+                                        "plain_text":", ",
+                                        "text":{
+                                            "content":", "
+                                        },
+                                        "type":"text"
+                                    },
+                                    {
+                                        "plain_text":"ite",
+                                        "text":{
+                                            "content":"ite"
+                                        },
+                                        "type":"text",
+                                        "annotations":{
+                                            "italic":true
+                                        }
+                                    },
+                                    {
+                                        "plain_text":", ",
+                                        "text":{
+                                            "content":", "
+                                        },
+                                        "type":"text"
+                                    },
+                                    {
+                                        "plain_text":"other",
+                                        "text":{
+                                            "content":"other"
+                                        },
+                                        "type":"text",
+                                        "annotations":{
+                                            "strikethrough":true
+                                        }
+                                    },
+                                    {
+                                        "plain_text":", more...",
+                                        "text":{
+                                            "content":", more..."
+                                        },
+                                        "type":"text"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "plain_text":"row 2_3",
+                                        "text":{
+                                            "content":"row 2_3"
+                                        },
+                                        "type":"text"
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"list",
+                        "text":{
+                            "content":"list"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "href":"https://platform.openai.com/docs/guides/rate-limits/overview",
+                        "plain_text":"Why do we have rate limits?\n",
+                        "text":{
+                            "link":{
+                                "url":"https://platform.openai.com/docs/guides/rate-limits/overview"
+                            },
+                            "content":"Why do we have rate limits?\n"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\nRate limits are a common practice for APIs, and they're put in place for a few different reasons:",
+                        "text":{
+                            "content":"\nRate limits are a common practice for APIs, and they're put in place for a few different reasons:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"They help protect against abuse or misuse of the API. For example, a malicious actor could flood the API with requests in an attempt to overload it or cause disruptions in service. By setting rate limits, ",
+                        "text":{
+                            "content":"They help protect against abuse or misuse of the API. For example, a malicious actor could flood the API with requests in an attempt to overload it or cause disruptions in service. By setting rate limits, "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"OpenAI",
+                        "text":{
+                            "content":"OpenAI"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true,
+                            "color":"gray"
+                        }
+                    },
+                    {
+                        "plain_text":" can prevent this kind of activity.",
+                        "text":{
+                            "content":" can prevent this kind of activity."
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Rate limits help ensure that everyone has fair access to the API. If one person or organization makes an excessive number of requests, it could bog down the API for everyone else. By throttling the number of requests that a single user can make, OpenAI ensures that the most number of people have an opportunity to use the API without experiencing slowdowns.",
+                        "text":{
+                            "content":"Rate limits help ensure that everyone has fair access to the API. If one person or organization makes an excessive number of requests, it could bog down the API for everyone else. By throttling the number of requests that a single user can make, OpenAI ensures that the most number of people have an opportunity to use the API without experiencing slowdowns."
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Rate limits can help OpenAI manage the aggregate load on its infrastructure. If requests to the API increase dramatically, it could tax the servers and cause performance issues. By setting rate limits, OpenAI can help maintain a smooth and consistent experience for all users.",
+                        "text":{
+                            "content":"Rate limits can help OpenAI manage the aggregate load on its infrastructure. If requests to the API increase dramatically, it could tax the servers and cause performance issues. By setting rate limits, OpenAI can help maintain a smooth and consistent experience for all users."
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"number list",
+                        "text":{
+                            "content":"number list"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "numbered_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"number list1",
+                        "text":{
+                            "content":"number list1"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"numbered_list_item"
+        },
+        {
+            "object":"block",
+            "numbered_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"numner list2",
+                        "text":{
+                            "content":"numner list2"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"numbered_list_item"
+        },
+        {
+            "object":"block",
+            "type":"heading_2",
+            "heading_2":{
+                "rich_text":[
+                    {
+                        "plain_text":"checkbox",
+                        "text":{
+                            "content":"checkbox"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Three frogs",
+                        "text":{
+                            "content":"Three frogs"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"to_do",
+            "to_do":{
+                "rich_text":[
+                    {
+                        "plain_text":" The first frog",
+                        "text":{
+                            "content":" The first frog"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "checked":true
+            }
+        },
+        {
+            "object":"block",
+            "type":"to_do",
+            "to_do":{
+                "rich_text":[
+                    {
+                        "plain_text":" The second frog",
+                        "text":{
+                            "content":" The second frog"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "checked":false
+            }
+        },
+        {
+            "object":"block",
+            "type":"to_do",
+            "to_do":{
+                "rich_text":[
+                    {
+                        "plain_text":" The third frog",
+                        "text":{
+                            "content":" The third frog"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "checked":false
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_1",
+            "heading_1":{
+                "rich_text":[
+                    {
+                        "plain_text":"math and grapth",
+                        "text":{
+                            "content":"math and grapth"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Here is math",
+                        "text":{
+                            "content":"Here is math"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "type":"equation",
+                        "equation":{
+                            "expression":"e^{i\\pi} + 1 = 0"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"mermaid grapth:",
+                        "text":{
+                            "content":"mermaid grapth:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"graph TD\nA[Module A] -->|A1| B( Module B)\nB --> C{Confidition C}\nC -->|condition C1| D[Module D]\nC -->|condition C2| E[Module E]\nC -->|condition C3| F[Module F]",
+                        "text":{
+                            "content":"graph TD\nA[Module A] -->|A1| B( Module B)\nB --> C{Confidition C}\nC -->|condition C1| D[Module D]\nC -->|condition C2| E[Module E]\nC -->|condition C3| F[Module F]"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"mermaid"
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"sequenceDiagram",
+                        "text":{
+                            "content":"sequenceDiagram"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"sequenceDiagram\nA->>B: Have you received a message?\nB-->>A: Message received",
+                        "text":{
+                            "content":"sequenceDiagram\nA->>B: Have you received a message?\nB-->>A: Message received"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"mermaid"
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"gantt",
+                        "text":{
+                            "content":"gantt"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"gantt\ntitle Gantt chart\ndateFormat  YYYY-MM-DD\nsection Proj A\nTask 1           :a1, 2018-06-06, 30d\nTask 2     :after a1  , 20d\nsection Proj B\nTask 3      :2018-06-12  , 12d\nTask 4      : 24d",
+                        "text":{
+                            "content":"gantt\ntitle Gantt chart\ndateFormat  YYYY-MM-DD\nsection Proj A\nTask 1           :a1, 2018-06-06, 30d\nTask 2     :after a1  , 20d\nsection Proj B\nTask 3      :2018-06-12  , 12d\nTask 4      : 24d"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"mermaid"
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"chart",
+                        "text":{
+                            "content":"chart"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":", budget, income, expenses, debt\nJune,5000,8000,4000,6000\nJuly,3000,1000,4000,3000\nAug,5000,7000,6000,3000\nSep,7000,2000,3000,1000\nOct,6000,5000,4000,2000\nNov,4000,3000,5000,\n\ntype: pie\ntitle: \u6bcf\u6708\u6536\u76ca\nx.title: Amount\ny.title: Month\ny.suffix: $",
+                        "text":{
+                            "content":", budget, income, expenses, debt\nJune,5000,8000,4000,6000\nJuly,3000,1000,4000,3000\nAug,5000,7000,6000,3000\nSep,7000,2000,3000,1000\nOct,6000,5000,4000,2000\nNov,4000,3000,5000,\n\ntype: pie\ntitle: \u6bcf\u6708\u6536\u76ca\nx.title: Amount\ny.title: Month\ny.suffix: $"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"plain text"
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":",Budget,Income,Expenses,Debt\nJune,5000,8000,4000,6000\nJuly,3000,1000,4000,3000\nAug,5000,7000,6000,3000\nSep,7000,2000,3000,1000\nOct,6000,5000,4000,2000\nNov,4000,3000,5000,\n\ntype: line\ntitle: Monthly Revenue\nx.title: Amount\ny.title: Month\ny.suffix: $",
+                        "text":{
+                            "content":",Budget,Income,Expenses,Debt\nJune,5000,8000,4000,6000\nJuly,3000,1000,4000,3000\nAug,5000,7000,6000,3000\nSep,7000,2000,3000,1000\nOct,6000,5000,4000,2000\nNov,4000,3000,5000,\n\ntype: line\ntitle: Monthly Revenue\nx.title: Amount\ny.title: Month\ny.suffix: $"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"plain text"
+            }
+        }
+    ],
+    "properties":{
+        "Title":{
+            "title":[
+                {
+                    "text":{
+                        "content":"yinxiang_markdown"
+                    }
+                }
+            ]
+        },
+        "URL":{
+            "url":"http://selfboot.cn",
+            "type":"url"
+        },
+        "Tags":{
+            "type":"multi_select",
+            "multi_select":[
+                {
+                    "name":"md"
+                }
+            ]
+        },
+        "Created":{
+            "date":{
+                "start":"2018-09-20T18:30:36+08:00"
+            },
+            "type":"date"
+        }
+    },
+    "parent":{
+        "type":"database_id",
+        "database_id":"###database_id###"
+    }
+}

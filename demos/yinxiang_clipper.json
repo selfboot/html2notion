@@ -1,0 +1,2081 @@
+{
+    "children":[
+        {
+            "object":"block",
+            "type":"heading_1",
+            "heading_1":{
+                "rich_text":[
+                    {
+                        "plain_text":"Chat completions ",
+                        "text":{
+                            "content":"Chat completions "
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    },
+                    {
+                        "plain_text":"Beta",
+                        "text":{
+                            "content":"Beta"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true,
+                            "color":"green"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Using the OpenAI Chat API, you can build your own applications with ",
+                        "text":{
+                            "content":"Using the OpenAI Chat API, you can build your own applications with "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo",
+                        "text":{
+                            "content":"gpt-3.5-turbo"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" and ",
+                        "text":{
+                            "content":" and "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-4",
+                        "text":{
+                            "content":"gpt-4"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" to do things like:",
+                        "text":{
+                            "content":" to do things like:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Draft an email or other piece of writing",
+                        "text":{
+                            "content":"Draft an email or other piece of writing"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Write Python code",
+                        "text":{
+                            "content":"Write Python code"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Answer questions about a set of documents",
+                        "text":{
+                            "content":"Answer questions about a set of documents"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Create conversational agents",
+                        "text":{
+                            "content":"Create conversational agents"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Give your software a natural language interface",
+                        "text":{
+                            "content":"Give your software a natural language interface"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Tutor in a range of subjects",
+                        "text":{
+                            "content":"Tutor in a range of subjects"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Translate languages",
+                        "text":{
+                            "content":"Translate languages"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Simulate characters for video games\nand much more",
+                        "text":{
+                            "content":"Simulate characters for video games\nand much more"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"This guide explains how to ",
+                        "text":{
+                            "content":"This guide explains how to "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://platform.openai.com/docs/api-reference/chat",
+                        "plain_text":"make an API call for chat-based language models",
+                        "text":{
+                            "link":{
+                                "url":"https://platform.openai.com/docs/api-reference/chat"
+                            },
+                            "content":"make an API call for chat-based language models"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":" and shares tips for getting good results. You can also experiment with the new ",
+                        "text":{
+                            "content":" and shares tips for getting good results. You can also experiment with the new "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://platform.openai.com/playground?mode=chat",
+                        "plain_text":"chat format in the OpenAI Playground",
+                        "text":{
+                            "link":{
+                                "url":"https://platform.openai.com/playground?mode=chat"
+                            },
+                            "content":"chat format in the OpenAI Playground"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":".",
+                        "text":{
+                            "content":"."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_2",
+            "heading_2":{
+                "rich_text":[
+                    {
+                        "plain_text":"Introduction",
+                        "text":{
+                            "content":"Introduction"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Chat models take a series of messages as input, and return a model-generated message as output.",
+                        "text":{
+                            "content":"Chat models take a series of messages as input, and return a model-generated message as output."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Although the chat format is designed to make multi-turn conversations easy, it\u2019s just as useful for single-turn tasks without any conversations (such as those previously served by instruction following models like ",
+                        "text":{
+                            "content":"Although the chat format is designed to make multi-turn conversations easy, it\u2019s just as useful for single-turn tasks without any conversations (such as those previously served by instruction following models like "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"text-davinci-003",
+                        "text":{
+                            "content":"text-davinci-003"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":").",
+                        "text":{
+                            "content":")."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"An example API call looks as follows:",
+                        "text":{
+                            "content":"An example API call looks as follows:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"# Note: you need to be using OpenAI Python v0.27.0 for the code below to work",
+                        "text":{
+                            "content":"# Note: you need to be using OpenAI Python v0.27.0 for the code below to work"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"pink"
+                        }
+                    },
+                    {
+                        "plain_text":"import",
+                        "text":{
+                            "content":"import"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"gray"
+                        }
+                    },
+                    {
+                        "plain_text":" openai\n\nopenai.ChatCompletion.create(\n  model=",
+                        "text":{
+                            "content":" openai\n\nopenai.ChatCompletion.create(\n  model="
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"gpt-3.5-turbo\"",
+                        "text":{
+                            "content":"\"gpt-3.5-turbo\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":",\n  messages=[\n        {",
+                        "text":{
+                            "content":",\n  messages=[\n        {"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"role\"",
+                        "text":{
+                            "content":"\"role\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":": ",
+                        "text":{
+                            "content":": "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"system\"",
+                        "text":{
+                            "content":"\"system\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":", ",
+                        "text":{
+                            "content":", "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"content\"",
+                        "text":{
+                            "content":"\"content\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":": ",
+                        "text":{
+                            "content":": "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"You are a helpful assistant.\"",
+                        "text":{
+                            "content":"\"You are a helpful assistant.\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":"},\n        {",
+                        "text":{
+                            "content":"},\n        {"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"role\"",
+                        "text":{
+                            "content":"\"role\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":": ",
+                        "text":{
+                            "content":": "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"user\"",
+                        "text":{
+                            "content":"\"user\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":", ",
+                        "text":{
+                            "content":", "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"content\"",
+                        "text":{
+                            "content":"\"content\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":": ",
+                        "text":{
+                            "content":": "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"Who won the world series in 2020?\"",
+                        "text":{
+                            "content":"\"Who won the world series in 2020?\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":"},\n        {",
+                        "text":{
+                            "content":"},\n        {"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"role\"",
+                        "text":{
+                            "content":"\"role\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":": ",
+                        "text":{
+                            "content":": "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"assistant\"",
+                        "text":{
+                            "content":"\"assistant\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":", ",
+                        "text":{
+                            "content":", "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"content\"",
+                        "text":{
+                            "content":"\"content\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":": ",
+                        "text":{
+                            "content":": "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"The Los Angeles Dodgers won the World Series in 2020.\"",
+                        "text":{
+                            "content":"\"The Los Angeles Dodgers won the World Series in 2020.\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":"},\n        {",
+                        "text":{
+                            "content":"},\n        {"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"role\"",
+                        "text":{
+                            "content":"\"role\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":": ",
+                        "text":{
+                            "content":": "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"user\"",
+                        "text":{
+                            "content":"\"user\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":", ",
+                        "text":{
+                            "content":", "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"content\"",
+                        "text":{
+                            "content":"\"content\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":": ",
+                        "text":{
+                            "content":": "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"Where was it played?\"",
+                        "text":{
+                            "content":"\"Where was it played?\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "color":"green"
+                        }
+                    },
+                    {
+                        "plain_text":"}\n    ]\n)",
+                        "text":{
+                            "content":"}\n    ]\n)"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"plain text"
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"The main input is the messages parameter. Messages must be an array of message objects, where each object has a role (either \"system\", \"user\", or \"assistant\") and content (the content of the message). Conversations can be as short as 1 message or fill many pages.",
+                        "text":{
+                            "content":"The main input is the messages parameter. Messages must be an array of message objects, where each object has a role (either \"system\", \"user\", or \"assistant\") and content (the content of the message). Conversations can be as short as 1 message or fill many pages."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Typically, a conversation is formatted with a system message first, followed by alternating user and assistant messages.",
+                        "text":{
+                            "content":"Typically, a conversation is formatted with a system message first, followed by alternating user and assistant messages."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"The system message helps set the behavior of the assistant. In the example above, the assistant was instructed with \"You are a helpful assistant.\"",
+                        "text":{
+                            "content":"The system message helps set the behavior of the assistant. In the example above, the assistant was instructed with \"You are a helpful assistant.\""
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"The user messages help instruct the assistant. They can be generated by the end users of an application, or set by a developer as an instruction.",
+                        "text":{
+                            "content":"The user messages help instruct the assistant. They can be generated by the end users of an application, or set by a developer as an instruction."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"The assistant messages help store prior responses. They can also be written by a developer to help give examples of desired behavior.",
+                        "text":{
+                            "content":"The assistant messages help store prior responses. They can also be written by a developer to help give examples of desired behavior."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Including the conversation history helps when user instructions refer to prior messages. In the example above, the user\u2019s final question of \"Where was it played?\" only makes sense in the context of the prior messages about the World Series of 2020. Because the models have no memory of past requests, all relevant information must be supplied via the conversation. If a conversation cannot fit within the model\u2019s token limit, it will need to be shortened in some way.",
+                        "text":{
+                            "content":"Including the conversation history helps when user instructions refer to prior messages. In the example above, the user\u2019s final question of \"Where was it played?\" only makes sense in the context of the prior messages about the World Series of 2020. Because the models have no memory of past requests, all relevant information must be supplied via the conversation. If a conversation cannot fit within the model\u2019s token limit, it will need to be shortened in some way."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"Response format",
+                        "text":{
+                            "content":"Response format"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"An example API response looks as follows:",
+                        "text":{
+                            "content":"An example API response looks as follows:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"{\n 'id': 'chatcmpl-6p9XYPYSTTRi0xEviKjjilqrWU2Ve',\n 'object': 'chat.completion',\n 'created': 1677649420,\n 'model': 'gpt-3.5-turbo',\n 'usage': {'prompt_tokens': 56, 'completion_tokens': 31, 'total_tokens': 87},\n 'choices': [\n   {\n    'message': {\n      'role': 'assistant',\n      'content': 'The 2020 World Series was played in Arlington, Texas at the Globe Life Field, which was the new home stadium for the Texas Rangers.'},\n    'finish_reason': 'stop',\n    'index': 0\n   }\n  ]\n}",
+                        "text":{
+                            "content":"{\n 'id': 'chatcmpl-6p9XYPYSTTRi0xEviKjjilqrWU2Ve',\n 'object': 'chat.completion',\n 'created': 1677649420,\n 'model': 'gpt-3.5-turbo',\n 'usage': {'prompt_tokens': 56, 'completion_tokens': 31, 'total_tokens': 87},\n 'choices': [\n   {\n    'message': {\n      'role': 'assistant',\n      'content': 'The 2020 World Series was played in Arlington, Texas at the Globe Life Field, which was the new home stadium for the Texas Rangers.'},\n    'finish_reason': 'stop',\n    'index': 0\n   }\n  ]\n}"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"plain text"
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"In Python, the assistant\u2019s reply can be extracted with ",
+                        "text":{
+                            "content":"In Python, the assistant\u2019s reply can be extracted with "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"response['choices'][0]['message']['content']",
+                        "text":{
+                            "content":"response['choices'][0]['message']['content']"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":".",
+                        "text":{
+                            "content":"."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Every response will include a ",
+                        "text":{
+                            "content":"Every response will include a "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"finish_reason",
+                        "text":{
+                            "content":"finish_reason"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":". The possible values for ",
+                        "text":{
+                            "content":". The possible values for "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"finish_reason",
+                        "text":{
+                            "content":"finish_reason"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" are:",
+                        "text":{
+                            "content":" are:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"stop",
+                        "text":{
+                            "content":"stop"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":": API returned complete model output",
+                        "text":{
+                            "content":": API returned complete model output"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"length",
+                        "text":{
+                            "content":"length"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":": Incomplete model output due to ",
+                        "text":{
+                            "content":": Incomplete model output due to "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://platform.openai.com/docs/api-reference/chat/create#chat/create-max_tokens",
+                        "plain_text":"max_tokens",
+                        "text":{
+                            "link":{
+                                "url":"https://platform.openai.com/docs/api-reference/chat/create#chat/create-max_tokens"
+                            },
+                            "content":"max_tokens"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://platform.openai.com/docs/api-reference/chat/create#chat/create-max_tokens",
+                        "plain_text":" parameter",
+                        "text":{
+                            "link":{
+                                "url":"https://platform.openai.com/docs/api-reference/chat/create#chat/create-max_tokens"
+                            },
+                            "content":" parameter"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":" or token limit",
+                        "text":{
+                            "content":" or token limit"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"content_filter",
+                        "text":{
+                            "content":"content_filter"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":": Omitted content due to a flag from our content filters",
+                        "text":{
+                            "content":": Omitted content due to a flag from our content filters"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"null",
+                        "text":{
+                            "content":"null"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":": API response still in progress or incomplete",
+                        "text":{
+                            "content":": API response still in progress or incomplete"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"Managing tokens",
+                        "text":{
+                            "content":"Managing tokens"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Language models read text in chunks called tokens. In English, a token can be as short as one character or as long as one word (e.g., ",
+                        "text":{
+                            "content":"Language models read text in chunks called tokens. In English, a token can be as short as one character or as long as one word (e.g., "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"a",
+                        "text":{
+                            "content":"a"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" or ",
+                        "text":{
+                            "content":" or "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":" apple",
+                        "text":{
+                            "content":" apple"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":"), and in some languages tokens can be even shorter than one character or even longer than one word.",
+                        "text":{
+                            "content":"), and in some languages tokens can be even shorter than one character or even longer than one word."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"For example, the string ",
+                        "text":{
+                            "content":"For example, the string "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"\"ChatGPT is great!\"",
+                        "text":{
+                            "content":"\"ChatGPT is great!\""
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" is encoded into six tokens: ",
+                        "text":{
+                            "content":" is encoded into six tokens: "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"[\"Chat\", \"G\", \"PT\", \" is\", \" great\", \"!\"]",
+                        "text":{
+                            "content":"[\"Chat\", \"G\", \"PT\", \" is\", \" great\", \"!\"]"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":".",
+                        "text":{
+                            "content":"."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"The total number of tokens in an API call affects:",
+                        "text":{
+                            "content":"The total number of tokens in an API call affects:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"How much your API call costs, as you pay per token",
+                        "text":{
+                            "content":"How much your API call costs, as you pay per token"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"How long your API call takes, as writing more tokens takes more time",
+                        "text":{
+                            "content":"How long your API call takes, as writing more tokens takes more time"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Whether your API call works at all, as total tokens must be below the model\u2019s maximum limit (4096 tokens for ",
+                        "text":{
+                            "content":"Whether your API call works at all, as total tokens must be below the model\u2019s maximum limit (4096 tokens for "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo-0301",
+                        "text":{
+                            "content":"gpt-3.5-turbo-0301"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":")",
+                        "text":{
+                            "content":")"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Both input and output tokens count toward these quantities. For example, if your API call used 10 tokens in the message input and you received 20 tokens in the message output, you would be billed for 30 tokens.",
+                        "text":{
+                            "content":"Both input and output tokens count toward these quantities. For example, if your API call used 10 tokens in the message input and you received 20 tokens in the message output, you would be billed for 30 tokens."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"To see how many tokens are used by an API call, check the ",
+                        "text":{
+                            "content":"To see how many tokens are used by an API call, check the "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"usage",
+                        "text":{
+                            "content":"usage"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" field in the API response (e.g., ",
+                        "text":{
+                            "content":" field in the API response (e.g., "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"response['usage']['total_tokens']",
+                        "text":{
+                            "content":"response['usage']['total_tokens']"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":").",
+                        "text":{
+                            "content":")."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Chat models like ",
+                        "text":{
+                            "content":"Chat models like "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo",
+                        "text":{
+                            "content":"gpt-3.5-turbo"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" and ",
+                        "text":{
+                            "content":" and "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-4",
+                        "text":{
+                            "content":"gpt-4"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" use tokens in the same way as other models, but because of their message-based formatting, it's more difficult to count how many tokens will be used by a conversation.",
+                        "text":{
+                            "content":" use tokens in the same way as other models, but because of their message-based formatting, it's more difficult to count how many tokens will be used by a conversation."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"To see how many tokens are in a text string without making an API call, use OpenAI\u2019s ",
+                        "text":{
+                            "content":"To see how many tokens are in a text string without making an API call, use OpenAI\u2019s "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://github.com/openai/tiktoken",
+                        "plain_text":"tiktoken",
+                        "text":{
+                            "link":{
+                                "url":"https://github.com/openai/tiktoken"
+                            },
+                            "content":"tiktoken"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":" Python library. Example code can be found in the OpenAI Cookbook\u2019s guide on ",
+                        "text":{
+                            "content":" Python library. Example code can be found in the OpenAI Cookbook\u2019s guide on "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb",
+                        "plain_text":"how to count tokens with tiktoken",
+                        "text":{
+                            "link":{
+                                "url":"https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb"
+                            },
+                            "content":"how to count tokens with tiktoken"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":".",
+                        "text":{
+                            "content":"."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Each message passed to the API consumes the number of tokens in the content, role, and other fields, plus a few extra for behind-the-scenes formatting. This may change slightly in the future.",
+                        "text":{
+                            "content":"Each message passed to the API consumes the number of tokens in the content, role, and other fields, plus a few extra for behind-the-scenes formatting. This may change slightly in the future."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"If a conversation has too many tokens to fit within a model\u2019s maximum limit (e.g., more than 4096 tokens for ",
+                        "text":{
+                            "content":"If a conversation has too many tokens to fit within a model\u2019s maximum limit (e.g., more than 4096 tokens for "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo",
+                        "text":{
+                            "content":"gpt-3.5-turbo"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":"), you will have to truncate, omit, or otherwise shrink your text until it fits. Beware that if a message is removed from the messages input, the model will lose all knowledge of it.",
+                        "text":{
+                            "content":"), you will have to truncate, omit, or otherwise shrink your text until it fits. Beware that if a message is removed from the messages input, the model will lose all knowledge of it."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Note too that very long conversations are more likely to receive incomplete replies. For example, a ",
+                        "text":{
+                            "content":"Note too that very long conversations are more likely to receive incomplete replies. For example, a "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo",
+                        "text":{
+                            "content":"gpt-3.5-turbo"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" conversation that is 4090 tokens long will have its reply cut off after just 6 tokens.",
+                        "text":{
+                            "content":" conversation that is 4090 tokens long will have its reply cut off after just 6 tokens."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_2",
+            "heading_2":{
+                "rich_text":[
+                    {
+                        "plain_text":"Instructing chat models",
+                        "text":{
+                            "content":"Instructing chat models"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Best practices for instructing models may change from model version to version. The advice that follows applies to gpt-3.5-turbo-0301 and may not apply to future models.",
+                        "text":{
+                            "content":"Best practices for instructing models may change from model version to version. The advice that follows applies to gpt-3.5-turbo-0301 and may not apply to future models."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Many conversations begin with a system message to gently instruct the assistant. For example, here is one of the system messages used for ChatGPT:",
+                        "text":{
+                            "content":"Many conversations begin with a system message to gently instruct the assistant. For example, here is one of the system messages used for ChatGPT:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"quote",
+            "quote":{
+                "rich_text":[
+                    {
+                        "plain_text":"You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Knowledge cutoff: {knowledge_cutoff} Current date: {current_date}",
+                        "text":{
+                            "content":"You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Knowledge cutoff: {knowledge_cutoff} Current date: {current_date}"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"In general, ",
+                        "text":{
+                            "content":"In general, "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo-0301",
+                        "text":{
+                            "content":"gpt-3.5-turbo-0301"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" does not pay strong attention to the system message, and therefore important instructions are often better placed in a user message.",
+                        "text":{
+                            "content":" does not pay strong attention to the system message, and therefore important instructions are often better placed in a user message."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"If the model isn\u2019t generating the output you want, feel free to iterate and experiment with potential improvements. You can try approaches like:",
+                        "text":{
+                            "content":"If the model isn\u2019t generating the output you want, feel free to iterate and experiment with potential improvements. You can try approaches like:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Make your instruction more explicit",
+                        "text":{
+                            "content":"Make your instruction more explicit"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Specify the format you want the answer in",
+                        "text":{
+                            "content":"Specify the format you want the answer in"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "bulleted_list_item":{
+                "rich_text":[
+                    {
+                        "plain_text":"Ask the model to think step by step or debate pros and cons before settling on an answer",
+                        "text":{
+                            "content":"Ask the model to think step by step or debate pros and cons before settling on an answer"
+                        },
+                        "type":"text"
+                    }
+                ]
+            },
+            "type":"bulleted_list_item"
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"For more prompt engineering ideas, read the OpenAI Cookbook guide on ",
+                        "text":{
+                            "content":"For more prompt engineering ideas, read the OpenAI Cookbook guide on "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://github.com/openai/openai-cookbook/blob/main/techniques_to_improve_reliability.md",
+                        "plain_text":"techniques to improve reliability",
+                        "text":{
+                            "link":{
+                                "url":"https://github.com/openai/openai-cookbook/blob/main/techniques_to_improve_reliability.md"
+                            },
+                            "content":"techniques to improve reliability"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":".",
+                        "text":{
+                            "content":"."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Beyond the system message, the temperature and max tokens are ",
+                        "text":{
+                            "content":"Beyond the system message, the temperature and max tokens are "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://platform.openai.com/docs/api-reference/chat",
+                        "plain_text":"two of many options",
+                        "text":{
+                            "link":{
+                                "url":"https://platform.openai.com/docs/api-reference/chat"
+                            },
+                            "content":"two of many options"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":" developers have to influence the output of the chat models. For temperature, higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. In the case of max tokens, if you want to limit a response to a certain length, max tokens can be set to an arbitrary number. This may cause issues for example if you set the max tokens value to 5 since the output will be cut-off and the result will not make sense to users.",
+                        "text":{
+                            "content":" developers have to influence the output of the chat models. For temperature, higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. In the case of max tokens, if you want to limit a response to a certain length, max tokens can be set to an arbitrary number. This may cause issues for example if you set the max tokens value to 5 since the output will be cut-off and the result will not make sense to users."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_2",
+            "heading_2":{
+                "rich_text":[
+                    {
+                        "plain_text":"Chat vs Completions",
+                        "text":{
+                            "content":"Chat vs Completions"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Because ",
+                        "text":{
+                            "content":"Because "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo",
+                        "text":{
+                            "content":"gpt-3.5-turbo"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" performs at a similar capability to ",
+                        "text":{
+                            "content":" performs at a similar capability to "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"text-davinci-003",
+                        "text":{
+                            "content":"text-davinci-003"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" but at 10% the price per token, we recommend ",
+                        "text":{
+                            "content":" but at 10% the price per token, we recommend "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo",
+                        "text":{
+                            "content":"gpt-3.5-turbo"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":" for most use cases.",
+                        "text":{
+                            "content":" for most use cases."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"For many developers, the transition is as simple as rewriting and retesting a prompt.",
+                        "text":{
+                            "content":"For many developers, the transition is as simple as rewriting and retesting a prompt."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"For example, if you translated English to French with the following completions prompt:",
+                        "text":{
+                            "content":"For example, if you translated English to French with the following completions prompt:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"Translate the following English text to French: \"{text}\"",
+                        "text":{
+                            "content":"Translate the following English text to French: \"{text}\""
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"plain text"
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"An equivalent chat conversation could look like:",
+                        "text":{
+                            "content":"An equivalent chat conversation could look like:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"[\n  {\"role\": \"system\", \"content\": \"You are a helpful assistant that translates English to French.\"},\n  {\"role\": \"user\", \"content\": 'Translate the following English text to French: \"{text}\"'}\n]",
+                        "text":{
+                            "content":"[\n  {\"role\": \"system\", \"content\": \"You are a helpful assistant that translates English to French.\"},\n  {\"role\": \"user\", \"content\": 'Translate the following English text to French: \"{text}\"'}\n]"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"plain text"
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"Or even just the user message:",
+                        "text":{
+                            "content":"Or even just the user message:"
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"code",
+            "code":{
+                "rich_text":[
+                    {
+                        "plain_text":"[\n  {\"role\": \"user\", \"content\": 'Translate the following English text to French: \"{text}\"'}\n]",
+                        "text":{
+                            "content":"[\n  {\"role\": \"user\", \"content\": 'Translate the following English text to French: \"{text}\"'}\n]"
+                        },
+                        "type":"text"
+                    }
+                ],
+                "language":"plain text"
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_2",
+            "heading_2":{
+                "rich_text":[
+                    {
+                        "plain_text":"FAQ",
+                        "text":{
+                            "content":"FAQ"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"Is fine-tuning available for ",
+                        "text":{
+                            "content":"Is fine-tuning available for "
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    },
+                    {
+                        "plain_text":"gpt-3.5-turbo",
+                        "text":{
+                            "content":"gpt-3.5-turbo"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true,
+                            "code":true
+                        }
+                    },
+                    {
+                        "plain_text":"?",
+                        "text":{
+                            "content":"?"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"No. As of Mar 1, 2023, you can only fine-tune base GPT-3 models. See the ",
+                        "text":{
+                            "content":"No. As of Mar 1, 2023, you can only fine-tune base GPT-3 models. See the "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://platform.openai.com/docs/guides/fine-tuning",
+                        "plain_text":"fine-tuning guide",
+                        "text":{
+                            "link":{
+                                "url":"https://platform.openai.com/docs/guides/fine-tuning"
+                            },
+                            "content":"fine-tuning guide"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":" for more details on how to use fine-tuned models.",
+                        "text":{
+                            "content":" for more details on how to use fine-tuned models."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"Do you store the data that is passed into the API?",
+                        "text":{
+                            "content":"Do you store the data that is passed into the API?"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"As of March 1st, 2023, we retain your API data for 30 days but no longer use your data sent via the API to improve our models. Learn more in our ",
+                        "text":{
+                            "content":"As of March 1st, 2023, we retain your API data for 30 days but no longer use your data sent via the API to improve our models. Learn more in our "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://openai.com/policies/usage-policies",
+                        "plain_text":"data usage policy",
+                        "text":{
+                            "link":{
+                                "url":"https://openai.com/policies/usage-policies"
+                            },
+                            "content":"data usage policy"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":".",
+                        "text":{
+                            "content":"."
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"heading_3",
+            "heading_3":{
+                "rich_text":[
+                    {
+                        "plain_text":"Adding a moderation layer",
+                        "text":{
+                            "content":"Adding a moderation layer"
+                        },
+                        "type":"text",
+                        "annotations":{
+                            "bold":true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "object":"block",
+            "type":"paragraph",
+            "paragraph":{
+                "rich_text":[
+                    {
+                        "plain_text":"If you want to add a moderation layer to the outputs of the Chat API, you can follow our ",
+                        "text":{
+                            "content":"If you want to add a moderation layer to the outputs of the Chat API, you can follow our "
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "href":"https://platform.openai.com/docs/guides/moderation",
+                        "plain_text":"moderation guide",
+                        "text":{
+                            "link":{
+                                "url":"https://platform.openai.com/docs/guides/moderation"
+                            },
+                            "content":"moderation guide"
+                        },
+                        "type":"text"
+                    },
+                    {
+                        "plain_text":" to prevent content that violates OpenAI\u2019s usage policies from being shown. ",
+                        "text":{
+                            "content":" to prevent content that violates OpenAI\u2019s usage policies from being shown. "
+                        },
+                        "type":"text"
+                    }
+                ]
+            }
+        }
+    ],
+    "properties":{
+        "Title":{
+            "title":[
+                {
+                    "text":{
+                        "content":"yinxiang_clipper"
+                    }
+                }
+            ]
+        },
+        "URL":{
+            "url":"https://platform.openai.com/docs/guides/chat",
+            "type":"url"
+        },
+        "Tags":{
+            "type":"multi_select",
+            "multi_select":[
+                {
+                    "name":"openai"
+                }
+            ]
+        },
+        "Created":{
+            "date":{
+                "start":"2023-04-24T13:34:07+08:00"
+            },
+            "type":"date"
+        }
+    },
+    "parent":{
+        "type":"database_id",
+        "database_id":"###database_id###"
+    }
+}
